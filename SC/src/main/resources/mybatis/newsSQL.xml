@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 뉴스 게시판 -->
+<mapper namespace="news">
+
+
+	<!-- 뉴스 게시판 리스트 페이징 -->
+	<select id="newsListPaging" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				NEWSIDX, TYPE, TITLE, CONTENT, NEWSDATE, ID, ISDEL, READCOUNT, GOOD, BAD, ROWNUM R
+			FROM (
+				SELECT 
+					NEWSIDX, TYPE, TITLE, CONTENT, NEWSDATE, ID, ISDEL, READCOUNT, GOOD, BAD
+				FROM
+					NEWS
+				WHERE 
+					TYPE = 'NEW'
+				ORDER BY NEWSIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+
+	<!-- 뉴스 게시판 카운트 -->
+	<select id="countNewsList" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			NEWS
+		WHERE
+			TYPE = 'NEW'
+	]]>
+	</select>
+
+	<!-- 뉴스 게시판 검색 리스트 페이징 -->
+	<select id="newsListSearchPaging" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			* 
+		FROM (
+			SELECT
+				NEWSIDX, TYPE, TITLE, CONTENT, NEWSDATE, ID, ISDEL, READCOUNT, GOOD, BAD, ROWNUM R
+			FROM (
+				SELECT 
+					NEWSIDX, TYPE, TITLE, CONTENT, NEWSDATE, ID, ISDEL, READCOUNT, GOOD, BAD
+				FROM
+					NEWS
+				<trim prefix="WHERE" prefixOverrides="OR">
+					<!-- 뉴스게시판 검색 : 검색어 입력 -->
+					<if test="KEYWORD != NULL">
+						TITLE LIKE '%'||#{KEYWORD}||'%'
+					</if>				
+				</trim>
+				<if test="ORDER!=NULL and ORDER.equals('IDX')">
+					ORDER BY NEWSIDX DESC
+				</if>
+				<if test="ORDER!=NULL and ORDER.equals('GOOD')">
+					ORDER BY GOOD DESC
+				</if> 
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	</select>
+
+	<!-- 뉴스 게시판 검색 카운트 -->
+	<select id="countNewsListSearch" parameterType="hashmap" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			NEWS
+		<trim prefix="WHERE" prefixOverrides="OR">
+			<!-- 단축키 검색 : 검색어 입력 -->
+			<if test="KEYWORD != NULL">
+				ID LIKE '%'||#{KEYWORD}||'%'
+			</if>				
+		</trim>
+	</select>
+
+	<!-- 뉴스 게시판 입력 -->
+	<insert id="insertNewsList" parameterType="sc.model.News">
+	<![CDATA[
+		INSERT INTO
+			NEWS
+		VALUES(
+			NEWSIDX_SEQ.NEXTVAL,
+			'NEW',
+			#{TITLE},
+			#{CONTENT},
+			SYSDATE,
+			#{ID},
+			'N',
+			0,
+			0,
+			0
+		)
+	]]>
+	</insert>
+
+	<!-- 뉴스 게시판 수정 -->
+	<update id="updateNewsList" parameterType="sc.model.News">
+	<![CDATA[
+		UPDATE
+			NEWS
+		SET
+			TITLE = #{TITLE},
+			CONTENT = #{CONTENT}
+		WHERE
+			NEWSIDX = #{NEWSIDX}
+	]]>           
+	</update>
+
+	<!-- 뉴스 게시판 수정(삭제) -->
+	<update id="updateNewsListDel" parameterType="int">
+	<![CDATA[
+		UPDATE
+			NEWS
+		SET
+			ISDEL = 'Y'
+		WHERE
+			NEWSIDX = #{NEWSIDX}
+	]]>           
+	</update>
+
+	<!-- 뉴스 게시판 선택 -->
+	<select id="selectNewsIDX" parameterType="int" resultType="sc.model.News">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			NEWS
+		WHERE
+			NEWSIDX = #{NEWSIDX}
+	]]>
+	</select>
+
+	<!-- 뉴스 게시판 조회수 -->
+	<update id="updateNewsReadcount" parameterType="int">
+	<![CDATA[
+		UPDATE
+			NEWS
+		SET
+			READCOUNT = READCOUNT + 1
+		WHERE
+			NEWSIDX = #{NEWSIDX}		
+	]]>
+	</update>
+
+	<!-- 뉴스 게시판 좋아요 -->
+	<update id="updateNewsGood" parameterType="int">
+	<![CDATA[
+		UPDATE
+			NEWS
+		SET
+			GOOD = GOOD + 1
+		WHERE
+			NEWSIDX = #{NEWSIDX}		
+	]]>
+	</update>
+
+	<!-- 뉴스 게시판 싫어요 -->
+	<update id="updateNewsBad" parameterType="int">
+	<![CDATA[
+		UPDATE
+			NEWS
+		SET
+			BAD = BAD + 1
+		WHERE
+			NEWSIDX = #{NEWSIDX}		
+	]]>
+	</update>
+</mapper>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+       "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+       "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+       
+<tiles-definitions>
+
+	<definition name="main_layout" template="/WEB-INF/jsp/layout/layout.jsp">
+		<put-attribute name="header" value="/WEB-INF/jsp/layout/main_header.jsp" />
+		<put-attribute name="left" value="/WEB-INF/jsp/layout/main_left.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/layout/main_footer.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/main.jsp" />
+	</definition>
+	
+	
+	<!-- Admin -->
+	
+	<definition name="adminMainPage" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/adminMainPage.jsp" />
+	</definition>	
+	
+	<!-- Admin Member -->
+	
+	<definition name="adminMemberList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/member/adminMemberList.jsp" />
+	</definition>
+	
+	<definition name="adminMemberDetail" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/member/adminMemberDetail.jsp" />
+	</definition>
+	
+	
+	<!-- Admin Short -->
+	
+	<definition name="adminShortWriteForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/shortcut/adminShortWriteForm.jsp" />
+	</definition>
+	
+	<definition name="adminShortModifyForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/admin/shortcut/adminShortModifyForm.jsp" />
+	</definition>
+	
+		
+	<!-- Member -->
+	
+	<definition name="loginForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/member/loginForm.jsp" />
+	</definition>
+	
+	<definition name="joinForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/member/joinForm.jsp" />
+	</definition>
+	
+	<definition name="findIdForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/member/findIdForm.jsp" />
+	</definition>
+	
+	<definition name="findPwForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/member/findPwForm.jsp" />
+	</definition>
+	
+	<definition name="myPage" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/member/myPage.jsp" />
+	</definition>
+	
+	<definition name="userModifyForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/member/userModifyForm.jsp" />
+	</definition>
+	
+	
+	<!-- message -->
+	
+	<definition name="messageList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/message/messageList.jsp" />
+	</definition>
+	
+	<definition name="messageDetail" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/message/messageDetail.jsp" />
+	</definition>
+	
+	
+	<!-- alarm -->
+	
+	<definition name="alarmList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/alarm/alarmList.jsp" />
+	</definition>
+	
+	
+	<!-- bookmark -->
+	
+	<definition name="bookmarkList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/bookmark/bookmarkList.jsp" />
+	</definition>
+	
+	
+	<!-- follow -->
+	
+	<definition name="followList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/follow/followList.jsp" />
+	</definition>
+	
+	
+	<!-- shortcut -->
+	
+	<definition name="shortcutList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/shortcut/shortcutList.jsp" />
+	</definition>
+	
+	<definition name="shortcutDetail" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/shortcut/shortcutDetail.jsp" />
+	</definition>
+	
+	<definition name="best10ShortList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/shortcut/best10ShortList.jsp" />
+	</definition>
+	
+	
+	<!-- free -->
+	
+	<definition name="freeList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/free/freeList.jsp" />
+	</definition>
+	
+	<definition name="freeDetail" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/free/freeDetail.jsp" />
+	</definition>
+	
+	<definition name="freeWriteForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/free/freeWriteForm.jsp" />
+	</definition>
+	
+	<definition name="freeModifyForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/free/freeModifyForm.jsp" />
+	</definition>
+	
+	<definition name="best10FreeList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/free/best10FreeList.jsp" />
+	</definition>
+	
+	
+	<!-- info -->
+	
+	<definition name="infoList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/info/infoList.jsp" />
+	</definition>
+	
+	<definition name="infoDetail" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/info/infoDetail.jsp" />
+	</definition>
+	
+	<definition name="infoWriteForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/info/infoWriteForm.jsp" />
+	</definition>
+	
+	<definition name="infoModifyForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/info/infoModifyForm.jsp" />
+	</definition>
+	
+	<definition name="best10InfoList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/info/best10InfoList.jsp" />
+	</definition>
+	
+	
+	<!-- news -->
+	
+	<definition name="newsList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/news/newsList.jsp" />
+	</definition>
+	
+	<definition name="newsDetail" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/news/newsDetail.jsp" />
+	</definition>
+	
+	<definition name="newsWriteForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/news/newsWriteForm.jsp" />
+	</definition>
+	
+	<definition name="newsModifyForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/news/newsModifyForm.jsp" />
+	</definition>
+	
+	
+	<!-- report -->
+	
+	<definition name="reportList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/report/reportList.jsp" />
+	</definition>
+	
+	<definition name="reportDetail" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/report/reportDetail.jsp" />
+	</definition>
+	
+	<definition name="reportWriteForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/report/reportWriteForm.jsp" />
+	</definition>
+	
+	<definition name="reportModifyForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/report/reportModifyForm.jsp" />
+	</definition>	
+	
+</tiles-definitions>

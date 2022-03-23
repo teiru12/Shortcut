@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 좋아요 테이블 -->
+<mapper namespace="goodbad">
+
+	<!-- 좋아요 입력 -->
+	<insert id="insertGood" parameterType="sc.model.Goodbad">
+		INSERT INTO
+			GOODBAD
+		VALUES(
+			GOODBADIDX_SEQ.NEXTVAL,
+			#{ID},
+			'Y',
+			'N',
+			#{TYPE},
+			#{IDX},
+			SYSDATE
+		)
+	</insert>
+	
+	<!-- 싫어요 입력 -->
+	<insert id="insertBad" parameterType="sc.model.Goodbad">
+		INSERT INTO
+			GOODBAD
+		VALUES(
+			GOODBADIDX_SEQ.NEXTVAL,
+			#{ID},
+			'N',
+			'Y',
+			#{TYPE},
+			#{IDX},
+			SYSDATE
+		)
+	</insert>
+	
+	<!-- 좋아요 선택(SELECT) BY TYPE, 게시글 식별번호 , 아이디 -->
+	<!-- 중복 좋아요, 싫어요를 방지하기 위한 조회 -->
+	<!-- 좋아요, 싫어요 하나라도 있으면 좋아요 싫어요를 할 수 없다 -->
+	<select id="selectGoodbad" parameterType="hashmap" resultType="sc.model.Goodbad">
+		SELECT
+			*
+		FROM
+			GOODBAD
+		WHERE
+			TYPE = #{TYPE}
+			AND
+			IDX = #{IDX}
+			AND
+			ID = #{ID}			
+	</select>
+
+	<!-- 좋아요 검색 BY 날짜, 내림차순 정렬 (좋아요 10개, 글수 10개) 자유게시판 -->
+	<select id="selectGoodFreeByDate" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			TYPE, FREEIDX, COUNT, TITLE, GOOD, READCOUNT
+		FROM
+			(
+			SELECT
+				B.TYPE, B.FREEIDX, COUNT, B.TITLE, B.GOOD, B.READCOUNT, ROWNUM R
+			FROM 
+				( SELECT
+					TYPE, IDX, COUNT(*) COUNT
+				FROM (
+					SELECT
+						*
+					FROM
+						GOODBAD
+					WHERE 
+						TO_CHAR(GOODDATE, 'YYYYMMDD') > TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+				)
+				GROUP BY
+					TYPE, IDX
+				HAVING
+					COUNT(*) >= 10
+				) A
+				INNER JOIN
+				FREE B
+			ON
+				A.IDX = B.FREEIDX 
+			ORDER BY COUNT
+		)
+	   WHERE
+		 R <= 10
+	]]>
+	</select>				
+
+	<!-- 좋아요 검색 BY 날짜, 내림차순 정렬 (좋아요 10개, 글수 10개) 정보교류게시판 -->		
+	<select id="selectGoodInfoByDate" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			TYPE, INFOIDX, COUNT, TITLE, GOOD, READCOUNT
+		FROM
+			(
+			SELECT
+				B.TYPE, B.INFOIDX, COUNT, B.TITLE, B.GOOD, B.READCOUNT, ROWNUM R
+			FROM 
+				( SELECT
+					TYPE, IDX, COUNT(*) COUNT
+				FROM (
+					SELECT
+						*
+					FROM
+						GOODBAD
+					WHERE 
+						TO_CHAR(GOODDATE, 'YYYYMMDD') > TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+				)
+				GROUP BY
+					TYPE, IDX
+				HAVING
+					COUNT(*) >= 10
+				) A
+				INNER JOIN
+				INFO B
+			ON
+				A.IDX = B.INFOIDX 
+			ORDER BY COUNT
+		)
+	   WHERE
+		 R <= 10
+	]]>
+	</select>			
+	
+	<!-- 좋아요 검색 BY 날짜, 내림차순 정렬 (좋아요 10개, 글수 10개) 단축키게시판 -->			
+	<select id="selectGoodShortByDate" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			TYPE, SHORTIDX, COUNT, TITLE, GOOD, READCOUNT
+		FROM
+			(
+			SELECT
+				B.TYPE, B.SHORTIDX, COUNT, B.TITLE, B.GOOD, B.READCOUNT, ROWNUM R
+			FROM 
+				( SELECT
+					TYPE, IDX, COUNT(*) COUNT
+				FROM (
+					SELECT
+						*
+					FROM
+						GOODBAD
+					WHERE 
+						TO_CHAR(GOODDATE, 'YYYYMMDD') > TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+				)
+				GROUP BY
+					TYPE, IDX
+				HAVING
+					COUNT(*) >= 10
+				) A
+				INNER JOIN
+				SHORT B
+			ON
+				A.IDX = B.SHORTIDX 
+			ORDER BY COUNT
+		)
+	   WHERE
+		 R <= 10
+	]]>
+	</select>			
+	
+</mapper>

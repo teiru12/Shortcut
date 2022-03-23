@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 자유 게시판 -->
+<mapper namespace="free">
+
+
+	<!-- 자유 게시판 리스트 페이징 -->
+	<select id="freeListPaging" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				FREEIDX, TYPE, TITLE, CONTENT, FREEDATE, ID, IP, PASSWORD, ISDEL, READCOUNT, GOOD, BAD, ROWNUM R
+			FROM (
+				SELECT 
+					FREEIDX, TYPE, TITLE, CONTENT, FREEDATE, ID, IP, PASSWORD, ISDEL, READCOUNT, GOOD, BAD
+				FROM
+					FREE
+				WHERE 
+					TYPE = 'FRE'
+				ORDER BY FREEIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+
+	<!-- 자유 게시판 카운트 -->
+	<select id="countFreeList" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			FREE
+		WHERE
+			TYPE = 'FREE'
+	]]>
+	</select>
+
+	<!-- 자유 게시판 검색 리스트 페이징 -->
+	<select id="freeListSearchPaging" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			* 
+		FROM (
+			SELECT
+				FREEIDX, TYPE, TITLE, CONTENT, FREEDATE, ID, IP, PASSWORD, ISDEL, READCOUNT, GOOD, BAD, ROWNUM R
+			FROM (
+				SELECT 
+					FREEIDX, TYPE, TITLE, CONTENT, FREEDATE, ID, IP, PASSWORD, ISDEL, READCOUNT, GOOD, BAD
+				FROM
+					SHORT
+				<trim prefix="WHERE" prefixOverrides="OR">
+					<!-- 자유게시판 검색 : 검색어 입력 -->
+					<if test="KEYWORD != NULL">
+						TITLE LIKE '%'||#{KEYWORD}||'%'
+					</if>				
+				</trim>
+				<if test="ORDER!=NULL and ORDER.equals('IDX')">
+					ORDER BY FREEIDX DESC
+				</if>
+				<if test="ORDER!=NULL and ORDER.equals('GOOD')">
+					ORDER BY GOOD DESC
+				</if> 
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	</select>
+
+	<!-- 자유 게시판 검색 카운트 -->
+	<select id="countFreeListSearch" parameterType="String" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			FREE
+		WHERE
+			TYPE = 'FREE'
+	]]>
+	</select>
+
+	<!-- 자유 게시판 입력 -->
+	<insert id="insertFreeList" parameterType="sc.model.Free">
+	<![CDATA[
+		INSERT INTO
+			FREE
+		VALUES(
+			FREEIDX_SEQ.NEXTVAL,
+			'FRE',
+			#{TITLE},
+			#{CONTENT},
+			SYSDATE,
+			#{ID},
+			#{IP},
+			#{PASSWORD},
+			'N'
+			0,
+			0,
+			0
+		)
+	]]>
+	</insert>	
+	
+	<!-- 자유 게시판 수정 -->
+	<update id="updateFreeList" parameterType="sc.model.Free">
+	<![CDATA[
+		UPDATE
+			FREE
+		SET
+			TITLE = #{TITLE},
+			CONTENT = #{CONTENT}
+		WHERE
+			SHORTIDX = #{SHORTIDX}
+	]]>           
+	</update>
+
+	<!-- 자유 게시판 수정(삭제) -->
+	<update id="updateFreeListDel" parameterType="sc.model.Free">
+	<![CDATA[
+		UPDATE
+			FREE
+		SET
+			ISDEL = 'Y'
+		WHERE
+			FREEIDX = #{FREEIDX}
+	]]>        
+	</update>
+
+	<!-- 자유 게시판 선택 -->
+	<select id="selectFreeIDX" parameterType="int" resultType="sc.model.Free">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			FREE
+		WHERE
+			FREEIDX = #{FREEIDX}
+	]]>
+	</select>
+
+	<!-- 자유 게시판 조회수 -->
+	<update id="updateFreeReadcount" parameterType="int">
+	<![CDATA[
+		UPDATE
+			FREE
+		SET
+			READCOUNT = READCOUNT + 1
+		WHERE
+			FREEIDX = #{FREEIDX}
+		
+	]]>
+	</update>
+	
+	<!-- 자유 게시판 좋아요 -->
+	<update id="updateFreeGood" parameterType="int">
+	<![CDATA[
+		UPDATE
+			FREE
+		SET
+			GOOD = GOOD + 1
+		WHERE
+			FREEIDX = #{FREEIDX}
+		
+	]]>
+	</update>
+
+	<!-- 자유 게시판 싫어요 -->
+	<update id="updateFreeBad" parameterType="int">
+	<![CDATA[
+		UPDATE
+			FREE
+		SET
+			BAD = BAD + 1
+		WHERE
+			FREEIDX = #{FREEIDX}
+		
+	]]>
+	</update>
+
+	<!-- 자유 게시판 댓글 -->
+	
+	<!-- 자유 게시판 댓글 리스트 페이징 BY 게시글번호 -->
+	<select id="freeListComPagingByFreeIDX" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				FREECOMIDX, FREEIDX, CONTENT, FREECOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, ISDEL, ROWNUM R
+			FROM (
+				SELECT 
+					FREECOMIDX, FREEIDX, CONTENT, FREECOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, ISDEL
+				FROM
+					FREECOM
+				WHERE 
+					FREEIDX = #{FREEIDX}
+				ORDER BY FREECOMIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+
+	<!-- 자유 게시판 댓글 카운트 BY 게시글번호 -->
+	<select id="countFreeComByFreeIDX" parameterType="int" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			FREECOM
+		WHERE
+			FREEIDX = #{FREEIDX}
+	]]>
+	</select>
+
+	<!-- 자유 게시판 댓글 입력 BY 게시글번호 -->
+	<insert id="insertFreeListComByFreeIDX" parameterType="sc.model.FreeCom">
+	<![CDATA[
+		INSERT INTO
+			FREECOM
+		VALUES(
+			FREECOMIDX_SEQ.NEXTVAL,
+			#{FREEIDX},
+			#{CONTENT},
+			SYSDATE,
+			#{ID},
+			#{IP},
+			#{PASSWORD},
+			#{RETYPE},
+			#{RESTEP},
+			#{RELEVEL},
+			'N'
+		)
+	]]>
+	</insert>
+
+	<!-- 자유 게시판 댓글 수정 BY 게시글번호 -->
+	<update id="updateFreeListComByFreeIDX" parameterType="sc.model.FreeCom">
+	<![CDATA[
+		UPDATE
+			FREECOM
+		SET
+			CONTENT = #{CONTENT}
+		WHERE
+			FREECOMIDX = #{FREECOMIDX}
+	]]>           
+	</update>
+
+	<!-- 자유 게시판 댓글 수정 (삭제) BY 게시글번호 -->
+	<update id="updateFreeListComDelByFreeIDX" parameterType="int">
+	<![CDATA[
+		UPDATE
+			FREECOM
+		SET
+			ISDEL = 'Y'
+		WHERE
+			FREECOMIDX = #{FREECOMIDX}
+	]]>        
+	</update>
+
+</mapper>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 신고 게시판 -->
+<mapper namespace="report">
+	
+	<!-- 신고 게시판 리스트 페이징 -->
+	<select id="reportListPaging" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				REPORTIDX, TYPE, TITLE, CONTENT, REPORTDATE, ID, ISDEL, ROWNUM R
+			FROM (
+				SELECT 
+					REPORTIDX, TYPE, TITLE, CONTENT, REPORTDATE, ID, ISDEL
+				FROM
+					REPORT
+				WHERE 
+					TYPE = 'REP'
+				ORDER BY REPORTIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+
+	<!-- 신고 게시판 카운트 -->
+	<select id="countReportList" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			REPORT
+		WHERE
+			TYPE = 'REP'
+	]]>
+	</select>
+
+	<!-- 신고 게시판 입력 -->
+	<insert id="insertReportList" parameterType="sc.model.Report">
+	<![CDATA[
+		INSERT INTO
+			REPORT
+		VALUES(
+			REPORTIDX_SEQ.NEXTVAL,
+			'REP',
+			#{TITLE},
+			#{CONTENT},
+			SYSDATE,
+			#{ID},
+			'N'
+		)
+	]]>
+	</insert>
+
+	<!-- 신고 게시판 수정 -->
+	<update id="updateReportList" parameterType="sc.model.Report">
+	<![CDATA[
+		UPDATE
+			REPORT
+		SET
+			TITLE = #{TITLE},
+			CONTENT = #{CONTENT}
+		WHERE
+			REPORTIDX = #{REPORTIDX}
+	]]>           
+	</update>
+
+	<!-- 신고 게시판 수정(삭제) -->
+	<update id="updateReportListDel" parameterType="int">
+	<![CDATA[
+		UPDATE
+			REPORT
+		SET
+			ISDEL = 'Y'
+		WHERE
+			REPORTIDX = #{REPORTIDX}
+	]]>           
+	</update>
+
+	<!-- 신고 게시판 선택 -->
+	<select id="selectReportIDX" parameterType="int" resultType="sc.model.Report">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			REPORT
+		WHERE
+			REPORTIDX = #{REPORTIDX}
+	]]>
+	</select>
+
+
+	<!-- 신고 게시판 댓글 -->
+
+	<!-- 신고 게시판 댓글 리스트 -->
+	<select id="reportListComByReportIDX" parameterType="int" resultType="hashmap">
+	<![CDATA[
+		SELECT 
+			REPORTCOMIDX, REPORTIDX, CONTENT, REPORTCOMDATE
+		FROM
+			REPORT
+		WHERE 
+			REPORTIDX = #{REPORTIDX}
+		ORDER BY REPORTIDX DESC
+	]]>
+	</select>
+	
+	<!-- 신고 게시판 댓글 입력 BY 게시글번호 -->
+	<insert id="insertReportListComByReportIDX" parameterType="sc.model.ReportCom">
+	<![CDATA[
+		INSERT INTO
+			REPORTCOM
+		VALUES(
+			REPORTCOMIDX_SEQ.NEXTVAL,
+			#{REPORTIDX},
+			#{CONTENT},
+			SYSDATE
+		)
+	]]>
+	</insert>
+
+	<!-- 신고 게시판 댓글 수정 BY 게시글번호 -->
+	<update id="updateReportListComByReportIDX" parameterType="sc.model.ReportCom">
+	<![CDATA[
+		UPDATE
+			REPORTCOM
+		SET
+			CONTENT = #{CONTENT}
+		WHERE
+			REPORTCOMIDX = #{REPORTCOMIDX}
+	]]>           
+	</update>
+
+	<!-- 신고 게시판 댓글 수정 (삭제) BY 게시글번호 -->
+	<update id="updateReportListComDelByReportIDX" parameterType="int">
+	<![CDATA[
+		UPDATE
+			REPORTCOM
+		SET
+			ISDEL = 'Y'
+		WHERE
+			REPORTCOMIDX = #{REPORTCOMIDX}
+	]]>           
+	</update>
+</mapper>

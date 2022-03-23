@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 쪽지 -->
+<mapper namespace="message">
+
+	<!-- 회원의 보낸 쪽지 리스트 페이징 -->
+	<select id="sendMessageListPagingById" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				MSGIDX, SENDID, GETID, SENDDATE, CONTENT, ISDEL, ROWNUM R
+			FROM (
+				SELECT 
+					MSGIDX, SENDID, GETID, SENDDATE, CONTENT, ISDEL
+				FROM
+					MESSAGE
+				WHERE 
+					SENDID = #{SENDID}
+				ORDER BY MSGIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+
+	<!-- 회원의 보낸 쪽지 카운트 -->
+	<select id="countSendMessageList" parameterType="String" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			MESSAGE
+		WHERE
+			SENDID = #{SENDID}
+	]]>
+	</select>
+
+	<!-- 회원의 받은 쪽지 리스트 페이징 -->
+	<select id="getMessageListPagingById" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				MSGIDX, SENDID, GETID, SENDDATE, CONTENT, ISDEL, ROWNUM R
+			FROM (
+				SELECT 
+					MSGIDX, SENDID, GETID, SENDDATE, CONTENT, ISDEL
+				FROM
+					MESSAGE
+				WHERE 
+					GETID = #{GETID}
+				ORDER BY MSGIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+
+	<!-- 회원의 받은 쪽지 카운트 -->
+	<select id="countGetMessageList" parameterType="String" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			MESSAGE
+		WHERE
+			GETID = #{GETID}
+	]]>
+	</select>
+
+	<!-- 회원의 쪽지 정보 1개 선택 (SELECT) BY MSGIDX -->
+	<select id="selectMessageByMsgIDX" parameterType="int" resultType="sc.model.Message">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			MESSAGE
+		WHERE
+			MSGIDX = #{MSGIDX}
+	]]>
+	</select>
+	
+	<!-- 회원의 쪽지 정보 수정 (삭제) -->
+	<update id="updateMessageByMsgIDX" parameterType="int">
+	<![CDATA[
+		UPDATE
+			MESSAGE
+		SET
+			ISDEL = 'Y'
+		WHERE
+			MEMIDX = #{MEMIDX}
+	]]>           
+	</update>
+
+	<!-- 쪽지 작성 -->
+	<insert id="insertMessage" parameterType="sc.model.Message">
+	<![CDATA[
+		INSERT INTO
+			MESSAGE
+		VALUES(
+			MSGIDX_SEQ.NEXTVAL,
+			#{SENDID},
+			#{GETID},
+			SYSDATE,
+			#{CONTENT},
+			'N'
+		)
+	]]>
+	</insert>
+</mapper>

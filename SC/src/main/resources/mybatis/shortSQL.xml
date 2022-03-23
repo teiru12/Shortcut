@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 단축키 게시판 -->
+<mapper namespace="short">
+
+	<!-- 단축키 게시판 리스트 페이징 -->
+	<select id="shortListPaging" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				SHORTIDX, TYPE, TITLE, CONTENT, SHORTDATE, READCOUNT, GOOD, BAD, ROWNUM R
+			FROM (
+				SELECT 
+					SHORTIDX, TYPE, TITLE, CONTENT, SHORTDATE, READCOUNT, GOOD, BAD
+				FROM
+					SHORT
+				WHERE 
+					TYPE = 'SHO'
+				ORDER BY SHORTIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+
+	<!-- 단축키 게시판 카운트 -->
+	<select id="countShortList" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			SHORT
+		WHERE
+			TYPE = 'SHO'
+	]]>
+	</select>
+
+	<!-- 단축키 게시판 검색 리스트 페이징 -->
+	<select id="shortListSearchPaging" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			* 
+		FROM (
+			SELECT
+				SHORTIDX, TYPE, TITLE, CONTENT, SHORTDATE, READCOUNT, GOOD, BAD, ROWNUM R
+			FROM (
+				SELECT 
+					SHORTIDX, TYPE, TITLE, CONTENT, SHORTDATE, READCOUNT, GOOD, BAD
+				FROM
+					SHORT
+				<trim prefix="WHERE" prefixOverrides="OR">
+					<!-- 단축키 검색 : 검색어 입력 -->
+					<if test="KEYWORD != NULL">
+						TITLE LIKE '%'||#{KEYWORD}||'%'
+						OR
+						CONTENT LIKE '%'||#{KEYWORD}||'%'
+					</if>				
+				</trim>		
+				<!-- ORDER가 NULL일 때 -->
+				<if test="ORDER==NULL">
+					<if test="#{STYPE}=='M'">
+						ORDER BY 'M' DESC
+					</if>
+					<if test="#{STYPE}=='E'">
+						ORDER BY 'E' DESC
+					</if>
+					<if test="#{STYPE}=='H'">
+						ORDER BY 'H' DESC
+					</if>
+					<if test="#{STYPE}=='W'">
+						ORDER BY 'W' DESC
+					</if>
+					<if test="#{STYPE}=='N'">
+						ORDER BY 'N' DESC
+					</if>
+				</if>
+				<!-- ORDER가 NULL이 아닐 때 -->
+				<if test="ORDER!=NULL and ORDER.equals('IDX')">
+					ORDER BY SHORTIDX
+				</if>
+				<if test="ORDER!=NULL and ORDER.equals('MICRO')">
+					ORDER BY #{STYPE} == 'M' DESC
+				</if>
+				<if test="ORDER!=NULL and ORDER.equals('ECLIPSE')">
+					ORDER BY #{STYPE} == 'E' DESC
+				</if>
+				<if test="ORDER!=NULL and ORDER.equals('HWP')">
+					ORDER BY #{STYPE} == 'H' DESC
+				</if>
+				<if test="ORDER!=NULL and ORDER.equals('WINDOW')">
+					ORDER BY #{STYPE} == 'W' DESC
+				</if>
+				<if test="ORDER!=NULL and ORDER.equals('NOTE')">
+					ORDER BY #{STYPE} == 'N' DESC
+				</if>
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	</select>
+
+	<!-- 단축키 게시판 검색 카운트 -->
+	<select id="countShortListSearch" parameterType="hashmap" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			SHORT
+		<trim prefix="WHERE" prefixOverrides="OR">
+			<!-- 단축키 검색 : 검색어 입력 -->
+			<if test="KEYWORD != NULL">
+				ID LIKE '%'||#{KEYWORD}||'%'
+			</if>				
+		</trim>
+	</select>
+
+	<!-- 단축키 게시판 입력 -->
+	<insert id="insertShortList" parameterType="sc.model.Short">
+	<![CDATA[
+		INSERT INTO
+			SHORT
+		VALUES(
+			SHORTIDX_SEQ.NEXTVAL,
+			'SHO',
+			#{TITLE},
+			#{CONTENT},
+			SYSDATE,
+			0,
+			0,
+			0,
+			#{STYPE}
+		)
+	]]>
+	</insert>
+
+
+	<!-- 단축키 게시판 수정 -->
+	<update id="updateShortList" parameterType="sc.model.Short">
+	<![CDATA[
+		UPDATE
+			SHORT
+		SET
+			TITLE = #{TITLE},
+			CONTENT = #{CONTENT},
+			STYPE = #{STYPE}
+		WHERE
+			SHORTIDX = #{SHORTIDX}
+	]]>           
+	</update>
+
+	<!-- 단축키 게시판 삭제 -->
+	<delete id="deleteShortList" parameterType="int">
+	<![CDATA[
+		DELETE
+		FROM
+			SHORT
+		WHERE
+			SHORTIDX = #{SHORTIDX}
+	]]>
+	</delete>
+
+	<!-- 단축키 게시판 선택 -->
+	<select id="selectShortIDX" parameterType="int" resultType="sc.model.Short">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			SHORT
+		WHERE
+			SHORTIDX = #{SHORTIDX}
+	]]>
+	</select>
+
+	<!-- 단축키 게시판 조회수 -->
+	<update id="updateShortReadcount" parameterType="int">
+	<![CDATA[
+		UPDATE
+			 SHORT
+		SET
+			READCOUNT = READCOUNT + 1
+		WHERE
+			SHORTIDX = #{SHORTIDX}
+		
+	]]>
+	</update>
+
+	<!-- 단축키 게시판 좋아요 -->
+	<update id="updateShortGood" parameterType="int">
+	<![CDATA[
+		UPDATE
+			 SHORT
+		SET
+			GOOD = GOOD + 1
+		WHERE
+			SHORTIDX = #{SHORTIDX}
+		
+	]]>
+	</update>
+
+	<!-- 단축키 게시판 싫어요 -->
+	<update id="updateShortBad" parameterType="int">
+	<![CDATA[
+		UPDATE
+			 SHORT
+		SET
+			BAD = BAD + 1
+		WHERE
+			SHORTIDX = #{SHORTIDX}
+		
+	]]>
+	</update>
+
+	<!-- 단축키 게시판 댓글 -->
+	
+	<!-- 단축키 게시판 댓글 리스트 페이징 BY 게시글번호 -->
+	<select id="shortListComPagingByShortIDX" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				SHORTCOMIDX, SHORTIDX, CONTENT, SHORTCOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, ISDEL, ROWNUM R
+			FROM (
+				SELECT 
+					SHORTCOMIDX, SHORTIDX, CONTENT, SHORTCOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, ISDEL
+				FROM
+					SHORTCOM
+				WHERE 
+					SHORTIDX = #{SHORTIDX}
+				ORDER BY SHORTCOMIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+
+	<!-- 단축키 게시판 댓글 카운트 BY 게시글번호 -->
+	<select id="countShortListComByShortIDX" parameterType="int" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			SHORTCOM
+		WHERE
+			SHORTIDX = #{SHORTIDX}
+	]]>
+	</select>
+
+	<!-- 단축키 게시판 댓글 입력 BY 게시글번호 -->
+	<insert id="insertShortListComByShortIDX" parameterType="sc.model.ShortCom">
+	<![CDATA[
+		INSERT INTO
+			SHORTCOM
+		VALUES(
+			SHORTCOMIDX_SEQ.NEXTVAL,
+			#{SHORTIDX},
+			#{CONTENT},
+			SYSDATE,
+			#{ID},
+			#{IP},
+			#{PASSWORD},
+			#{RETYPE},
+			#{RESTEP},
+			#{RELEVEL},
+			'N'
+
+		)
+	]]>
+	</insert>
+
+	<!-- 단축키 게시판 댓글 수정 BY 게시글번호 -->
+	<update id="updateShortListComByShortIDX" parameterType="sc.model.ShortCom">
+	<![CDATA[
+		UPDATE
+			SHORTCOM
+		SET
+			CONTENT = #{CONTENT}
+		WHERE
+			SHORTCOMIDX = #{SHORTCOMIDX}
+	]]>           
+	</update>
+
+	<!-- 단축키 게시판 댓글 수정 (삭제) BY 게시글번호 -->
+	<update id="updateShortListComDelByShortIDX" parameterType="int">
+	<![CDATA[
+		UPDATE
+			SHORTCOM
+		SET
+			ISDEL = 'Y'
+		WHERE
+			SHORTCOMIDX = #{SHORTCOMIDX}
+	]]>
+	</update>
+</mapper>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 팔로우 -->
+<mapper namespace="follow">
+	<!-- 회원의 팔로우 리스트 페이징 -->
+	<select id="followListPaging" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				FOLLOWIDX, ID, FOLLOWID, ROWNUM R
+			FROM (
+				SELECT 
+					FOLLOWIDX, ID, FOLLOWID
+				FROM
+					FOLLOW
+				WHERE 
+					ID = #{ID}
+				ORDER BY FOLLOWIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+
+	<!-- 회원의 팔로우 카운트 -->
+	<select id="countFollow" parameterType="String" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			FOLLOW
+		WHERE
+			ID = #{ID}
+	]]>
+	</select>
+
+	<!-- 회원의 팔로우 추가 -->
+	<insert id="insertFollow" parameterType="sc.model.Follow">
+	<![CDATA[
+		INSERT INTO
+			FOLLOW
+		VALUES(
+			FOLLOWIDX_SEQ.NEXTVAL,
+			#{ID},
+			#{FOLLOWID}
+		)
+	]]>
+	</insert>
+	
+	<!-- 회원의 팔로우 삭제 -->
+	<delete id="deleteFollow" parameterType="int">
+	<![CDATA[
+		DELETE
+		FROM
+			FOLLOW
+		WHERE
+			FOLLOWIDX = #{FOLLOWIDX}
+	]]>
+	</delete>
+</mapper>

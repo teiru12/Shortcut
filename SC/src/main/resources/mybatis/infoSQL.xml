@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 정보교류 게시판 -->
+<mapper namespace="info">
+	
+	<!-- 정보교류 게시판 리스트 페이징 -->
+	<select id="infoListPaging" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				INFOIDX, TYPE, TITLE, CONTENT, INFODATE, ID, IP, PASSWORD, ISDEL, READCOUNT, GOOD, BAD, ROWNUM R
+			FROM (
+				SELECT 
+					INFOIDX, TYPE, TITLE, CONTENT, INFODATE, ID, IP, PASSWORD, ISDEL, READCOUNT, GOOD, BAD
+				FROM
+					INFO
+				WHERE 
+					INFOIDX= #{INFOIDX}
+				ORDER BY INFOIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+
+	<!-- 정보교류 게시판 카운트 -->
+	<select id="countInfoList" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			INFO
+		WHERE
+			TYPE = 'INF'
+	]]>
+	</select>
+
+	<!-- 정보교류 게시판 검색 리스트 페이징 -->
+	<select id="infoListSearchPaging" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			* 
+		FROM (
+			SELECT
+				INFOIDX, TYPE, TITLE, CONTENT, INFODATE, ID, IP, PASSWORD, ISDEL, READCOUNT, GOOD, BAD, ROWNUM R
+			FROM (
+				SELECT 
+					INFOIDX, TYPE, TITLE, CONTENT, INFODATE, ID, IP, PASSWORD, ISDEL, READCOUNT, GOOD, BAD
+				FROM
+					INFO
+				<trim prefix="WHERE" prefixOverrides="OR">
+					<!-- 정보교류 검색 : 검색어 입력 -->
+					<if test="KEYWORD != NULL">
+						TITLE LIKE '%'||#{KEYWORD}||'%'
+					</if>				
+				</trim>	
+				<if test="ORDER!=NULL and ORDER.equals('IDX')">
+						ORDER BY INFOIDX DESC
+				</if>
+				<if test="ORDER!=NULL and ORDER.equals('GOOD')">
+						ORDER BY GOOD DESC
+				</if>
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}
+
+	</select>
+
+	<!-- 정보교류 게시판 검색 카운트 -->
+	<select id="countInfoListSearch" parameterType="hashmap" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			INFO
+		<trim prefix="WHERE" prefixOverrides="OR">
+			<!-- 정보교류 검색 : 검색어 입력 -->
+			<if test="KEYWORD != NULL">
+				ID LIKE '%'||#{KEYWORD}||'%'
+			</if>				
+		</trim>
+	</select>
+
+	<!-- 정보교류 게시판 입력 -->
+	<insert id="insertInfoList" parameterType="sc.model.Info">
+	<![CDATA[
+		INSERT INTO
+			INFO
+		VALUES(
+			INFOIDX_SEQ.NEXTVAL,
+			'INF',
+			#{TITLE},
+			#{CONTENT},
+			SYSDATE,
+			#{ID},
+			#{IP},
+			${PASSWORD},
+			'N',
+			0,
+			0,
+			0
+		)
+	]]>
+	</insert>
+
+	<!-- 정보교류 게시판 수정 -->
+	<update id="updateInfoList" parameterType="sc.model.Info">
+	<![CDATA[
+		UPDATE
+			INFO
+		SET
+			TITLE = #{TITLE},
+			CONTENT = #{CONTENT},
+		WHERE
+			INFOIDX = #{INFOIDX}
+	]]>           
+	</update>
+
+	<!-- 정보교류 게시판 수정(삭제) -->
+	<update id="updateInfoListDEL" parameterType="int">
+	<![CDATA[
+		UPDATE
+			INFO
+		SET
+			ISDEL = 'Y'
+		WHERE
+			INFOIDX = #{INFOIDX}
+	]]>           
+	</update>
+
+	<!-- 정보교류 게시판 선택 -->
+	<select id="selectInfoIDX" parameterType="int" resultType="sc.model.Info">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			INFO
+		WHERE
+			INFOIDX = #{INFOIDX}
+	]]>
+	</select>
+
+	<!-- 정보교류 게시판 조회수 -->
+	<update id="updateInfoReadcount" parameterType="int">
+	<![CDATA[
+		UPDATE
+			INFO
+		SET
+			READCOUNT = READCOUNT + 1
+		WHERE
+			INFOIDX = #{INFOIDX}
+		
+	]]>
+	</update>
+
+	<!-- 정보교류 게시판 좋아요 -->
+	<update id="updateInfoGood" parameterType="int">
+	<![CDATA[
+		UPDATE
+			INFO
+		SET
+			GOOD = GOOD + 1
+		WHERE
+			INFOIDX = #{INFOIDX}
+		
+	]]>
+	</update>
+
+	<!-- 정보교류 게시판 싫어요 -->
+	<update id="updateInfoBad" parameterType="int">
+	<![CDATA[
+		UPDATE
+			 INFO
+		SET
+			BAD = BAD + 1
+		WHERE
+			INFOIDX = #{INFOIDX}
+		
+	]]>
+	</update>
+
+
+
+	<!-- 정보교류 게시판 댓글 -->
+
+	<!-- 정보교류 게시판 댓글 리스트 페이징 BY 게시글번호 -->
+	<select id="infoListComPagingByInfoIDX" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				INFOCOMIDX, INFOIDX, CONTENT, INFOCOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, ISDEL, ROWNUM R
+			FROM (
+				SELECT 
+					INFOCOMIDX, INFOIDX, CONTENT, INFOCOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, ISDEL
+				FROM
+					INFOCOM
+				WHERE 
+					INFOIDX = #{INFOIDX}
+				ORDER BY INFOCOMIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+
+	<!-- 정보교류 게시판 댓글 카운트 BY 게시글번호 -->
+	<select id="countInfoComByInfoIDX" parameterType="int" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			INFOCOM
+		WHERE
+			INFOIDX = #{INFOIDX}
+	]]>
+	</select>
+
+	<!-- 정보교류 게시판 댓글 입력 BY 게시글번호 -->
+	<insert id="insertInfoListComByInfoIDX" parameterType="sc.model.InfoCom">
+	<![CDATA[
+		INSERT INTO
+			INFOCOM
+		VALUES(
+			INFOCOMIDX_SEQ.NEXTVAL,
+			#{INFOIDX},
+			#{CONTENT},
+			SYSDATE,
+			#{ID},
+			#{IP},
+			#{PASSWORD},
+			#{RETYPE},
+			#{RESTEP},
+			#{RELEVEL},
+			'N'
+		)
+	]]>
+	</insert>
+
+	<!-- 정보교류 게시판 댓글 수정 BY 게시글번호 -->
+	<update id="updateInfoListComByInfoIDX" parameterType="sc.model.InfoCom">
+	<![CDATA[
+		UPDATE
+			INFOCOM
+		SET
+			CONTENT = #{CONTENT}
+		WHERE
+			INFOCOMIDX = #{INFOCOMIDX}
+	]]>           
+	</update>
+
+	<!-- 정보교류 게시판 댓글 수정 (삭제) BY 게시글번호 -->
+	<update id="updateInfoListComDelByInfoIDX" parameterType="int">
+	<![CDATA[
+		UPDATE
+			INFOCOM
+		SET
+			ISDEL = 'Y'
+		WHERE
+			INFOCOMIDX = #{INFOCOMIDX}
+	]]>      
+	</update>
+
+</mapper>

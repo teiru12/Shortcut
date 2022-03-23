@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 회원 -->
+<mapper namespace="member">
+
+	<!-- 회원 정보 입력 -->
+	<insert id="insertMember" parameterType="sc.model.Member">
+	<![CDATA[
+		INSERT INTO
+			MEMBER
+		VALUES(
+			MEMIDX_SEQ.NEXTVAL,
+			#{ID},
+			#{PASSWORD},
+			#{EMAIL},
+			#{NAME},
+			#{NICKNAME},
+			0,
+			null,
+			'ON'
+		)
+	]]>
+	</insert>
+
+	<!-- 회원 정보 수정 -->
+	<update id="updateMember" parameterType="sc.model.Member">
+	<![CDATA[
+		UPDATE
+			MEMBER
+		SET
+			PASSWORD = #{PASSWORD},
+			NAME = #{NAME},
+			NICKNAME = #{NICKNAME},
+			PROFILE = #{PROFILE},
+			EXP = #{EXP}
+		WHERE
+			MEMIDX = #{MEMIDX}
+	]]>           
+	</update>
+
+	<!-- 회원 상태 수정 (활동, 정지, 삭제) 추가 - 관리자용/탈퇴 - 일반회원 -->
+	<update id="updateMemberStatus" parameterType="sc.model.Member">
+	<![CDATA[
+		UPDATE
+			MEMBER
+		SET
+			PASSWORD = #{PASSWORD},
+			NAME = #{NAME},
+			NICKNAME = #{NICKNAME},
+			PROFILE = #{PROFILE},
+			STATUS = #{STATUS}
+		WHERE
+			MEMIDX = #{MEMIDX}
+	]]> 
+	</update>
+
+	<!-- 회원 정보 1개 선택 (SELECT) BY MEMIDX -->
+	<select id="selectMemberIDX" parameterType="int" resultType="sc.model.Member">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			MEMBER
+		WHERE
+			MEMIDX = #{MEMIDX}	
+	]]>
+	</select>
+
+	<!-- 회원 정보 1개 선택 (SELECT) BY ID -->
+	<select id="selectMemberId" parameterType="String" resultType="sc.model.Member">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			MEMBER
+		WHERE
+			ID = #{ID}	
+	]]>
+	</select>
+	
+	<!-- 회원 정보 1개 선택 (SELECT) BY 이름, 이메일 : 아이디 찾기 -->
+	<select id="selectMemberFindId" parameterType="hashmap" resultType="sc.model.Member">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			MEMBER
+		WHERE
+			NAME = #{NAME}
+			AND
+			EMAIL = #{EMAIL}
+	]]>
+	</select>
+	
+	<!-- 회원 정보 1개 선택 (SELECT) BY 이름, 이메일, ID : 비밀번호 찾기 -->
+	<select id="selectMemberFindPw" parameterType="hashmap" resultType="sc.model.Member">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			MEMBER
+		WHERE
+			NAME = #{NAME}
+			AND
+			EMAIL = #{EMAIL}
+			AND
+			ID = #{ID}
+	]]>
+	</select>
+
+	<!-- 회원 정보 리스트 페이징 -->
+	<select id="memberListPaging" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				MEMIDX, ID, PASSWORD, EMAIL, NAME, NICKNAME, EXP, PROFILE, STATUS, ROWNUM R
+			FROM (
+				SELECT 
+					MEMIDX, ID, PASSWORD, EMAIL, NAME, NICKNAME, EXP, PROFILE, STATUS
+				FROM
+					MEMBER
+				ORDER BY MEMIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+
+	<!-- 회원 정보 카운트 -->
+	<select id="countMember" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			MEMBER
+	]]>
+	</select>	
+
+	<!-- 회원 정보 검색 페이징 -->
+	<select id="memberListSearchPaging" parameterType="hashmap" resultType="hashmap">
+		SELECT
+			* 
+		FROM (
+			SELECT
+				MEMIDX, ID, PASSWORD, EMAIL, NAME, NICKNAME, EXP, PROFILE, STATUS, ROWNUM R
+			FROM (
+				SELECT 
+					MEMIDX, ID, PASSWORD, EMAIL, NAME, NICKNAME, EXP, PROFILE, STATUS
+				FROM
+					MEMBER
+				<trim prefix="WHERE" prefixOverrides="OR">
+					<!-- 아이디 검색 : 검색어 입력 -->
+					<if test="KEYWORD != NULL">
+						ID LIKE '%'||#{KEYWORD}||'%'
+					</if>
+					<!-- 레벨범위 : 최소레벨 EXP, 최대레벨 EXP-->
+					<if test="MINEXP!=NULL">
+						EXP BETWEEN #{MINEXP} AND #{MAXEXP}
+					</if>
+					<!-- 회원 상태 : 체크박스로 선택 -->
+					<if test="STON != NULL">
+						STATUS = 'ON'
+					</if>
+					<if test="STOFF != NULL">	
+						OR STATUS = 'OFF'
+					</if>
+					<if test="STDEL != NULL">
+						OR STATUS = 'DEL'
+					</if>				
+				</trim>		
+				<if test="MINEXP!=NULL">
+					ORDER BY EXP
+				</if>
+				<if test="MINEXP==NULL">
+					ORDER BY MEMIDX DESC
+				</if>
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+		<if test="ORDER!=NULL and ORDER.equals('IDX')">
+			ORDER BY MEMIDX
+		</if>
+		<if test="ORDER!=NULL and ORDER.equals('EXPASC')">
+			ORDER BY EXP
+		</if>
+		<if test="ORDER!=NULL and ORDER.equals('EXPDESC')">
+			ORDER BY EXP DESC
+		</if>
+	</select>
+
+	<!-- 회원 정보 검색 카운트 -->
+	<select id="countMemberSearch" parameterType="hashmap" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			MEMBER
+		<trim prefix="WHERE" prefixOverrides="OR">
+			<!-- 아이디 검색 : 검색어 입력 -->
+			<if test="KEYWORD != NULL">
+				ID LIKE '%'||#{KEYWORD}||'%'
+			</if>
+			<!-- 레벨범위 : 최소레벨 EXP, 최대레벨 EXP-->
+			<if test="MINEXP!=NULL">
+				EXP BETWEEN #{MINEXP} AND #{MAXEXP}
+			</if>
+			<!-- 회원 상태 : 체크박스로 선택 -->
+			<if test="STON != NULL">
+				STATUS = 'ON'
+			</if>
+			<if test="STOFF != NULL">	
+				OR STATUS = 'OFF'
+			</if>
+			<if test="STDEL != NULL">
+				OR STATUS = 'DEL'
+			</if>				
+		</trim>
+	</select>
+	
+</mapper>
