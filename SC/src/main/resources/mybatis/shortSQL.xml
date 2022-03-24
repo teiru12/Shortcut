@@ -17,8 +17,6 @@
 					SHORTIDX, TYPE, TITLE, CONTENT, SHORTDATE, READCOUNT, GOOD, BAD
 				FROM
 					SHORT
-				WHERE 
-					TYPE = 'SHO'
 				ORDER BY SHORTIDX DESC
 			)
 		)
@@ -34,8 +32,6 @@
 			COUNT(*)
 		FROM
 			SHORT
-		WHERE
-			TYPE = 'SHO'
 	]]>
 	</select>
 
@@ -135,7 +131,6 @@
 	]]>
 	</insert>
 
-
 	<!-- 단축키 게시판 수정 -->
 	<update id="updateShortList" parameterType="sc.model.Short">
 	<![CDATA[
@@ -181,8 +176,7 @@
 		SET
 			READCOUNT = READCOUNT + 1
 		WHERE
-			SHORTIDX = #{SHORTIDX}
-		
+			SHORTIDX = #{SHORTIDX}		
 	]]>
 	</update>
 
@@ -190,12 +184,11 @@
 	<update id="updateShortGood" parameterType="int">
 	<![CDATA[
 		UPDATE
-			 SHORT
+			SHORT
 		SET
 			GOOD = GOOD + 1
 		WHERE
-			SHORTIDX = #{SHORTIDX}
-		
+			SHORTIDX = #{SHORTIDX}		
 	]]>
 	</update>
 
@@ -203,12 +196,11 @@
 	<update id="updateShortBad" parameterType="int">
 	<![CDATA[
 		UPDATE
-			 SHORT
+			SHORT
 		SET
 			BAD = BAD + 1
 		WHERE
-			SHORTIDX = #{SHORTIDX}
-		
+			SHORTIDX = #{SHORTIDX}		
 	]]>
 	</update>
 
@@ -266,7 +258,6 @@
 			#{RESTEP},
 			#{RELEVEL},
 			'N'
-
 		)
 	]]>
 	</insert>

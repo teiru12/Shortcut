@@ -17,8 +17,6 @@
 					INFOIDX, TYPE, TITLE, CONTENT, INFODATE, ID, IP, PASSWORD, ISDEL, READCOUNT, GOOD, BAD
 				FROM
 					INFO
-				WHERE 
-					INFOIDX= #{INFOIDX}
 				ORDER BY INFOIDX DESC
 			)
 		)
@@ -34,8 +32,6 @@
 			COUNT(*)
 		FROM
 			INFO
-		WHERE
-			TYPE = 'INF'
 	]]>
 	</select>
 
@@ -67,7 +63,6 @@
 		)
 		WHERE 
 			R between #{START} and #{END}
-
 	</select>
 
 	<!-- 정보교류 게시판 검색 카운트 -->
@@ -151,8 +146,7 @@
 		SET
 			READCOUNT = READCOUNT + 1
 		WHERE
-			INFOIDX = #{INFOIDX}
-		
+			INFOIDX = #{INFOIDX}		
 	]]>
 	</update>
 
@@ -177,11 +171,9 @@
 		SET
 			BAD = BAD + 1
 		WHERE
-			INFOIDX = #{INFOIDX}
-		
+			INFOIDX = #{INFOIDX}		
 	]]>
 	</update>
-
 
 
 	<!-- 정보교류 게시판 댓글 -->

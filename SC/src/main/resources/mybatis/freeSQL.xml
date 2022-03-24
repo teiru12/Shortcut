@@ -4,7 +4,6 @@
 <!-- 자유 게시판 -->
 <mapper namespace="free">
 
-
 	<!-- 자유 게시판 리스트 페이징 -->
 	<select id="freeListPaging" parameterType="hashmap" resultType="hashmap">
 	<![CDATA[
@@ -18,8 +17,6 @@
 					FREEIDX, TYPE, TITLE, CONTENT, FREEDATE, ID, IP, PASSWORD, ISDEL, READCOUNT, GOOD, BAD
 				FROM
 					FREE
-				WHERE 
-					TYPE = 'FRE'
 				ORDER BY FREEIDX DESC
 			)
 		)
@@ -35,8 +32,6 @@
 			COUNT(*)
 		FROM
 			FREE
-		WHERE
-			TYPE = 'FREE'
 	]]>
 	</select>
 
@@ -51,7 +46,7 @@
 				SELECT 
 					FREEIDX, TYPE, TITLE, CONTENT, FREEDATE, ID, IP, PASSWORD, ISDEL, READCOUNT, GOOD, BAD
 				FROM
-					SHORT
+					FREE
 				<trim prefix="WHERE" prefixOverrides="OR">
 					<!-- 자유게시판 검색 : 검색어 입력 -->
 					<if test="KEYWORD != NULL">
@@ -72,14 +67,16 @@
 
 	<!-- 자유 게시판 검색 카운트 -->
 	<select id="countFreeListSearch" parameterType="String" resultType="int">
-	<![CDATA[
 		SELECT
 			COUNT(*)
 		FROM
 			FREE
-		WHERE
-			TYPE = 'FREE'
-	]]>
+		<trim prefix="WHERE" prefixOverrides="OR">
+			<!-- 자유게시판 검색 : 검색어 입력 -->
+			<if test="KEYWORD != NULL">
+				TITLE LIKE '%'||#{KEYWORD}||'%'
+			</if>				
+		</trim>
 	</select>
 
 	<!-- 자유 게시판 입력 -->
@@ -113,7 +110,7 @@
 			TITLE = #{TITLE},
 			CONTENT = #{CONTENT}
 		WHERE
-			SHORTIDX = #{SHORTIDX}
+			FREEIDX = #{FREEIDX}
 	]]>           
 	</update>
 
@@ -149,8 +146,7 @@
 		SET
 			READCOUNT = READCOUNT + 1
 		WHERE
-			FREEIDX = #{FREEIDX}
-		
+			FREEIDX = #{FREEIDX}		
 	]]>
 	</update>
 	
@@ -162,8 +158,7 @@
 		SET
 			GOOD = GOOD + 1
 		WHERE
-			FREEIDX = #{FREEIDX}
-		
+			FREEIDX = #{FREEIDX}		
 	]]>
 	</update>
 
@@ -175,8 +170,7 @@
 		SET
 			BAD = BAD + 1
 		WHERE
-			FREEIDX = #{FREEIDX}
-		
+			FREEIDX = #{FREEIDX}		
 	]]>
 	</update>
 

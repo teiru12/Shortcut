@@ -4,7 +4,6 @@
 <!-- 뉴스 게시판 -->
 <mapper namespace="news">
 
-
 	<!-- 뉴스 게시판 리스트 페이징 -->
 	<select id="newsListPaging" parameterType="hashmap" resultType="hashmap">
 	<![CDATA[
@@ -18,8 +17,6 @@
 					NEWSIDX, TYPE, TITLE, CONTENT, NEWSDATE, ID, ISDEL, READCOUNT, GOOD, BAD
 				FROM
 					NEWS
-				WHERE 
-					TYPE = 'NEW'
 				ORDER BY NEWSIDX DESC
 			)
 		)
@@ -35,8 +32,6 @@
 			COUNT(*)
 		FROM
 			NEWS
-		WHERE
-			TYPE = 'NEW'
 	]]>
 	</select>
 
@@ -149,7 +144,7 @@
 		SET
 			READCOUNT = READCOUNT + 1
 		WHERE
-			NEWSIDX = #{NEWSIDX}		
+			NEWSIDX = #{NEWSIDX}
 	]]>
 	</update>
 
@@ -159,9 +154,9 @@
 		UPDATE
 			NEWS
 		SET
-			GOOD = GOOD + 1
+			GOOD = GOOD + 1	
 		WHERE
-			NEWSIDX = #{NEWSIDX}		
+			NEWSIDX = #{NEWSIDX}
 	]]>
 	</update>
 
@@ -171,9 +166,9 @@
 		UPDATE
 			NEWS
 		SET
-			BAD = BAD + 1
+			BAD = BAD + 1	
 		WHERE
-			NEWSIDX = #{NEWSIDX}		
+			NEWSIDX = #{NEWSIDX}
 	]]>
 	</update>
 </mapper>

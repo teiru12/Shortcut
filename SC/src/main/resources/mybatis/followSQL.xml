@@ -37,6 +37,18 @@
 			ID = #{ID}
 	]]>
 	</select>
+	
+	<!-- 내 아이디의 팔로우 아이디 검색 -->
+	<select id="findFollowId" parameterType="hashmap" resultType="String">
+		SELECT
+			FOLLOWID
+		FROM
+			FOLLOW
+		WHERE
+			ID = #{ID}
+			AND
+			FOLLOWID = #{FOLLOWID}
+	</select>
 
 	<!-- 회원의 팔로우 추가 -->
 	<insert id="insertFollow" parameterType="sc.model.Follow">

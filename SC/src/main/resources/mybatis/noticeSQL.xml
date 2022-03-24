@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 공지 게시판 -->
+<mapper namespace="notice">
+
+	<!-- 공지 게시판 리스트 페이징 -->
+	<select id="noticeListPaging" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				NOTICEIDX, TYPE, TITLE, CONTENT, NOTICEDATE, ISDEL, READCOUNT, GOOD, BAD, ROWNUM R
+			FROM (
+				SELECT 
+					NOTICEIDX, TYPE, TITLE, CONTENT, NOTICEDATE, ISDEL, READCOUNT, GOOD, BAD
+				FROM
+					NOTICE
+				ORDER BY NOTICEIDX DESC
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+	]]>
+	</select>
+	
+	<!-- 공지 게시판 카운트 -->
+	<select id="countNoticeList" resultType="int">
+	<![CDATA[
+		SELECT
+			COUNT(*)
+		FROM
+			NOTICE
+	]]>
+	</select>
+	
+	<!-- 공지 게시판 최신 3글 -->
+	<select id="noticeListThree" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				NOTICEIDX, TYPE, TITLE, CONTENT, NOTICEDATE, ISDEL, READCOUNT, GOOD, BAD, ROWNUM R
+			FROM (
+				SELECT 
+					NOTICEIDX, TYPE, TITLE, CONTENT, NOTICEDATE, ISDEL, READCOUNT, GOOD, BAD
+				FROM
+					NOTICE
+				ORDER BY NOTICEDATE DESC
+			)
+		)
+		WHERE 
+			R between 1 and 3
+	]]>
+	</select>
+	
+	<!-- 공지 게시판 상세보기 -->
+	<select id="selectNoticeIDX" parameterType="int" resultType="sc.model.Notice">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			NOTICE
+		WHERE
+			NOTICEIDX = #{NOTICEIDX}
+	]]>
+	</select>
+	
+	<!-- 공지 게시판 입력 -->
+	<insert id="insertNoticeList" parameterType="sc.model.Notice">
+	<![CDATA[
+		INSERT INTO
+			NOTICE
+		VALUES(
+			NOTICEIDX_SEQ.NEXTVAL,
+			'NOT',
+			#{TITLE},
+			#{CONTENT},
+			SYSDATE,
+			'N',
+			0,
+			0,
+			0
+		)
+	]]>
+	</insert>
+	
+	<!-- 공지 게시판 수정 -->
+	<update id="updateNoticeList" parameterType="sc.model.Notice">
+	<![CDATA[
+		UPDATE
+			NOTICE
+		SET
+			TITLE = #{TITLE},
+			CONTENT = #{CONTENT}
+		WHERE
+			NOTICEIDX = #{NOTICEIDX}
+	]]>           
+	</update>
+
+	<!-- 공지 게시판 수정(삭제) -->
+	<update id="updateNoticeListDel" parameterType="int">
+	<![CDATA[
+		UPDATE
+			NOTICE
+		SET
+			ISDEL = 'Y'
+		WHERE
+			NOTICEIDX = #{NOTICEIDX}
+	]]>           
+	</update>
+		
+	<!-- 공지 게시판 조회수 -->
+	<update id="updateNoticeReadcount" parameterType="int">
+	<![CDATA[
+		UPDATE
+			NOTICE
+		SET
+			READCOUNT = READCOUNT + 1
+		WHERE
+			NOTICEIDX = #{NOTICEIDX}		
+	]]>
+	</update>
+
+	<!-- 공지 게시판 좋아요 -->
+	<update id="updateNoticeGood" parameterType="int">
+	<![CDATA[
+		UPDATE
+			NOTICE
+		SET
+			GOOD = GOOD + 1
+		WHERE
+			NOTICEIDX = #{NOTICEIDX}		
+	]]>
+	</update>
+
+	<!-- 공지 게시판 싫어요 -->
+	<update id="updateNoticeBad" parameterType="int">
+	<![CDATA[
+		UPDATE
+			NOTICE
+		SET
+			BAD = BAD + 1
+		WHERE
+			NOTICEIDX = #{NOTICEIDX}		
+	]]>
+	</update>
+
+</mapper>

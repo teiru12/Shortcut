@@ -17,8 +17,6 @@
 					REPORTIDX, TYPE, TITLE, CONTENT, REPORTDATE, ID, ISDEL
 				FROM
 					REPORT
-				WHERE 
-					TYPE = 'REP'
 				ORDER BY REPORTIDX DESC
 			)
 		)
@@ -34,8 +32,6 @@
 			COUNT(*)
 		FROM
 			REPORT
-		WHERE
-			TYPE = 'REP'
 	]]>
 	</select>
 
@@ -144,6 +140,6 @@
 			ISDEL = 'Y'
 		WHERE
 			REPORTCOMIDX = #{REPORTCOMIDX}
-	]]>           
+	]]>
 	</update>
 </mapper>
