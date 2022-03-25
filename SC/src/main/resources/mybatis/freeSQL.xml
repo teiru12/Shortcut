@@ -115,7 +115,7 @@
 	</update>
 
 	<!-- 자유 게시판 수정(삭제) -->
-	<update id="updateFreeListDel" parameterType="sc.model.Free">
+	<update id="updateFreeListDel" parameterType="int">
 	<![CDATA[
 		UPDATE
 			FREE
