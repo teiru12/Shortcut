@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import sc.model.ShortCom;
+
 @Repository("shortDAO")
 public class ShortDAO {
 	
@@ -15,7 +17,7 @@ public class ShortDAO {
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	/* 단축키 게시판 리스트 페이징 */
-	public List<Map<String,Object>> shortListPaging(Map<String,Object> map) throws Exception {
+	public List<Short> shortListPaging(Map<String,Object> map) throws Exception {
 		return sqlSessionTemplate.selectList("short.shortListPaging", map);
 	}
 
@@ -25,7 +27,7 @@ public class ShortDAO {
 	}
 	
 	/* 단축키 게시판 검색 리스트 페이징 */
-	public List<Map<String,Object>> shortListSearchPaging(Map<String,Object> map) throws Exception{
+	public List<Short> shortListSearchPaging(Map<String,Object> map) throws Exception{
 		return sqlSessionTemplate.selectList("short.shortListSearchPaging",map);
 	}
 	
@@ -70,7 +72,7 @@ public class ShortDAO {
 	}
 	
 	/* 단축키 게시판 댓글 리스트 페이징 BY 게시글번호 */
-	public List<Map<String,Object>> shortListComPagingByShortIDX(Map<String,Object> map) throws Exception {
+	public List<ShortCom> shortListComPagingByShortIDX(Map<String,Object> map) throws Exception {
 		return sqlSessionTemplate.selectList("short.shortListComPagingByShortIDX", map);
 	}
 	

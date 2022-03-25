@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import sc.model.ShortCom;
+
 @Service("shortService")
 public class ShortServiceImpl implements ShortService {
 	
@@ -15,7 +17,7 @@ public class ShortServiceImpl implements ShortService {
 	private ShortDAO shortDAO;
 
 	@Override
-	public List<Map<String, Object>> shortListPaging(int START, int END) throws Exception {
+	public List<Short> shortListPaging(int START, int END) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 			map.put("START", START);
@@ -31,7 +33,7 @@ public class ShortServiceImpl implements ShortService {
 	}
 
 	@Override
-	public List<Map<String, Object>> shortListSearchPaging(int START, int END) throws Exception {
+	public List<Short> shortListSearchPaging(int START, int END) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("START", START);
@@ -84,7 +86,7 @@ public class ShortServiceImpl implements ShortService {
 	}
 
 	@Override
-	public List<Map<String, Object>> shortListComPagingByShortIDX(int START, int END) throws Exception {
+	public List<ShortCom> shortListComPagingByShortIDX(int START, int END) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("START", START);
