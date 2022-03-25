@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 import sc.model.Follow;
 
-@Service("folloService")
+@Service("followService")
 public class FollowServiceImpl implements FollowService {
 
-	@Resource(name="folloDAO")
+	@Resource(name="followDAO")
 	private FollowDAO followDAO;
 	
 	/*회원의 팔로우 리스트 페이징*/

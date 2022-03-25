@@ -331,7 +331,7 @@
     <build>
     	<defaultGoal>install</defaultGoal>
     	<directory>${basedir}/target</directory>
-    	<finalName>Jumo</finalName>
+    	<finalName>SC</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>

@@ -14,7 +14,7 @@ import sc.model.ReportCom;
 @Service("reportService")
 public class ReportServiceImpl implements ReportService{
 	
-	@Resource(name="ReportDAO")
+	@Resource(name="reportDAO")
 	private ReportDAO reportDAO;
 
 	/*신고 게시판 리스트 페이징*/

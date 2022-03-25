@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import sc.model.Visit;
 
-@Service("visetService")
+@Service("visitService")
 public class VisitServiceImpl implements VisitService{
 
 	@Resource(name="visitDAO")

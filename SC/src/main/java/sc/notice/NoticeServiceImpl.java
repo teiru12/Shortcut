@@ -13,7 +13,7 @@ import sc.model.Notice;
 @Service("noticeService")
 public class NoticeServiceImpl implements NoticeService {
 	
-	@Resource(name="NoticeDAO")
+	@Resource(name="noticeDAO")
 	private NoticeDAO noticeDAO;
 	
 	/* 공지 게시판 리스트 페이징 */

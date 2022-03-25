@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 import sc.model.Goodbad;
 
-@Service("GoodbadService")
+@Service("goodbadService")
 public class GoodbadServiceImpl implements GoodbadService{
 	
-	@Resource(name = "GoodbadDAO")
+	@Resource(name = "goodbadDAO")
 	private GoodbadDAO goodbadDAO;
 
 	//좋아요 입력

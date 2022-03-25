@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 import sc.model.News;
 
-@Service("NewsService")
+@Service("newsService")
 public class NewsServiceImpl implements NewsService {
 	
-	@Resource(name = "NewsDAO")
+	@Resource(name = "newsDAO")
 	private NewsDAO newsDAO;
 
 	//뉴스 게시판 리스트 페이징

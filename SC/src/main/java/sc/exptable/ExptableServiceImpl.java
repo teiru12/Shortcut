@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 
 import sc.model.Exptable;
 
-@Service("ExptableService")
+@Service("exptableService")
 public class ExptableServiceImpl implements ExptableService {
 
-	@Resource(name = "ExptableDAO")
+	@Resource(name = "exptableDAO")
 	private ExptableDAO exptableDAO;
 	
 	@Override

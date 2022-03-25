@@ -14,10 +14,10 @@
 		http://www.springframework.org/schema/cache 
 		http://www.springframework.org/schema/cache/spring-cache.xsd">
 		
-	<context:component-scan base-package="sc">
+ 	<context:component-scan base-package="sc">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller"/>
-	</context:component-scan>	
+	</context:component-scan>
 		
 	<bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">

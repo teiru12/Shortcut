@@ -3,6 +3,8 @@ package sc.alarm;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository("alarmDAO")
 public class AlarmDAO {
 	
-	@Autowired
+	@Resource(name="sqlSessionTemplate")
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	/* 알람 리스트 */

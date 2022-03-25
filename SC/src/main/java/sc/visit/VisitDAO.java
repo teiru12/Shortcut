@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import sc.model.Visit;
 
-@Repository("vistDAO")
+@Repository("visitDAO")
 public class VisitDAO {
 	
 	@Resource(name="sqlSessionTemplate")
