@@ -1,15 +1,16 @@
 package sc.shortcut;
 
 import java.util.List;
-import java.util.Map;
+
+import sc.model.ShortCom;
 
 public interface ShortService {
 	
-	public List<Map<String,Object>> shortListPaging(int START, int END) throws Exception;
+	public List<Short> shortListPaging(int START, int END) throws Exception;
 	
 	public int countShortList() throws Exception;
 	
-	public List<Map<String,Object>> shortListSearchPaging(int START, int END) throws Exception;
+	public List<Short> shortListSearchPaging(int START, int END) throws Exception;
 	
 	public int countShortListSearch() throws Exception;
 	
@@ -27,7 +28,7 @@ public interface ShortService {
 	
 	public void updateShortBad(int SHORTIDX) throws Exception;
 	
-	public List<Map<String,Object>> shortListComPagingByShortIDX(int START, int END) throws Exception;
+	public List<ShortCom> shortListComPagingByShortIDX(int START, int END) throws Exception;
 	
 	public int countShortListComByShortIDX() throws Exception;
 	
