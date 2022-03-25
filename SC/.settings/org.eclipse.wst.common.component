@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
         	
     
-    <wb-module deploy-name="Jumo">
+    <wb-module deploy-name="SC">
                 		
         
         <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
@@ -15,7 +15,7 @@
         
         <property name="java-output-path" value="target/classes"/>
                 
-        <property name="context-root" value="Jumo"/>
+        <property name="context-root" value="SC"/>
                 	
     
     </wb-module>
