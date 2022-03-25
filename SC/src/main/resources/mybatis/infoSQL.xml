@@ -66,7 +66,7 @@
 	</select>
 
 	<!-- 정보교류 게시판 검색 카운트 -->
-	<select id="countInfoListSearch" parameterType="hashmap" resultType="int">
+	<select id="countInfoListSearch" parameterType="String" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM
