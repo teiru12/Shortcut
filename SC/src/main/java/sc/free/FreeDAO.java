@@ -35,8 +35,8 @@ public class FreeDAO {
 	}
 	
 	/*자유 게시판 검색 카운트*/
-	public int countFreeListSearch() throws Exception {
-		return sqlSessionTemplate.selectOne("free.countFreeListSearch");
+	public int countFreeListSearch(String KEYWORD) throws Exception {
+		return sqlSessionTemplate.selectOne("free.countFreeListSearch", KEYWORD);
 	}
 	
 	/*자유 게시판 입력*/

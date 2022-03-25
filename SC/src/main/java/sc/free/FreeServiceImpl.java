@@ -50,8 +50,8 @@ public class FreeServiceImpl implements FreeService {
 
 	/*자유 게시판 검색 카운트*/
 	@Override
-	public int countFreeListSearch() throws Exception {
-		return Integer.parseInt(String.valueOf(freeDAO.countFreeListSearch()));
+	public int countFreeListSearch(String KEYWORD) throws Exception {
+		return Integer.parseInt(String.valueOf(freeDAO.countFreeListSearch(KEYWORD)));
 	}
 
 	/*자유 게시판 입력*/

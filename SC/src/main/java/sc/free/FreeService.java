@@ -17,7 +17,7 @@ public interface FreeService {
 	public List<Free> freeListSearchPaging(int START, int END, String KEYWORD, String ORDER) throws Exception;
 	
 	/*자유 게시판 검색 카운트*/
-	public int countFreeListSearch() throws Exception;
+	public int countFreeListSearch(String KEYWORD) throws Exception;
 	
 	/*자유 게시판 입력*/
 	public void insertFreeList(Free free) throws Exception;
