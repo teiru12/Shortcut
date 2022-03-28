@@ -20,17 +20,17 @@
 	
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/**" />
+			<mvc:mapping path="/**.cut" />
 			<bean id="loggerIntercepter"
 				class="sc.util.interceptor.LoggerInterceptor" />
 		</mvc:interceptor>
 		
-<!-- 		<mvc:interceptor>
-			<mvc:mapping path="/**.al" />
+ 		<mvc:interceptor>
+			<mvc:mapping path="/**.cut" />
 
 			<bean id="loginInterceptor"
-				class="jumo.util.interceptor.LoginInterceptor" />
-		</mvc:interceptor> -->
+				class="sc.util.interceptor.LoginInterceptor" />
+		</mvc:interceptor>
 		
 	</mvc:interceptors>
 	

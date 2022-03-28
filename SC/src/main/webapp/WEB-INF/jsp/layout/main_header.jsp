@@ -17,6 +17,9 @@
     <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
 </head>
 
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
 <div id="main"> <!-- main div를 사용하면 좌우 패딩이 생김 -->
 
 	<div id="app">
@@ -34,6 +37,8 @@
 					<nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
 						<ol class="breadcrumb"> <!-- 우측 상단 메뉴 리스트 -->
 						
+							<!-- 알람 영역 코드 -->
+						
 							<!-- XXX 회원님 로그인 하셨습니다. -->
 							<c:if test="${! empty id}">
 								<li class="breadcrumb"><a href="#" class="btn icon icon-left">${id} 회원님</a></li>
@@ -41,14 +46,14 @@
 						
 							<!-- 로그인하지 않은 상태에서 보여줄 상단 메뉴 -->
 							<c:if test="${empty id}">
-								<li class="breadcrumb"><a href="main.cut" class="btn icon icon-left btn-secondary">로&emsp;그&emsp;인</a>&nbsp;</li>
-								<li class="breadcrumb"><a href="main.cut" class="btn icon icon-left btn-secondary">회 원 가 입</a></li>
+								<li class="breadcrumb"><a href="loginForm.cut" class="btn icon icon-left btn-secondary" style="width:100px">로그인</a>&nbsp;</li>
+								<li class="breadcrumb"><a href="joinForm.cut" class="btn icon icon-left btn-secondary" style="width:100px">회원가입</a></li>
 							</c:if>
 
 							<!-- 로그인한 상태에서 보여줄 상단 메뉴 -->
 							<c:if test="${! empty id}">
-								<li class="breadcrumb"><a href="main.cut" class="btn icon icon-left btn-secondary">로 그 아 웃</a>&nbsp;</li>
-								<li class="breadcrumb"><a href="main.cut" class="btn icon icon-left btn-secondary">마이페이지</a></li>
+								<li class="breadcrumb"><a href="logout.cut" class="btn icon icon-left btn-secondary" style="width:100px">로그아웃</a>&nbsp;</li>
+								<li class="breadcrumb"><a href="myPage.cut" class="btn icon icon-left btn-secondary" style="width:100px">마이페이지</a></li>
 							</c:if>
 							
 						</ol>
