@@ -26,10 +26,25 @@ public class MemberController {
 	public String loginForm(Model model) throws Exception {
 		return "loginForm";
 	}
+	
 	@RequestMapping(value = "/login.cut")
 	public String login(Member member, HttpServletRequest request, Model model) throws Exception {
 		
 		return "/member/login";
+	}
+
+	@ResponseBody
+	@RequestMapping("/logout.cut")
+	public Map<String, String> logout(HttpServletRequest request) throws Exception {
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		String id = (String) request.getSession().getAttribute("id"); 
+		
+		request.getSession().invalidate();
+		
+		msg.put("message", id + "님 로그아웃 하셨습니다.");
+		
+		return msg;
 	}
 	
 	@RequestMapping(value="/joinForm.cut", method = {RequestMethod.POST, RequestMethod.GET})
@@ -72,6 +87,7 @@ public class MemberController {
 	@RequestMapping("/myPage.cut")
 	public String myPage(HttpServletRequest request, Model model) throws Exception {
 
+// 테스트를 위해 임의로 test1@sc.cut을 세션에 입력
 request.getSession().setAttribute("id", "test1@sc.cut");
 		
 		/* 세션으로부터 로그인 id를 읽어와 해당 id의 회원정보를 읽어옴 */
@@ -89,7 +105,7 @@ request.getSession().setAttribute("id", "test1@sc.cut");
 	}
 	
 	@ResponseBody
-	@RequestMapping("userDelete.cut")
+	@RequestMapping("/userDelete.cut")
 	public Map<String, String> userDelete(HttpServletRequest request) throws Exception {
 		Map<String, String> msg = new HashMap<String, String>();
 		
@@ -102,11 +118,13 @@ request.getSession().setAttribute("id", "test1@sc.cut");
 			memberService.updateMemberStatus(memUpdate);
 			
 			msg.put("message", "삭제되었습니다.");
+			
+			// 세션 로그아웃
+			request.getSession().invalidate();
 		} else { // 일치하는 회원정보가 없어서 삭제되지 않음
 			msg.put("message", "삭제되지 않았습니다.");
 		}
 		
 		return msg;
-	}
-	
+	}	
 }

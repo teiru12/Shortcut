@@ -20,6 +20,60 @@
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
+<script>
+/* 로그아웃 Ajax */
+function logout() {
+	swal({
+		title				: '로그아웃하시겠습니까?',
+		width 				: 600,
+		padding				: '3em',
+		closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+		buttons				: {
+			cancle : {
+				text 		: '취소',
+				value 		: false,
+				className 	: 'btn btn-outline-primary' 
+			},
+			confirm : {
+				text 		: '확인',
+				value 		: true,
+				className 	: 'btn btn-outline-primary' 
+			}
+		}
+	
+	}).then((result) => {
+		if(result) {
+			/* 로그아웃 */
+			$.ajax({
+				url 		: "/SC/logout.cut",
+				data		: { },
+				contentType	: "application/json",
+				success		: function(data) {
+					
+					swal({
+						title				: '로그아웃하셨습니다',
+						text 				: '안녕히 가세요',
+						closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+						buttons				: {
+							confirm : {
+								text 		: '확인',
+								value 		: true,
+								className 	: 'btn btn-outline-primary' 
+							}
+						}
+					
+					}).then((result) => {
+						/* 회원 탈퇴 후 loginForm으로 리다이렉트 */
+						location.href="/SC/loginForm.cut";
+					});
+				}				
+			});
+		}
+	});
+}
+
+</script>
+
 <div id="main"> <!-- main div를 사용하면 좌우 패딩이 생김 -->
 
 	<div id="app">
@@ -52,7 +106,7 @@
 
 							<!-- 로그인한 상태에서 보여줄 상단 메뉴 -->
 							<c:if test="${! empty id}">
-								<li class="breadcrumb"><a href="logout.cut" class="btn icon icon-left btn-secondary" style="width:120px">로그아웃</a>&nbsp;</li>
+								<li class="breadcrumb"><a href="javascript:logout()" class="btn icon icon-left btn-secondary" style="width:120px">로그아웃</a>&nbsp;</li>
 								<li class="breadcrumb"><a href="myPage.cut" class="btn icon icon-left btn-secondary" style="width:120px">마이페이지</a></li>
 							</c:if>
 							
