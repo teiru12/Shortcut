@@ -41,7 +41,6 @@
 
 	<!-- 회원 상태 수정 (활동, 정지, 삭제) 추가 - 관리자용/탈퇴 - 일반회원 -->
 	<update id="updateMemberStatus" parameterType="sc.model.Member">
-	<![CDATA[
 		UPDATE
 			MEMBER
 		SET
@@ -52,7 +51,6 @@
 			STATUS = #{STATUS}
 		WHERE
 			MEMIDX = #{MEMIDX}
-	]]> 
 	</update>
 
 	<!-- 회원 정보 1개 선택 (SELECT) BY MEMIDX -->

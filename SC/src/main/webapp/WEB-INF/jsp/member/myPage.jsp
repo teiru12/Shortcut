@@ -30,18 +30,31 @@ function userDelete() {
 	
 	}).then((result) => {
 		if(result) {
+			/* 회원 탈퇴 */
 			$.ajax({
 				url 		: "userDelete.cut",
 				data		: { },
 				contentType	: "application/json",
 				success		: function(data) {
-					alert(data.message);
+					
+					swal({
+						title				: '탈퇴하셨습니다',
+						text 				: '로그인 페이지로 이동합니다.',
+						closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+						buttons				: {
+							confirm : {
+								text 		: '확인',
+								value 		: true,
+								className 	: 'btn btn-outline-primary' 
+							}
+						}
+					
+					}).then((result) => {
+						/* 회원 탈퇴 후 loginForm으로 리다이렉트 */
+						location.href="/loginForm.cut";
+					});
 				}				
 			});
-			
-			/* 회원 탈퇴 */				
-			
-			/* 회원 탈퇴 후 loginForm으로 리다이렉트 */
 		}
 	});
 }
@@ -63,7 +76,7 @@ function userDelete() {
 						<div class="d-flex align-items-center">
 							<div class="avatar avatar-xl">
 								<!-- 이미지 없을 시 기본 이미지 이미지 있을 경우 해당 이미지 -->
-								<img src="assets/images/faces/1.jpg" alt="Face 1">
+								<img src="assets/images/faces/${member.PROFILE}" alt="Face">
 							</div>
 							<div class="ms-3 name">
 								<h5 class="font-bold">레벨 : ${level}</h5>
