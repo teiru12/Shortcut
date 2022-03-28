@@ -13,8 +13,6 @@ function userDelete() {
 	swal({
 		title				: '탈퇴하시겠습니까?',
 		text 				: '탈퇴 후 재가입 가능합니다.',
-		width 				: 600,
-		padding				: '3em',
 		dangerMode			: true, // 확인 버튼 빨갛게
 		closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
 		buttons				: {
@@ -50,7 +48,6 @@ function userDelete() {
 								className 	: 'btn btn-outline-primary' 
 							}
 						}
-					
 					}).then((result) => {
 						/* 회원 탈퇴 후 loginForm으로 리다이렉트 */
 						location.href="/SC/loginForm.cut";
@@ -59,6 +56,22 @@ function userDelete() {
 			});
 		}
 	});
+}
+/* 회원정보수정 */
+function userModifyForm() {
+	location.href="/SC/userModifyForm.cut";
+}
+/* 쪽지 리스트 */
+function messageList() {
+	location.href="/SC/messageList.cut";
+}
+/* 즐겨찾기 리스트 */
+function bookmarkList() {
+	location.href="/SC/bookmarkList.cut";
+}
+/* 팔로우 리스트 */
+function followList() {
+	location.href="/SC/followList.cut";
 }
 </script>
 </head>
@@ -90,17 +103,26 @@ function userDelete() {
 					
 					    <div class="card-content pb-4" style="margin-left:auto; margin-right:auto">
 							<div class="px-4">
-					  		  <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'>회원 정보수정</button>
-							</div>
-							<div class="px-4">
-							    <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'>쪽지</button>
-							</div>
-							<div class="px-4">
-							    <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'>즐겨찾기</button>
+					  		  <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'
+					  		  	onClick="userModifyForm()">
+					  		  	회원 정보수정
+					  		  </button>
 							</div>
 							<div class="px-4">
 							    <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'
-									onClick="">
+							    	onClick="messageList()">
+							    	쪽지
+							    </button>
+							</div>
+							<div class="px-4">
+							    <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'
+							    	onClick="bookmarkList()">
+							    	즐겨찾기
+							    </button>
+							</div>
+							<div class="px-4">
+							    <button class='btn btn-block btn-xl btn-light-primary font-bold mt-3'
+									onClick="followList()">
 									팔로우
 								</button>
 							</div>
