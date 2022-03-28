@@ -46,14 +46,14 @@
 						
 							<!-- 로그인하지 않은 상태에서 보여줄 상단 메뉴 -->
 							<c:if test="${empty id}">
-								<li class="breadcrumb"><a href="loginForm.cut" class="btn icon icon-left btn-secondary" style="width:100px">로그인</a>&nbsp;</li>
-								<li class="breadcrumb"><a href="joinForm.cut" class="btn icon icon-left btn-secondary" style="width:100px">회원가입</a></li>
+								<li class="breadcrumb"><a href="loginForm.cut" class="btn icon icon-left btn-secondary" style="width:150px">로그인</a>&nbsp;</li>
+								<li class="breadcrumb"><a href="joinForm.cut" class="btn icon icon-left btn-secondary" style="width:150px">회원가입</a></li>
 							</c:if>
 
 							<!-- 로그인한 상태에서 보여줄 상단 메뉴 -->
 							<c:if test="${! empty id}">
-								<li class="breadcrumb"><a href="logout.cut" class="btn icon icon-left btn-secondary" style="width:100px">로그아웃</a>&nbsp;</li>
-								<li class="breadcrumb"><a href="myPage.cut" class="btn icon icon-left btn-secondary" style="width:100px">마이페이지</a></li>
+								<li class="breadcrumb"><a href="logout.cut" class="btn icon icon-left btn-secondary" style="width:150px">로그아웃</a>&nbsp;</li>
+								<li class="breadcrumb"><a href="myPage.cut" class="btn icon icon-left btn-secondary" style="width:150px">마이페이지</a></li>
 							</c:if>
 							
 						</ol>
