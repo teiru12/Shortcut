@@ -128,7 +128,7 @@
 											</c:if>
 					    					<c:forEach var="shortItem" items="${shortList}">
 												<tr>
-													<td width="100%">${shortItem.CONTENT}</td>
+													<td width="100%">${shortItem.TITLE}</td>
 												</tr>
 											</c:forEach>
 										</table>
@@ -155,7 +155,7 @@
 											</c:if>
 					    					<c:forEach var="freeItem" items="${freeList}">
 													<tr>
-														<td width="80%">${freeItem.CONTENT}</td>
+														<td width="80%">${freeItem.TITLE}</td>
 														<td width="20%">${freeItem.READCOUNT}</td>
 													</tr>
 											</c:forEach>
@@ -184,7 +184,7 @@
 											</c:if>
 					    					<c:forEach var="infoItem" items="${infoList}">
 													<tr>
-														<td width="80%">${infoItem.CONTENT}</td>
+														<td width="80%">${infoItem.TITLE}</td>
 														<td width="20%">${infoItem.READCOUNT}</td>
 													</tr>
 											</c:forEach> 
@@ -226,7 +226,7 @@
 											</c:if>
 						    					<c:forEach var="goodShortItem" items="${goodShortList}">
 													<tr>
-														<td width="100%">${goodShortItem.CONTENT}</td>
+														<td width="100%">${goodShortItem.TITLE}</td>
 													</tr>
 												</c:forEach>
 											</table>
@@ -254,7 +254,7 @@
 											</c:if>
 						    					<c:forEach var="freeItem" items="${goodFreeList}">
 														<tr>
-															<td width="80%">${freeItem.CONTENT}</td>
+															<td width="80%">${freeItem.TITLE}</td>
 															<td width="20%">${freeItem.READCOUNT}</td>
 														</tr>
 												</c:forEach>
@@ -283,7 +283,7 @@
 											</c:if>
 						    					<c:forEach var="infoItem" items="${goodInfoList}">
 														<tr>
-															<td width="80%">${infoItem.CONTENT}</td>
+															<td width="80%">${infoItem.TITLE}</td>
 															<td width="20%">${infoItem.READCOUNT}</td>
 														</tr>
 												</c:forEach> 
