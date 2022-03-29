@@ -25,8 +25,6 @@
 function logout() {
 	swal({
 		title				: '로그아웃하시겠습니까?',
-		width 				: 600,
-		padding				: '3em',
 		closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
 		buttons				: {
 			cancle : {
@@ -61,7 +59,6 @@ function logout() {
 								className 	: 'btn btn-outline-primary' 
 							}
 						}
-					
 					}).then((result) => {
 						/* 회원 탈퇴 후 loginForm으로 리다이렉트 */
 						location.href="/SC/loginForm.cut";

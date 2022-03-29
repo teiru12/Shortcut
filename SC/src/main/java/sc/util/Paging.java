@@ -29,28 +29,26 @@ public class Paging {
 	}
 	
 	private void makePageHtml(String url, String searchUrl) {
-		pageHtml.append("<div class=\"row mt-5\">");
-		pageHtml.append("<div class=\"col text-center\">");
-		pageHtml.append("<div class=\"block-27\">");
-		pageHtml.append("<ul>");
+		
+		pageHtml.append("<ul class=\"pagination pagination-primary\">");
 		if(startPage>pageBlock) {
-			pageHtml.append("<li><a href=\"" + url + "?page=" + (startPage-pageBlock) + searchUrl + "\">&lt;</a></li>&nbsp;");
+			pageHtml.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "?page=" + (startPage-pageBlock) + searchUrl + "\">&lt;</a></li>&nbsp;");
 		}
 		
 		for(int i=startPage;i<=endPage;i++) {
-			pageHtml.append("<li class=\"active\">");
+			pageHtml.append("<li class=\"page-item active\">");
 			if(i!=currentPage) {
-				pageHtml.append("<li><a href=\"" + url + "?page=" + i  + searchUrl + "\">" + i + "</a></li>&nbsp;");				
+				pageHtml.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "?page=" + i  + searchUrl + "\">" + i + "</a></li>&nbsp;");				
 			} else {
-				pageHtml.append("<li class=\"active\"><span>" + i+ "</span>&nbsp;");				
+				pageHtml.append("<li class=\"page-item active\"><span>" + i+ "</span>&nbsp;");				
 			}
 		}
 		
 		if(endPage<totalPage) {
-			pageHtml.append("<li><a href=\"" + url + "?page=" + (startPage+pageBlock)  + searchUrl + "\">&gt;</a></li>");			
+			pageHtml.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "?page=" + (startPage+pageBlock)  + searchUrl + "\">&gt;</a></li>");			
 		}
 		
-		pageHtml.append("</ul></div></div></div>");
+		pageHtml.append("</ul>");
 	}
 
 	public int getTotalPage() {
