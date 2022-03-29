@@ -19,6 +19,8 @@
 
 <!-- jQuery -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!-- SweetAlert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
 <script>
 /* 로그아웃 Ajax */
@@ -49,7 +51,7 @@ function logout() {
 				success		: function(data) {
 					
 					swal({
-						title				: '로그아웃하셨습니다',
+						title				: data.message,
 						text 				: '안녕히 가세요',
 						closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
 						buttons				: {

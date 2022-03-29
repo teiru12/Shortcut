@@ -107,9 +107,6 @@ public class MemberController {
 	@RequestMapping("/myPage.cut")
 	public String myPage(HttpServletRequest request, Model model) throws Exception {
 
-// 테스트를 위해 임의로 test1@sc.cut을 세션에 입력
-request.getSession().setAttribute("id", "test1@sc.cut");
-		
 		/* 세션으로부터 로그인 id를 읽어와 해당 id의 회원정보를 읽어옴 */
 		String id = (String) request.getSession().getAttribute("id");
 		Member member = memberService.selectMemberId(id);
