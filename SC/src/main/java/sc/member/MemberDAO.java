@@ -69,4 +69,9 @@ public class MemberDAO {
 	public int countMemberSearch(Map<String, Object> map) throws Exception{
 		return sqlSessionTemplate.selectOne("member.countMemberSearch", map);
 	}
+	
+	/* 회원가입 인증 */
+	public void testjoin(String EMAIL) throws Exception {
+		sqlSessionTemplate.update("member.testjoin", EMAIL);
+	}
 }

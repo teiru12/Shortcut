@@ -84,4 +84,9 @@ public class MemberServiceImpl implements MemberService{
 		return memberDAO.countMemberSearch(map);
 	}
 	
+	@Override
+	public void testjoin(String Email) throws Exception {
+		memberDAO.testjoin(Email);
+	}
+	
 }
