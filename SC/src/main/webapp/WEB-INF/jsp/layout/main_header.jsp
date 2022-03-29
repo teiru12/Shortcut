@@ -30,7 +30,7 @@ function logout() {
 			cancle : {
 				text 		: '취소',
 				value 		: false,
-				className 	: 'btn btn-outline-primary' 
+				className 	: 'btn btn-primary' 
 			},
 			confirm : {
 				text 		: '확인',
@@ -56,7 +56,7 @@ function logout() {
 							confirm : {
 								text 		: '확인',
 								value 		: true,
-								className 	: 'btn btn-outline-primary' 
+								className 	: 'btn btn-primary' 
 							}
 						}
 					}).then((result) => {

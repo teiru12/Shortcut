@@ -42,7 +42,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public Member selectMemberFindId(Map<String, Object> map) throws Exception {
+	public String selectMemberFindId(Map<String, Object> map) throws Exception {
 		return memberDAO.selectMemberFindId(map);
 	}
 

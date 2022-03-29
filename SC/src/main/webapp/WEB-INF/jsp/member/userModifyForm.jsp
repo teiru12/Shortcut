@@ -6,9 +6,125 @@
 <head>
 <meta charset="UTF-8">
 <title>숏컷</title>
+<!-- SweetAlert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
 function userModify() {
+	swal({
+		title				: '수정하시겠습니까?',
+		closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+		buttons				: {
+			confirm : {
+				text 		: '수정',
+				value 		: true,
+				className 	: 'btn btn-primary' 
+			},
+			cancle : {
+				text 		: '취소',
+				value 		: false,
+				className 	: 'btn btn-outline-primary' 
+			}
+		}
+	}).then((result) => {
+		if(result) {
+			// 회원 정보 수정에 필요한 변수
+			let ID = document.getElementById("ID").value;
+			let PASSWORD = document.getElementById("PASSWORD").value;
+			let PASSWORD2 = document.getElementById("PASSWORD2").value;
+			let NAME = document.getElementById("NAME").value;
+			let NICKNAME = document.getElementById("NICKNAME").value;
+			let PROFILE = document.getElementById("PROFILE").value;
 	
+			// 입력받은 값들의 유효성 검사
+			if(PASSWORD == null || PASSWORD.trim() == "") {
+				swal({
+					title				: '비밀번호를 입력해주세요.',
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				});
+				return false;
+			}
+			if(PASSWORD.trim() != PASSWORD2.trim()) {
+				swal({
+					title				: '비밀번호가 일치하지 않습니다.',
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				});
+				return false;
+			}
+			if(NAME == null || NAME.trim() == "") {
+				swal({
+					title				: '이름을 입력해주세요.',
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				});
+				return false;
+			}
+			if(NICKNAME == null || NICKNAME.trim() == "") {
+				swal({
+					title				: '닉네임을 입력해주세요.',
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				});
+				return false;
+			}			
+			
+			/* 회원 수정 */
+			$.ajax({
+				url 		: "userModify.cut",
+				data		: {"ID" : ID, "PASSWORD" : PASSWORD, "NAME" : NAME, "NICKNAME" : NICKNAME, "PROFILE" : PROFILE},
+				contentType	: "application/json",
+				success		: function(data) {
+					
+					swal({
+						title				: '수정하였습니다',
+						text 				: '마이 페이지로 이동합니다.',
+						closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+						buttons				: {
+							confirm : {
+								text 		: '확인',
+								value 		: true,
+								className 	: 'btn btn-primary' 
+							}
+						}
+					}).then((result) => {
+						/* 회원 탈퇴 후 loginForm으로 리다이렉트 */
+						location.href="/SC/myPage.cut";
+					});
+				}				
+			});
+		}
+	});
+}
+function selectImage(imgNumber) {
+	let src = "assets/images/faces/" + imgNumber + ".jpg";
+	
+	// modal 창 닫기
+	$('#large').modal("hide");
+	// 폼에 넘겨줄 hidden 태그의 value값 변경
+	document.getElementById("PROFILE").value = imgNumber + ".jpg";
+	// 이미지 출력 변경
+	document.getElementById("faceImg").src = src;
 }
 </script>
 </head>
@@ -33,8 +149,7 @@ function userModify() {
                                 </div>
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <form class="form form-horizontal" id="modifyForm" method="post"
-                                        	enctype="multipart/form-data"> <!-- Modify Form -->
+                                        <form class="form form-horizontal" id="modifyForm" method="post"> <!-- Modify Form -->
                                             <div class="form-body">
                                                 <div class="row">
                                                 
@@ -48,7 +163,7 @@ function userModify() {
 																		<img src="assets/images/faces/blank.png" alt="Face">
 																	</c:if>
 																	<c:if test="${! empty member.PROFILE}">
-																		<img src="assets/images/faces/${member.PROFILE}" alt="Face">
+																		<img src="assets/images/faces/${member.PROFILE}" alt="Face" id="faceImg">
 																	</c:if>
 																</div>
 															</div>
@@ -63,6 +178,7 @@ function userModify() {
 					                                        		data-bs-target="#large">
 					                                                이미지 선택
 					                                            </button>
+					                                            <input type="hidden" id="PROFILE" name="PROFILE" value="${member.PROFILE}">
 																
                                                             	<!-- file input일 경우 사용할 폼
 																<input class="form-control form-control-sm" id="formFileSm" type="file">
@@ -80,7 +196,7 @@ function userModify() {
                                                     <div class="col-md-8">
                                                         <div class="form-group has-icon-left">
                                                             <div class="position-relative">
-                                                                <input type="text" class="form-control" placeholder="ID" id="ID"
+                                                                <input type="text" class="form-control" placeholder="ID" id="ID" name="ID"
                                                                 	value="${member.ID}" disabled>
                                                                 <div class="form-control-icon">
                                                                     <i class="bi bi-person"></i>
@@ -165,7 +281,7 @@ function userModify() {
                                                     <br/><br/>
                                                     <br/><br/>
                                                     <div class="col-sm-9 col-md-7 col-lg-5 mx-auto d-flex justify-content-end">
-                                                        <button type="submit" class="btn btn-primary me-1 mb-1"
+                                                        <button type="button" class="btn btn-primary me-1 mb-1"
                                                          	onClick="userModify()">
                                                          	회원수정
                                                          </button>
@@ -189,42 +305,53 @@ function userModify() {
         </div>
     </div>
     
-                                            <!--large size Modal -->
-                                            <div class="modal fade text-left" id="large" tabindex="-1" role="dialog"
-                                                aria-labelledby="myModalLabel17" aria-hidden="true">
-                                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
-                                                    role="document">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h4 class="modal-title" id="myModalLabel17">Large Modal</h4>
-                                                            <button type="button" class="close" data-bs-dismiss="modal"
-                                                                aria-label="Close">
-                                                                <i data-feather="x"></i>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            I love tart cookie cupcake. I love chupa chups biscuit. I
-                                                            love
-                                                            marshmallow apple pie wafer
-                                                            liquorice. Marshmallow cotton candy chocolate. Apple pie
-                                                            muffin tart.
-                                                            Marshmallow halvah pie
-                                                            marzipan lemon drops jujubes. Macaroon sugar plum cake icing
-                                                            toffee.
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-light-secondary"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-x d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">Close</span>
-                                                            </button>
-                                                            <button type="button" class="btn btn-primary ml-1"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-check d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">Accept</span>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
+	<!--large size Modal -->
+	<div class="modal fade text-left" id="large" tabindex="-1" role="dialog"
+	    aria-labelledby="myModalLabel17" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg"
+		    role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="myModalLabel17">이미지 선택</h4>
+					<button type="button" class="close" data-bs-dismiss="modal"
+					    aria-label="Close">
+					    <i data-feather="x"></i>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="avatar avatar-xl">
+						<img src="assets/images/faces/1.jpg" alt="Face" onClick="selectImage(1)">
+					</div>		
+					<div class="avatar avatar-xl">
+						<img src="assets/images/faces/2.jpg" alt="Face" onClick="selectImage(2)">
+					</div>
+					<div class="avatar avatar-xl">
+						<img src="assets/images/faces/3.jpg" alt="Face" onClick="selectImage(3)">
+					</div>
+					<div class="avatar avatar-xl">
+						<img src="assets/images/faces/4.jpg" alt="Face" onClick="selectImage(4)">
+					</div>
+					<div class="avatar avatar-xl">
+						<img src="assets/images/faces/5.jpg" alt="Face" onClick="selectImage(5)">
+					</div>
+					<div class="avatar avatar-xl">
+						<img src="assets/images/faces/6.jpg" alt="Face" onClick="selectImage(6)">
+					</div>
+					<div class="avatar avatar-xl">
+						<img src="assets/images/faces/7.jpg" alt="Face" onClick="selectImage(7)">
+					</div>
+					<div class="avatar avatar-xl">
+						<img src="assets/images/faces/8.jpg" alt="Face" onClick="selectImage(8)">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-light-secondary"
+					    data-bs-dismiss="modal">
+					    <i class="bx bx-x d-block d-sm-none"></i>
+					    <span class="d-none d-sm-block">취소</span>
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>

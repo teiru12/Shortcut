@@ -41,7 +41,7 @@ public class MemberDAO {
 	}
 	
 	/* 회원 정보 1개 선택 (SELECT) BY 이름, 이메일 : 아이디 찾기 */
-	public Member selectMemberFindId(Map<String, Object> map) throws Exception {
+	public String selectMemberFindId(Map<String, Object> map) throws Exception {
 		return sqlSessionTemplate.selectOne("member.selectMemberFindId", map);
 	}
 	

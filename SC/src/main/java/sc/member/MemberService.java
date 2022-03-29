@@ -17,7 +17,7 @@ public interface MemberService {
 	
 	public Member selectMemberId(String ID) throws Exception;
 	
-	public Member selectMemberFindId(Map<String, Object> map) throws Exception;
+	public String selectMemberFindId(Map<String, Object> map) throws Exception;
 	
 	public Member selectMemberFindPw(Map<String, Object> map) throws Exception;
 		

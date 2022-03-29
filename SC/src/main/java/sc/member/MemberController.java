@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import sc.mail.MailService;
 import sc.model.Member;
 import sc.util.CalculateExp;
 
@@ -21,6 +22,9 @@ public class MemberController {
 
 	@Resource(name="memberService")
 	private MemberService memberService;
+	
+	@Resource(name="mailService")
+	private MailService mailService;
 	
 	@RequestMapping(value = "/loginForm.cut")
 	public String loginForm(Model model) throws Exception {
@@ -53,9 +57,24 @@ public class MemberController {
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="/join.cut", method = RequestMethod.POST)
-	public void join(@RequestBody Map<String, Object> data, HttpServletRequest request, Model model) throws Exception{
-		System.out.println("data : " + data);
+	@RequestMapping(value="/join.cut")
+	public void join(String ID, String EMAIL, String PASSWORD, String NAME, String NICKNAME) throws Exception{
+		Member member = new Member();
+		member.setEMAIL(EMAIL);
+		member.setID(ID);
+		member.setNAME(NAME);
+		member.setPASSWORD(PASSWORD);
+		member.setNICKNAME(NICKNAME);
+		
+		memberService.insertMember(member);
+		mailService.sendAuthMail(EMAIL);
+		
+	}
+	
+	@RequestMapping(value="/testjoin.cut")
+	public void testjoin(HttpServletRequest request) throws Exception {
+		System.out.println("오나 " + request.getParameter("EMAIL"));
+		memberService.testjoin(request.getParameter("EMAIL"));
 	}
 	
 	//아이디 찾기 페이지
@@ -66,15 +85,16 @@ public class MemberController {
 	}
 	
 	//아이디 찾기 실행
-	@RequestMapping("/findId.cut")
-	public String findId(HttpServletRequest request, Model model) throws Exception {
-		Map<String, Object> map = new HashMap<String, Object>();		
+	@RequestMapping(value="/findId.cut")
+	@ResponseBody
+	public String findId(String NAME, String EMAIL, Model model) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("NAME", NAME);
+		map.put("EMAIL", EMAIL);
 		
-		Member member = memberService.selectMemberFindId(map);
-		
-		model.addAttribute("id", member);
-		
-		return "findId";
+		String ID = memberService.selectMemberFindId(map);
+
+		return ID;
 	}
 	
 	//비밀번호 찾기 페이지
@@ -114,6 +134,34 @@ request.getSession().setAttribute("id", "test1@sc.cut");
 		model.addAttribute("member", member);
 		
 		return "userModifyForm";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/userModify.cut")
+	public Map<String, String> userModify(HttpServletRequest request,
+			String ID,
+			String PASSWORD,
+			String NAME,
+			String NICKNAME,
+			String PROFILE) throws Exception {
+		Map<String, String> msg = new HashMap<String, String>();
+	
+		/* ID에 해당하는 회원 정보를 읽어온다 */
+		Member memUpdate = memberService.selectMemberId(ID);
+		
+		if(memUpdate != null) {
+			memUpdate.setPASSWORD(PASSWORD);
+			memUpdate.setNAME(NAME);
+			memUpdate.setNICKNAME(NICKNAME);
+			memUpdate.setPROFILE(PROFILE);
+			
+			memberService.updateMember(memUpdate);
+			
+			msg.put("message", "수정되었습니다.");
+		} else {
+			msg.put("message", "일치하는 회원정보가 없습니다.");
+		}
+		return msg;
 	}
 	
 	@ResponseBody

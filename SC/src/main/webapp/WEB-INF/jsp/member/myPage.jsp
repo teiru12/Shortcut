@@ -20,7 +20,7 @@ function userDelete() {
 			cancle : {
 				text 		: '취소',
 				value 		: false,
-				className 	: 'btn btn-outline-primary' 
+				className 	: 'btn btn-primary' 
 			},
 			confirm : {
 				text 		: '탈퇴',
@@ -46,7 +46,7 @@ function userDelete() {
 							confirm : {
 								text 		: '확인',
 								value 		: true,
-								className 	: 'btn btn-outline-primary' 
+								className 	: 'btn btn-primary' 
 							}
 						}
 					}).then((result) => {
