@@ -8,7 +8,6 @@
 	<style>
 	body{
 			margin-top: 100px;
-			font-family: 'Trebuchet MS', serif;
 			line-height: 1.6
 		}
 		
@@ -116,15 +115,20 @@
 								<div style="text-align:center">
 									<div class="col-md-12 ftco-animate">
 									<div class="cart-list">
-								<table class="table">
-				    				<thead class="thead-primary"> 
-				    				<tr> 
-				    					<th scope="col" width="100%">제목</th>
-				    				</tr> 
-					    				</thead>
+										<table class="table">
+						    				<thead class="thead-primary">
+							    				<tr> 
+							    					<th scope="col" width="100%">제목</th>
+							    				</tr> 
+							    			</thead>
+											<c:if test = "${empty shortList}">
+												<tr>
+													<td>게시글이 없습니다.</td>
+												</tr>					
+											</c:if>
 					    					<c:forEach var="shortItem" items="${shortList}">
 												<tr>
-													<td width="100%">${shortItem.CONTENT}</td>
+													<td width="100%">${shortItem.TITLE}</td>
 												</tr>
 											</c:forEach>
 										</table>
@@ -143,11 +147,16 @@
 				    					<th scope="col" width="20%">조회수</th>
 				    				</tr> 
 					    				</thead>
-					    					<c:forEach var="freeItem1" items="${freeList}">
-					    						<c:set var="freeItem2" value="${freeReadCount[status.index]}"/>
+											<c:if test = "${empty freeList}">
+												<tr>
+													<td width="80%">게시글이 없습니다.</td>
+													<td width="20%">0</td>
+												</tr>					
+											</c:if>
+					    					<c:forEach var="freeItem" items="${freeList}">
 													<tr>
-														<td width="80%">${freeItem1.CONTENT}</td>
-														<td width="20%">${freeItem2.READCOUNT}</td>
+														<td width="80%">${freeItem.TITLE}</td>
+														<td width="20%">${freeItem.READCOUNT}</td>
 													</tr>
 											</c:forEach>
 										</table>
@@ -167,11 +176,16 @@
 				    					<th scope="col" width="20%">조회수</th>
 				    				</tr> 
 					    				</thead>
-					    					<c:forEach var="infoItem1" items="${infoList}">
-					    						<c:set var="infoItem2" value="${infoReadCount[status.index]}"/>
+											<c:if test = "${empty infoList}">
+												<tr>
+													<td width="80%">게시글이 없습니다.</td>
+													<td width="20%">0</td>
+												</tr>					
+											</c:if>
+					    					<c:forEach var="infoItem" items="${infoList}">
 													<tr>
-														<td width="80%">${infoItem1.CONTENT}</td>
-														<td width="20%">${infoItem2.READCOUNT}</td>
+														<td width="80%">${infoItem.TITLE}</td>
+														<td width="20%">${infoItem.READCOUNT}</td>
 													</tr>
 											</c:forEach> 
 										</table>
@@ -205,9 +219,14 @@
 					    					<th scope="col" width="100%">제목</th> 
 					    				</tr> 
 						    				</thead>
+											<c:if test = "${empty goodShortList}">
+												<tr>
+													<td>게시글이 없습니다.</td>
+												</tr>					
+											</c:if>
 						    					<c:forEach var="goodShortItem" items="${goodShortList}">
 													<tr>
-														<td width="100%">${goodShortItem.CONTENT}</td>
+														<td width="100%">${goodShortItem.TITLE}</td>
 													</tr>
 												</c:forEach>
 											</table>
@@ -227,11 +246,16 @@
 					    					<th scope="col" width="20%">조회수</th>
 					    				</tr> 
 						    				</thead>
-						    					<c:forEach var="freeItem1" items="${goodFreeList}">
-						    						<c:set var="freeItem2" value="${freeReadCount[status.index]}"/>
+											<c:if test = "${empty goodFreeList}">
+												<tr>
+													<td width="80%">게시글이 없습니다.</td>
+													<td width="20%">0</td>
+												</tr>					
+											</c:if>
+						    					<c:forEach var="freeItem" items="${goodFreeList}">
 														<tr>
-															<td width="80%">${freeItem1.CONTENT}</td>
-															<td width="20%">${freeItem2.READCOUNT}</td>
+															<td width="80%">${freeItem.TITLE}</td>
+															<td width="20%">${freeItem.READCOUNT}</td>
 														</tr>
 												</c:forEach>
 											</table>
@@ -249,13 +273,18 @@
 					    				<tr> 
 					    					<th scope="col" width="80%">제목</th>
 					    					<th scope="col" width="20%">조회수</th>
-					    				</tr> 
+					    				</tr>
 						    				</thead>
-						    					<c:forEach var="infoItem1" items="${goodInfoList}">
-						    						<c:set var="infoItem2" value="${infoReadCount[status.index]}"/>
+											<c:if test = "${empty goodInfoList}">
+												<tr>
+													<td width="80%">게시글이 없습니다.</td>
+													<td width="20%">0</td>
+												</tr>					
+											</c:if>
+						    					<c:forEach var="infoItem" items="${goodInfoList}">
 														<tr>
-															<td width="80%">${infoItem1.CONTENT}</td>
-															<td width="20%">${infoItem2.READCOUNT}</td>
+															<td width="80%">${infoItem.TITLE}</td>
+															<td width="20%">${infoItem.READCOUNT}</td>
 														</tr>
 												</c:forEach> 
 											</table>
