@@ -112,8 +112,6 @@
 		FROM
 			MEMBER
 		WHERE
-			NAME = #{NAME}
-			AND
 			EMAIL = #{EMAIL}
 			AND
 			ID = #{ID}
