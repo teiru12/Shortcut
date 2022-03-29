@@ -104,6 +104,18 @@ request.getSession().setAttribute("id", "test1@sc.cut");
 		return "myPage";
 	}
 	
+	@RequestMapping("/userModifyForm.cut")
+	public String userModifyForm(HttpServletRequest request, Model model) throws Exception {
+		
+		/* 세션으로부터 로그인 id를 읽어와 해당 id의 회원정보를 읽어옴 */
+		String id = (String) request.getSession().getAttribute("id");
+		Member member = memberService.selectMemberId(id);
+		
+		model.addAttribute("member", member);
+		
+		return "userModifyForm";
+	}
+	
 	@ResponseBody
 	@RequestMapping("/userDelete.cut")
 	public Map<String, String> userDelete(HttpServletRequest request) throws Exception {

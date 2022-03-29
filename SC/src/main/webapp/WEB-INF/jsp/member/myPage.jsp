@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -72,7 +73,7 @@ function bookmarkList() {
 /* 팔로우 리스트 */
 function followList() {
 	location.href="/SC/followList.cut";
-}
+} 
 </script>
 </head>
 <body>
@@ -92,7 +93,12 @@ function followList() {
 							<div class="d-flex align-items-center">
 								<div class="avatar avatar-xl">
 									<!-- 이미지 없을 시 기본 이미지 이미지 있을 경우 해당 이미지 -->
-									<img src="assets/images/faces/${member.PROFILE}" alt="Face">
+									<c:if test="${empty member.PROFILE}">
+										<img src="assets/images/faces/blank.png" alt="Face">
+									</c:if>
+									<c:if test="${! empty member.PROFILE}">
+										<img src="assets/images/faces/${member.PROFILE}" alt="Face">
+									</c:if>
 								</div>
 								<div class="ms-3 name">
 									<h5 class="font-bold">레벨 : ${level}</h5>
