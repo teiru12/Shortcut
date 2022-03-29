@@ -71,20 +71,21 @@ public class MemberController {
 		
 	}
 	
+	// 메일 인증 후 결과 페이지 연결
 	@RequestMapping(value="/testjoin.cut")
 	public void testjoin(HttpServletRequest request) throws Exception {
 		System.out.println("오나 " + request.getParameter("EMAIL"));
 		memberService.testjoin(request.getParameter("EMAIL"));
 	}
 	
-	//아이디 찾기 페이지
+	// 아이디 찾기 페이지
 	@RequestMapping("/findIdForm.cut")
 	public String findIdForm(Model model) throws Exception {
 		
 		return "findIdForm";
 	}
 	
-	//아이디 찾기 실행
+	// 아이디 찾기 실행
 	@RequestMapping(value="/findId.cut")
 	@ResponseBody
 	public String findId(String NAME, String EMAIL, Model model) throws Exception {
@@ -99,11 +100,31 @@ public class MemberController {
 	
 	//비밀번호 찾기 페이지
 	@RequestMapping("/findPwForm.cut")
-	public String main(Model model) {
+	public String findPwForm(Model model) {
 		
 		return "findPwForm";
 	}
 	
+	// 비밀번호 찾기 실행
+	@ResponseBody
+	@RequestMapping(value = "/findPw.cut")
+	public String findPw(String ID,String EMAIL)throws Exception{
+		
+		Map<String,Object> map = new HashMap<String,Object>();
+		Member memberInfo = new Member();
+		
+		//EMAIL, ID 읽어옴
+		map.put("EMAIL",EMAIL);
+		map.put("ID",ID);
+		
+		memberInfo = memberService.selectMemberFindPw(map);
+		String PASSWORD = memberService.selectMemberFindPw(map).getPASSWORD();
+		mailService.sendAuthMail2(EMAIL,PASSWORD);
+		return "findPw";
+	
+	}
+	
+	// 마이 페이지
 	@RequestMapping("/myPage.cut")
 	public String myPage(HttpServletRequest request, Model model) throws Exception {
 
@@ -121,6 +142,7 @@ public class MemberController {
 		return "myPage";
 	}
 	
+	// 회원정보 수정 폼
 	@RequestMapping("/userModifyForm.cut")
 	public String userModifyForm(HttpServletRequest request, Model model) throws Exception {
 		
@@ -133,6 +155,7 @@ public class MemberController {
 		return "userModifyForm";
 	}
 	
+	// 회원정보 수정
 	@ResponseBody
 	@RequestMapping("/userModify.cut")
 	public Map<String, String> userModify(HttpServletRequest request,
@@ -161,6 +184,7 @@ public class MemberController {
 		return msg;
 	}
 	
+	// 회원 탈퇴
 	@ResponseBody
 	@RequestMapping("/userDelete.cut")
 	public Map<String, String> userDelete(HttpServletRequest request) throws Exception {
