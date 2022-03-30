@@ -29,23 +29,25 @@ public class Paging {
 	}
 	
 	private void makePageHtml(String url, String searchUrl) {
-		
 		pageHtml.append("<ul class=\"pagination pagination-primary justify-content-center\">");
 		if(startPage>pageBlock) {
-			pageHtml.append("<li class=\"page-item disabled\"><a class=\"page-link\" href=\"" + url + "?page=" + (startPage-pageBlock) + searchUrl + "\">&lt;</a></li>&nbsp;");
+			pageHtml.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "?page=" + (startPage-pageBlock) + searchUrl + "\">&lt;</a></li>&nbsp;");
 		}
 		
 		for(int i=startPage;i<=endPage;i++) {
 			pageHtml.append("<li class=\"page-item active\">");
 			if(i!=currentPage) {
-				pageHtml.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "?page=" + i  + searchUrl + "\">" + i + "</a></li>&nbsp;");				
+				pageHtml.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "?page=" + i  + searchUrl + "\">" + i + "</a></li>");				
 			} else {
-				pageHtml.append("<li class=\"page-item active\"><a class=\"page-link\">" + i+ "&nbsp;");				
+				pageHtml.append("<li class=\"page-item active\"><a class=\"page-link\">" + i + "</a></li>");				
 			}
 		}
 		
 		if(endPage<totalPage) {
 			pageHtml.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "?page=" + (startPage+pageBlock)  + searchUrl + "\">&gt;</a></li>");			
+		}
+		if(endPage>=totalPage) {
+			pageHtml.append("<li class=\"page-item\" style=\"display:hidden\"></li>");			
 		}
 		
 		pageHtml.append("</ul>");

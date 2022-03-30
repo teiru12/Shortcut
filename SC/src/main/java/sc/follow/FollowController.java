@@ -1,6 +1,7 @@
 package sc.follow;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -24,9 +25,6 @@ public class FollowController {
 	// 팔로우 리스트 페이징
 	@RequestMapping("/followList.cut")
 	public String followList(HttpServletRequest request, Model model) throws Exception {
-		
-// 테스트용 세션입력
-request.getSession().setAttribute("id", "test1");
 		
 		/* 세션으로부터 로그인 id를 읽어옴 */
 		String id = (String) request.getSession().getAttribute("id");
@@ -67,13 +65,67 @@ request.getSession().setAttribute("id", "test1");
 		return "followList";
 	}
 	
+	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping("/followDelete.cut")
-	public Map<String, String> followDelete(int FOLLOWIDX, String FOLLOWID) throws Exception{
+	public Map<String, String> followDelete(HttpServletRequest request,
+			int FOLLOWIDX, String FOLLOWID, int currentPage) throws Exception{
 		Map<String, String> msg = new HashMap<String, String>();
 		
 		/* 팔로우 삭제*/
 		followService.deleteFollow(FOLLOWIDX);
+		
+		/* 세션으로부터 로그인 id를 읽어옴 */
+		String id = (String) request.getSession().getAttribute("id");
+		
+		/* 페이징 변수 설정 */
+		int pageSize = 2; // 페이지당 출력할 포인트 정보의 수
+		// int currentPage // currentPage는 파라미터로 전달받음
+		int START = 1 + pageSize * (currentPage - 1);
+		int END = pageSize * currentPage;
+
+		int countFollowAll; // 전체 팔로우의 수
+		int pageBlock = 5; // 표시할 페이지의 수
+		String url = "followList.cut";
+		String searchUrl = "";
+		/* 페이징을 위한 값 계산 */
+		countFollowAll = followService.countFollow(id);
+		
+		// 만약 삭제를 했을 때 currentPage의 마지막 아이템을 삭제했을 경우 currentPage를 이전 페이지로 설정
+		if(countFollowAll <= ((currentPage-1)*pageSize)) {
+			currentPage = currentPage-1;
+			START = 1 + pageSize * (currentPage - 1);
+			END = pageSize * currentPage;
+		}
+		
+		Paging paging = new Paging(countFollowAll, pageBlock, pageSize, currentPage, url, searchUrl);
+		List<Follow> followList = followService.followListPaging(id, START, END);
+		
+		/* StringBuffer에 새로 생성할 팔로우 테이블 생성 */
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("<tbody id=\"followBody\">");
+		for(int i=0;i<followList.size();i++) {
+			sb.append("<tr>");
+			sb.append("<td width=\"50%\">" + ((Map<String, Object>)followList.get(i)).get("FOLLOWID") + "</td>");
+			sb.append("<td width=\"50%\">");
+			sb.append("<button class=\"btn btn-sm btn-light\" onClick=\"followDelete(");
+			sb.append(((Map<String, Object>)followList.get(i)).get("FOLLOWIDX") + ",'" + ((Map<String, Object>)followList.get(i)).get("FOLLOWID") + "'," + currentPage);
+			sb.append(")\">삭제</button></td></tr>");
+		}		
+		sb.append("<tbody>");
+		
+		String newFollow = sb.toString();
+		
+		StringBuffer pb = new StringBuffer();
+		
+		pb.append("<span id=\"pageBody\">");
+		pb.append(paging.getPageHtml().toString());
+		pb.append("</span>");
+		String newPage = pb.toString();
+		
+		msg.put("newFollow", newFollow);
+		msg.put("newPage", newPage);
 		
 		msg.put("message", FOLLOWID + "회원을 팔로우 삭제하였습니다.");
 		
