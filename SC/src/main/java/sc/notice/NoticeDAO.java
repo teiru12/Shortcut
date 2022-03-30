@@ -18,7 +18,7 @@ public class NoticeDAO {
 	
 	/* 공지 게시판 리스트 페이징 */
 	public List<Notice> noticeListPaging(Map<String, Object> map) throws Exception{
-		return sqlSessionTemplate.selectOne("notice.noticeListPaging", map);
+		return sqlSessionTemplate.selectList("notice.noticeListPaging", map);
 	}
 	
 	/* 공지 게시판 카운트 */

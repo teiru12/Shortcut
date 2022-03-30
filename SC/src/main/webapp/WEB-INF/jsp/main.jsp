@@ -6,11 +6,6 @@
 <meta charset="UTF-8">
 <title>메인</title>
 	<style>
-	body{
-			margin-top: 100px;
-			line-height: 1.6
-		}
-		
 		.container{
 			width: 800px;
 			margin: 0 auto;
@@ -118,17 +113,25 @@
 										<table class="table">
 						    				<thead class="thead-primary">
 							    				<tr> 
-							    					<th scope="col" width="100%">제목</th>
-							    				</tr> 
+							    					<th scope="col" width="15%">프로그램</th>
+							    					<th scope="col" width="25%">단축키</th>
+							    					<th scope="col" width="45%">설명</th>
+							    					<th scope="col" width="15%">조회수</th>
+							    				</tr>
 							    			</thead>
-											<c:if test = "${empty shortList}">
-												<tr>
-													<td>게시글이 없습니다.</td>
-												</tr>					
-											</c:if>
+							    			<table class="table">
+												<c:if test = "${empty shortList}">
+													<tr>
+														<th width="100%">게시글이 없습니다.</th>
+													</tr>		
+												</c:if>
+											</table>
 					    					<c:forEach var="shortItem" items="${shortList}">
 												<tr>
-													<td width="100%">${shortItem.TITLE}</td>
+													<td width="15%">${shortItem.STYPE}</td>
+													<td width="30%"><a href="shortDetail.cut?SHORTIDX=${shortItem.SHORTIDX}">${shortItem.TITLE}</a></td>
+													<td width="40%">${shortItem.CONTENT}</td>
+													<td width="15%">${shortItem.READCOUNT}</td>
 												</tr>
 											</c:forEach>
 										</table>
@@ -155,7 +158,7 @@
 											</c:if>
 					    					<c:forEach var="freeItem" items="${freeList}">
 													<tr>
-														<td width="80%">${freeItem.TITLE}</td>
+														<td width="80%"><a href="freeDetail.cut?FREEIDX=${freeItem.FREEIDX }">${freeItem.TITLE}</a></td>
 														<td width="20%">${freeItem.READCOUNT}</td>
 													</tr>
 											</c:forEach>
@@ -184,7 +187,7 @@
 											</c:if>
 					    					<c:forEach var="infoItem" items="${infoList}">
 													<tr>
-														<td width="80%">${infoItem.TITLE}</td>
+														<td width="80%"><a href="infoDetail.cut?INFOIDX=${infoItem.INFOIDX }">${infoItem.TITLE}</a></td>
 														<td width="20%">${infoItem.READCOUNT}</td>
 													</tr>
 											</c:forEach> 
@@ -201,7 +204,7 @@
 				<div class="col-12 col-md-6 col-lg-6">
 						<div class="card">
 							<div class="card-header">
-								<h4>10추 글</h4>
+								<h4>인기글</h4>
 								<div class="card-body">
 								<ul class="tabs" id="tab2">
 									<li class="tab-link current" data-tab2="tab2-1">단축키</li>
