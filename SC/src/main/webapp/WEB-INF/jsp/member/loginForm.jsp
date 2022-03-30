@@ -5,6 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <title>숏컷</title>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
 /* 로그인 화면에서 엔터키 입력시 로그인 시도 */
 function keyPress() {
@@ -19,34 +22,128 @@ window.onload = function() {
 /* 공백, 특수문자 입력 불가 */
 $(document).on("keyup", "input[noSpecial]", function() {$(this).val( $(this).val().replace(/[^ㄱ-힣a-zA-Z0-9@]/gi,"") );})
 $(document).on("keyup", "input[noBlank]", function() {$(this).val( $(this).val().replace(/\s/gi,"") );})
-function loginProcess(){ 
-	var id = $("#ID").val(); 
-	var pw = $("#PASSWORD").val(); 
-	var idChk = $("#SAVEID").is(":checked"); // 체크박스가 체크되었는지를 담아준다. ( true/false 로 담긴다.) 
+/*
+	//쿠키에 저장된 ID를 가져옴. 없으면 공백
+	$("#ID").val(Cookies.get('key'));     
 	
-	if(id == ""){ // 아이디가 입력이 안된 채 로그인 버튼을 누른 경우 
-		alert("아이디를 입력해주세요"); // 입력하라는 메세지 출력 
-		$("#ID").focus(); // 아이디 인풋창에 포커스를 맞춰준다. 
-		return false; // return false를 해줘서 서버이동을 막는다. 
-	}else if(pw ==""){ 
-		alert("비밀번호를 입력해주세요"); 
-		$("#PASSWORD").focus(); 
-		return false; 
-	}else if(idChk){ // 아이디, 비밀번호 저장 체크박스가 체크 된 경우 (true) 
-		setCookie("Cookie_id", id, 7); // 쿠키에 저장하는 이벤트를 호출한다. Cookie_mail 이름으로 id가 7일동안 저장 
-	}else{ // 체크가 해제 된 경우 (false) 
-		deleteCookie("Cookie_id"); // 쿠키 정보를 지우는 이벤트를 호출한다. 
-	} $("#loginForm").submit(); 
-};
+	if($("#ID").val() != ""){ //input에 이미 ID가 저장되어 있을 경우
+	    $("#SAVEID").attr("checked", true); // 아이디저장 체크박스 checked
+	}
+	
+	$("#SAVEID").change(function(){ //체크박스에 변화가 있을 때
+		if($("#SAVEID").is(":checked")){ //ID 저장하기 체크박스에 checked가 됐다면
+	   		 Cookies.set('key', $("#ID").val(), { expires: 7 }); //7일동안 쿠키에 저장
+		}else{ //ID저장하기 체크박스가 해제
+	      	Cookies.remove('key');
+		}
+	});
+	 
+	 //ID 저장하기를 체크한 상태에 ID를 입력하는 경우에도 쿠키 저장
+	$("#ID").keyup(function(){
+		if($("#SAVEID").is(":checked")){
+		    Cookies.set('key', $("#ID").val(), { expires: 7 });
+		}
+	});
+*/
 </script>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#loginCkd').click(function(e) {
+		
+		var ID = $("#ID").val();
+		var PASSWORD = $("#PASSWORD").val();
+		
+		
+		if(ID == null || ID.trim() == "") {
+			 swal({
+				title				: '아이디를 입력해주세요.',
+				buttons				: {
+					confirm : {
+						text 		: '확인',
+						value 		: true,
+						className 	: 'btn btn-primary' 
+					}
+				}
+			}); 
+			return false;
+		}
+		
+		if(PASSWORD == null || PASSWORD.trim() == "") {
+			swal({
+				title				: '비밀번호를 입력해주세요.',
+				buttons				: {
+					confirm : {
+						text 		: '확인',
+						value 		: true,
+						className 	: 'btn btn-primary' 
+					}
+				}
+			});
+			return false;
+		}
+	    
+		$.ajax({
+			url 		: "login.cut",
+			data		: {"ID" : ID, "PASSWORD" : PASSWORD},
+			contentType	: "application/json; charset=UTF-8",
+			success		: function(data) {
+				
+				// 로그인에 실패했을 경우
+				if(data.message != 'success') {
+					
+					let alertMsg;
+					if(data.message == 'fail') {
+						alertMsg = '로그인에 실패하였습니다.';
+					} else if(data.message == 'invalidPw') {
+						alertMsg = '비밀번호가 틀렸습니다.';
+					} else if(data.message == 'notExist') {
+						alertMsg = '존재하지 않는 아이디입니다.';
+					}
+					swal({
+						title				: alertMsg,
+						closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+						buttons				: {
+							confirm : {
+								text 		: '확인',
+								value 		: true,
+								className 	: 'btn btn-primary' 
+							}
+						}
+					});
+				} else { // 로그인에 성공했을 경우
+					swal({
+						title				: '로그인에 성공했습니다',
+						text 				: '메인 페이지로 이동합니다.',
+						closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+						buttons				: {
+							confirm : {
+								text 		: '확인',
+								value 		: true,
+								className 	: 'btn btn-primary' 
+							}
+						}
+					}).then((result) => {
+						location.href="/SC/main.cut";
+					});
+				}
+			},
+			error: function(jqXHR, textStatus, errorThrown) {
+				alert("ERROR : " + textStatus + " : " + errorThrown);
+			}
+		})
+	});
+})
+</script>
+<script>
 
+</script>
 </head>
 <body>
 
 <div id="main">
 <section id="input-with-icons">
 	<div class="col-12">
-		<div class="col-md-3 col-12 mx-auto">
+		<div class="col-md-4 col-12 mx-auto">
 			<div class="card">
 			    <div class="card-header">
 			        <h4 class="card-title">로그인</h4>
@@ -62,7 +159,7 @@ function loginProcess(){
 								    <div class="col-md-8">
 								        <div class="form-group has-icon-left">
 								            <div class="position-relative">
-								                <input type="text" class="form-control" placeholder="ID" id="ID" noBlank>
+								                <input type="text" class="form-control" placeholder="ID" name="ID" id="ID">
 								                <div class="form-control-icon">
 								                    <i class="bi bi-person"></i>
 								                </div>
@@ -75,7 +172,7 @@ function loginProcess(){
 									<div class="col-md-8">
 									    <div class="form-group has-icon-left">
 									        <div class="position-relative">
-									            <input type="password" class="form-control" placeholder="Password" noSpecial>
+									            <input type="password" id="PASSWORD" name="PASSWORD" class="form-control" placeholder="Password">
 									            <div class="form-control-icon">
 									                <i class="bi bi-lock"></i>
 									            </div>
@@ -83,19 +180,19 @@ function loginProcess(){
 									    </div>
 									</div>
 			                        <div class="col-11 ">
-										<a href="/SC/findId.cut">아이디 찾기</a>
-										<a href="/SC/findPw.cut">비밀번호 찾기</a>
+										<a href="/findId.cut">아이디 찾기</a>
+										<a href="/findPw.cut">비밀번호 찾기</a>
 									</div>
 									<div class="col-12 d-flex justify-content-end">
 		                                <div class="checkbox mt-2">
-		                                    <input type="checkbox" id="SAVEID" class='form-check-input'>
-		                                    <label for="remember-me-v">아이디 저장</label>
+		                                    <input type="checkbox" id="SAVEID" class=''>
+		                                    <label for="SAVEID">아이디 저장</label>
 		                                </div>
 			                        </div>
 			                        <br><br>
 			                        <div class="col-12" style="text-align: center; margin: 0 auto;">
 			                        	<div>
-			                        		<button onClick="loginProcess();" class="btn btn-primary" style="width:300px; height:45px;">로그인</button>
+			                        		<button type="button" id="loginCkd" class="btn btn-primary" style="width:300px; height:45px;">로그인</button>
 			                        	</div><br>
 			                        	<div>
 			                        		<a href="#" ><img src="assets/images/login/kakao_login_medium_wide.png" style="width:300px;"></a>
