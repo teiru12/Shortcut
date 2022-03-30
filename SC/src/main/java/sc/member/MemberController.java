@@ -32,10 +32,34 @@ public class MemberController {
 		return "loginForm";
 	}
 	
+	@ResponseBody
 	@RequestMapping(value = "/login.cut")
-	public String login(Member member, HttpServletRequest request, Model model) throws Exception {
+	public Map<String, String> login(String ID, String PASSWORD, HttpServletRequest request) throws Exception {
+		Map<String, String> msg = new HashMap<String, String>();
 		
-		return "/member/login";
+		Member m = new Member();
+		m.setID(ID);
+		m.setPASSWORD(PASSWORD);
+		
+		Member memberInfo = memberService.selectMemberId(ID);
+		
+		
+		  if(memberInfo == null) { //로그인 실패 
+			  msg.put("message", "notExist"); 
+		  } else { 
+			  if(memberInfo.getPASSWORD().equals(m.getPASSWORD())) {
+				  if(!memberInfo.getSTATUS().equals("ON")) { 
+					  msg.put("message", "fail"); 
+				  } else {
+					  msg.put("message", "success");
+					  request.getSession().setAttribute("id", ID);
+				  }
+		  
+			  } else {
+				  msg.put("message", "invalidPw"); 
+			  } 
+		  }		
+		return msg;
 	}
 
 	@ResponseBody
