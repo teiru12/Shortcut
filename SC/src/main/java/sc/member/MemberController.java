@@ -20,6 +20,8 @@ import sc.util.CalculateExp;
 @Controller
 public class MemberController {
 
+	private String TESTEMAIL = null;
+	
 	@Resource(name="memberService")
 	private MemberService memberService;
 	
@@ -56,19 +58,43 @@ public class MemberController {
 		return "joinForm";
 	}
 	
+	//회원가입
 	@ResponseBody
 	@RequestMapping(value="/join.cut")
-	public void join(String ID, String EMAIL, String PASSWORD, String NAME, String NICKNAME) throws Exception{
+	public String join(String ID, String EMAIL, String PASSWORD, String NAME, String NICKNAME) throws Exception{
 		Member member = new Member();
 		member.setEMAIL(EMAIL);
 		member.setID(ID);
 		member.setNAME(NAME);
 		member.setPASSWORD(PASSWORD);
 		member.setNICKNAME(NICKNAME);
+		TESTEMAIL = EMAIL;
 		
-		memberService.insertMember(member);
-		mailService.sendAuthMail(EMAIL);
+		memberService.insertMember(member); 
+		//mailService.sendAuthMail(EMAIL);
 		
+		System.out.println("ddddddddddddddddd");
+		
+		return EMAIL;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/testemail.cut")
+	public void testEmail(Model model) throws Exception {
+		mailService.sendAuthMail(TESTEMAIL);
+		System.out.println("123");
+	}
+	
+	//회원가입 아이디 중복체크
+	@ResponseBody
+	@RequestMapping(value="/checkID.cut")
+	public boolean checkID(String ID) throws Exception{		
+		
+		if(memberService.selectMemberId(ID) != null) {
+			return false;
+		}
+		
+		return true;
 	}
 	
 	// 메일 인증 후 결과 페이지 연결
