@@ -6,13 +6,14 @@
 <meta charset="UTF-8">
 <title>숏컷</title>
 </head>
+<!-- SweetAlert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script type="text/javascript">
 //아이디 찾기
 function findId_click(){		
 	let NAME = $("#NAME").val(); 
 	let EMAIL = $("#EMAIL").val();
-	
-	let sendData = "NAME=" + NAME + "&EMAIL=" + EMAIL;
+
 	//이메일 형식 검증을 위한 변수
 	let regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; 
 	if(NAME != null && NAME != "") {
@@ -24,43 +25,98 @@ function findId_click(){
 					 data : {"NAME" : NAME, "EMAIL" : EMAIL}, 
 					 success : function(data){
 						 if(data == 0) {
-							 $('#ID').text("회원 정보가 없습니다.");
+							 swal({
+									title				: '아이디 찾기',
+									text 				: '회원 정보가 없습니다',
+									closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+									buttons				: {
+										confirm : {
+											text 		: '확인',
+											value 		: true,
+											className 	: 'btn btn-primary' 
+										}
+									}
+								}).then((result) => {
+									$('#EMAIL').focus();
+									return false;
+								});
 						 } else {
-							 $('#ID').text(NAME + "님의 아이디는 '" + data + " '입니다.");
-													 
-							 ID = data;
+							 swal({
+									title				: '아이디 찾기',
+									text 				: NAME + "님의 아이디는 '" + data + " '입니다.",
+									closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+									buttons				: {
+										cancle : {
+											text 		: '확인',
+											value 		: false,
+											className 	: 'btn btn-outline-primary' 
+										},
+										confirm : {
+											text 		: '비밀번호 찾기',
+											value 		: true,
+											className 	: 'btn btn-primary' 
+										}
+									}
+							}).then((result) => {
+									if(result) {
+										window.location.href="/SC/findPwForm.cut"
+									}
+							});
 						 }
-						 $('#modalBox').modal('show');
-						 return false;
 					 }
 				 })
 			} else {
-				alert('이메일 형식이 맞지않습니다.'); 
-				$('#EMAIL').focus();
-				return false;
+				swal({
+					title				: '아이디 찾기',
+					text 				: '이메일 형식이 맞지않습니다.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				}).then((result) => {
+					$('#EMAIL').focus();
+					return false;
+				});
 			}
 		} else {
-			alert('이메일을 입력해주세요.');
-			$('#EMAIL').focus();
-			return false;
+			swal({
+				title				: '아이디 찾기',
+				text 				: '이메일을 입력해주세요.',
+				closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+				buttons				: {
+					confirm : {
+						text 		: '확인',
+						value 		: true,
+						className 	: 'btn btn-primary' 
+					}
+				}
+			}).then((result) => {
+				$('#EMAIL').focus();
+				return false;
+			});
 		}
 	} else {
-		alert('이름을 입력해주세요.');
-		$('#NAME').focus();
-		return false;
+		swal({
+			title				: '아이디 찾기',
+			text 				: '이름을 입력해주세요.',
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		}).then((result) => {
+			$('#NAME').focus();
+			return false;
+		});
 	}	
 }
-//로그인, 비밀번호 찾기로 넘어가기
-$(document).ready(function(){		
-	$('#loginBtn').on('click', function(){
-	  $('#modalBox').modal('hide');
-	  window.location.href="/SC/login.cut";
-	});
-	$('#findPwBtn').on('click', function(){
-	  $('#modalBox').modal('hide');
-	  window.location.href="/SC/findPwForm.cut";
-	});
-});
 </script>
 <body>
 	<div id="main">
@@ -87,33 +143,8 @@ $(document).ready(function(){
 									<i class="bi bi-envelope"></i>
 								</div>
 							</div>
-							<!-- <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5">아이디 찾기</button> -->
 
-							<!-- Modal창 띄우기 -->
 							<a href="#" onclick="findId_click();" class="btn btn-primary btn-block btn-lg shadow-lg mt-5" id="findId">아이디 찾기</a>
-
-							<!-- Modal로 ID 확인하기 -->
-							<div class="modal fade text-left" id="modalBox" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1" aria-hidden="true">
-								<div class="modal-dialog modal-dialog-scrollable" role="document">
-									<div class="modal-content">
-										<div class="modal-header">
-											<h5 class="modal-title" id="myModalLabel1">아이디 찾기</h5>
-										</div>
-										<div class="modal-body">
-											<div id=ID></div>
-										</div>
-										<div class="modal-footer">
-											<button type="button" id="loginBtn" class="btn btn-primary ml-1" data-bs-dismiss="modal">
-												<i class="bx bx-x d-block d-sm-none"></i> <span class="d-none d-sm-block">로그인</span>
-											</button>
-
-											<button type="button" id="findPwBtn" class="btn btn-primary ml-1" data-bs-dismiss="modal">
-												<i class="bx bx-check d-block d-sm-none"></i> <span class="d-none d-sm-block">비밀번호 찾기</span>
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
 
 						</form>
 
