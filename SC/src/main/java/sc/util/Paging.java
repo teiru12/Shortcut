@@ -30,9 +30,9 @@ public class Paging {
 	
 	private void makePageHtml(String url, String searchUrl) {
 		
-		pageHtml.append("<ul class=\"pagination pagination-primary\">");
+		pageHtml.append("<ul class=\"pagination pagination-primary justify-content-center\">");
 		if(startPage>pageBlock) {
-			pageHtml.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "?page=" + (startPage-pageBlock) + searchUrl + "\">&lt;</a></li>&nbsp;");
+			pageHtml.append("<li class=\"page-item disabled\"><a class=\"page-link\" href=\"" + url + "?page=" + (startPage-pageBlock) + searchUrl + "\">&lt;</a></li>&nbsp;");
 		}
 		
 		for(int i=startPage;i<=endPage;i++) {
@@ -40,7 +40,7 @@ public class Paging {
 			if(i!=currentPage) {
 				pageHtml.append("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "?page=" + i  + searchUrl + "\">" + i + "</a></li>&nbsp;");				
 			} else {
-				pageHtml.append("<li class=\"page-item active\"><span>" + i+ "</span>&nbsp;");				
+				pageHtml.append("<li class=\"page-item active\"><a class=\"page-link\">" + i+ "&nbsp;");				
 			}
 		}
 		
