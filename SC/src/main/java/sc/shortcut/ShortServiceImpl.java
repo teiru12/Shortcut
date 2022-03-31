@@ -33,19 +33,29 @@ public class ShortServiceImpl implements ShortService {
 	}
 
 	@Override
-	public List<Short> shortListSearchPaging(int START, int END) throws Exception {
+	public List<Short> shortListSearchPaging(int START, int END, String KEYWORD, String STYPE) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
+		
+		char s = STYPE.charAt(0);
 		
 		map.put("START", START);
 		map.put("END", END);
-		
-		return shortDAO.shortListPaging(map);
+		map.put("KEYWORD", KEYWORD);
+		map.put("STYPE", s);
+
+		return shortDAO.shortListSearchPaging(map);
 	}
 
 	@Override
-	public int countShortListSearch() throws Exception {
-	
-		return Integer.parseInt(String.valueOf(shortDAO.countShortListSearch()));
+	public int countShortListSearch(String KEYWORD, String STYPE) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		char s = STYPE.charAt(0);
+		
+		map.put("KEYWORD", KEYWORD);
+		map.put("STYPE", s);
+
+		return Integer.parseInt(String.valueOf(shortDAO.countShortListSearch(map)));
 	}
 
 	@Override

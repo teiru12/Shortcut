@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import sc.model.Free;
+import sc.model.FreeCom;
 import sc.model.Notice;
 import sc.notice.NoticeService;
 import sc.util.Paging;
@@ -24,7 +25,7 @@ public class FreeController {
 	@Resource(name = "noticeService")
 	private NoticeService noticeService;
 	
-	 
+	
 	@RequestMapping(value = "/freeList.cut")
 	public String freeList(HttpServletRequest request, Model model) throws Exception {
 		
@@ -87,8 +88,49 @@ public class FreeController {
 	
 	
 	@RequestMapping(value = "freeDetail.cut")
-	public String freeDetail(Model model) throws Exception {
+	public String freeDetail(int FREEIDX, Free free, FreeCom freeCom, Model model, HttpServletRequest request) throws Exception {
 		
+		String id = (String) request.getSession().getAttribute("id");
+		
+		
+		Free freeDetail = freeService.selectFreeIDX(FREEIDX);
+		
+		model.addAttribute("freeDetail", freeDetail);
+		
+		
+		/* 페이징 변수 설정 */
+		int pageSize = 5; // 페이지당 출력할 포인트 정보의 수
+		int START = 1;
+		int END = pageSize;
+		int currentPage = 1; // 현재 페이지
+
+		int countFreeCom; // 전체 댓글의 수
+		int pageBlock = 5; // 표시할 페이지의 수
+		String url = "freeDetail.cut";
+		String searchUrl = "&FREEIDX=" + FREEIDX;
+		
+		/* 기본 페이지가 아닐 경우 */
+		if (request.getParameter("page") != null) {
+			currentPage = Integer.parseInt(request.getParameter("page"));
+			START = 1 + pageSize * (currentPage - 1);
+			END = pageSize * currentPage;
+		}
+		
+		/* 페이징을 위한 값 계산 */
+		countFreeCom = freeService.countFreeComByFreeIDX(FREEIDX);
+		
+		// 페이징할 아이템의 총 수, 페이지의 수 ex> 1~5 6~10, 한 페이지에 표시할 아이템의 수, 현재 페이지, 이동주소, 검색시 사용할
+		// 주소 입력
+		Paging paging = new Paging(countFreeCom, pageBlock, pageSize, currentPage, url, searchUrl);
+		
+		List<FreeCom> freeComList = new ArrayList<FreeCom>();
+		freeComList = freeService.freeListComPagingByFreeIDX(START, END, FREEIDX);
+		
+		/* 페이징을 위한 값 삽입 */
+		model.addAttribute("currentPage", currentPage);
+		model.addAttribute("paging", paging);		
+		model.addAttribute("freeComList", freeComList);
+
 		
 		return "freeDetail";
 	}

@@ -28,12 +28,12 @@ public class ShortDAO {
 	
 	/* 단축키 게시판 검색 리스트 페이징 */
 	public List<Short> shortListSearchPaging(Map<String,Object> map) throws Exception{
-		return sqlSessionTemplate.selectList("short.shortListSearchPaging",map);
+		return sqlSessionTemplate.selectList("short.shortListSearchPaging", map);
 	}
 	
 	/* 단축키 게시판 검색 카운트 */
-	public int countShortListSearch() throws Exception{
-		return sqlSessionTemplate.selectOne("short.countShortListSearch");
+	public int countShortListSearch(Map<String,Object> map) throws Exception{
+		return sqlSessionTemplate.selectOne("short.countShortListSearch", map);
 	}
 	
 	/* 단축키 게시판 입력 */
