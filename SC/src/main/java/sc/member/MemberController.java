@@ -96,8 +96,6 @@ public class MemberController {
 		memberService.insertMember(member); 
 		//mailService.sendAuthMail(EMAIL);
 		
-		System.out.println("ddddddddddddddddd");
-		
 		return EMAIL;
 	}
 	
@@ -105,7 +103,6 @@ public class MemberController {
 	@RequestMapping(value = "/testemail.cut")
 	public void testEmail(Model model) throws Exception {
 		mailService.sendAuthMail(TESTEMAIL);
-		System.out.println("123");
 	}
 	
 	//회원가입 아이디 중복체크
@@ -123,7 +120,7 @@ public class MemberController {
 	// 메일 인증 후 결과 페이지 연결
 	@RequestMapping(value="/testjoin.cut")
 	public void testjoin(HttpServletRequest request) throws Exception {
-		System.out.println("오나 " + request.getParameter("EMAIL"));
+		//System.out.println("오나 " + request.getParameter("EMAIL"));
 		memberService.testjoin(request.getParameter("EMAIL"));
 	}
 	
