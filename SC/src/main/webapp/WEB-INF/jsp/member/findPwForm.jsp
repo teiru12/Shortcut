@@ -43,7 +43,6 @@ function findPw_click(){
 					 data : {"ID" : ID, "EMAIL" : EMAIL}, 
 					 success : function(data){
 						 
-						 
 						 if(data.result != 'success') { // 실패
 							 let failMsg = "회원 정보를 찾을 수 없습니다";
 							 swal({
