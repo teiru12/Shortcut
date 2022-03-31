@@ -15,7 +15,7 @@ import sc.model.Notice;
 import sc.notice.NoticeService;
 import sc.util.Paging;
 
-@Controller
+@Controller 
 public class FreeController {
 	
 	@Resource(name = "freeService")
