@@ -24,7 +24,7 @@ public class FreeController {
 	@Resource(name = "noticeService")
 	private NoticeService noticeService;
 	
-	
+	 
 	@RequestMapping(value = "/freeList.cut")
 	public String freeList(HttpServletRequest request, Model model) throws Exception {
 		
