@@ -9,12 +9,7 @@
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
-/* 로그인 화면에서 엔터키 입력시 로그인 시도 */
-function keyPress() {
-	if(window.event.keyCode ==13) {
-		return formCheck();	
-	}	
-}
+
 /* 첫 화면 로딩 시 포커스 */
 window.onload = function() {
 	document.getElementById("ID").focus();
@@ -22,37 +17,88 @@ window.onload = function() {
 /* 공백, 특수문자 입력 불가 */
 $(document).on("keyup", "input[noSpecial]", function() {$(this).val( $(this).val().replace(/[^ㄱ-힣a-zA-Z0-9@]/gi,"") );})
 $(document).on("keyup", "input[noBlank]", function() {$(this).val( $(this).val().replace(/\s/gi,"") );})
-/*
-	//쿠키에 저장된 ID를 가져옴. 없으면 공백
-	$("#ID").val(Cookies.get('key'));     
-	
-	if($("#ID").val() != ""){ //input에 이미 ID가 저장되어 있을 경우
-	    $("#SAVEID").attr("checked", true); // 아이디저장 체크박스 checked
-	}
-	
-	$("#SAVEID").change(function(){ //체크박스에 변화가 있을 때
-		if($("#SAVEID").is(":checked")){ //ID 저장하기 체크박스에 checked가 됐다면
-	   		 Cookies.set('key', $("#ID").val(), { expires: 7 }); //7일동안 쿠키에 저장
-		}else{ //ID저장하기 체크박스가 해제
-	      	Cookies.remove('key');
-		}
-	});
-	 
-	 //ID 저장하기를 체크한 상태에 ID를 입력하는 경우에도 쿠키 저장
-	$("#ID").keyup(function(){
-		if($("#SAVEID").is(":checked")){
-		    Cookies.set('key', $("#ID").val(), { expires: 7 });
-		}
-	});
-*/
+
 </script>
 <script type="text/javascript">
 $(document).ready(function(){
+	
+	
+	var key = getCookie("key");
+	$("#ID").val(key);
+	
+	if($("#ID").val() != "") {
+		$("#SAVEID").attr("checked", true);
+	}
+	
+	$("#SAVEID").change(function(){ //체크 박스의 변화
+		if($("#SAVEID").is(":checked")){ //아이디 저장하기 체크
+			setCookie("key", $("#ID").val(), 7); //7일 동안 쿠기 저장
+		} else { //아이디 저장하기 체크 해제
+			deleteCookie("key");
+		}
+	});
+	
+	//아이디 저장하기 체크한 상태에서 아이디 입력하는 경우에도 쿠키 저장
+	$("#ID").keyup(function(){
+		if($("#SAVEID").is(":checked")){
+			setCookie("key", $("#ID").val(), 7);
+		}
+	});
+	
+	
+	//쿠키 저장하기
+	function setCookie(cookieName, value, exdays) {
+		var exdate = new Date();
+		exdate.setDate(exdate.getDate() + exdays);
+		var cookieValue = escape(value) 
+			+ ((exdays == null) ? "" : "; expires=" + exdate.toGMTString());
+		document.cookie = cookieName + "=" + cookieValue;
+	}
+	
+	//쿠키 삭제
+	function deleteCookie(cookieName) {
+		var exprireDate = new Date();
+		expireDate.setDate(expireDate.getDate() - 1);
+		document.cookie = cookieName + "=" + "; expires=" 
+								+ expireDate.toGMTString();
+	}
+	
+	//쿠키 가져오기
+	function getCookie(cookieName) {
+	   cookieName = cookieName + '=';
+	   var cookieData = document.cookie;
+	   var start = cookieData.indexOf(cookieName);
+	   var cookieValue = '';
+	   if(start != -1) { //쿠키가 존재
+			start += cookieName.length;
+	   		var end = cookieData.indexOf(';', start);
+	   		if(end == -1) //쿠키 값의 마지막 위치 인덱스 번호 설정
+	   			end = cookieData.length;
+	   		console.log("end위치 : " + end);
+	   		cookieValue = cookieData.substring(start, end);
+	   }
+	   return unescape(cookieValue);
+	}
+	
+	/* 로그인 화면에서 엔터키 입력시 로그인 시도 */
+	$("#PASSWORD").keydown(function(key) {
+		if (key.keyCode == 13) {
+			$("#loginCkd").click();
+		}
+	});
 	$('#loginCkd').click(function(e) {
 		
 		var ID = $("#ID").val();
 		var PASSWORD = $("#PASSWORD").val();
 		
+		if($("#SAVEID").is(":checked")){
+			var userInputId = ID
+			setCookie("userInputId", userInputId, 60);
+			setCookie("setCookieYN", "Y", 60);
+		} else {
+			deleteCookie("userInputId");
+			deleteCookie("setCookieYN", "Y", 60);
+		}
 		
 		if(ID == null || ID.trim() == "") {
 			 swal({
@@ -180,8 +226,8 @@ $(document).ready(function(){
 									    </div>
 									</div>
 			                        <div class="col-11 ">
-										<a href="/findId.cut">아이디 찾기</a>
-										<a href="/findPw.cut">비밀번호 찾기</a>
+										<a href="/SC/findIdForm.cut">아이디 찾기</a>
+										<a href="/SC/findPwForm.cut">비밀번호 찾기</a>
 									</div>
 									<div class="col-12 d-flex justify-content-end">
 		                                <div class="checkbox mt-2">
