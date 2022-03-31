@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?> 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!-- 단축키 게시판 -->
+<!-- 단축키 게시판 --> 
 <mapper namespace="short">
 
 	<!-- 단축키 게시판 리스트 페이징 -->
@@ -53,26 +53,27 @@
 						TITLE LIKE '%'||#{KEYWORD}||'%'
 						OR
 						CONTENT LIKE '%'||#{KEYWORD}||'%'
-					</if>				
-				</trim>		
-				<!-- ORDER가 NULL일 때 -->
-				<if test="ORDER==NULL">
-					<if test="#{STYPE}=='M'">
-						ORDER BY 'M' DESC
 					</if>
-					<if test="#{STYPE}=='E'">
-						ORDER BY 'E' DESC
-					</if>
-					<if test="#{STYPE}=='H'">
-						ORDER BY 'H' DESC
-					</if>
-					<if test="#{STYPE}=='W'">
-						ORDER BY 'W' DESC
-					</if>
-					<if test="#{STYPE}=='N'">
-						ORDER BY 'N' DESC
-					</if>
-				</if>
+					<!-- STYPE이 NULL이 아닐때 -->
+					<if test="STYPE!=NULL">
+						<if test="STYPE=='M'">
+							STYPE = 'M'
+						</if>
+						<if test="STYPE=='E'">
+							STYPE = 'E'
+						</if>
+						<if test="STYPE=='H'">
+							STYPE = 'H'
+						</if>
+						<if test="STYPE=='W'">
+							STYPE = 'W'
+						</if>
+						<if test="STYPE=='N'">
+							STYPE = 'N'
+						</if>
+					</if>			
+				</trim>	
+				
 				<!-- ORDER가 NULL이 아닐 때 -->
 				<if test="ORDER!=NULL and ORDER.equals('IDX')">
 					ORDER BY SHORTIDX
@@ -107,9 +108,29 @@
 		<trim prefix="WHERE" prefixOverrides="OR">
 			<!-- 단축키 검색 : 검색어 입력 -->
 			<if test="KEYWORD != NULL">
-				ID LIKE '%'||#{KEYWORD}||'%'
-			</if>				
-		</trim>
+				TITLE LIKE '%'||#{KEYWORD}||'%'
+				OR
+				CONTENT LIKE '%'||#{KEYWORD}||'%'
+			</if>
+			<!-- STYPE이 NULL이 아닐때 -->
+			<if test="STYPE!=NULL">
+				<if test="STYPE=='M'">
+					STYPE = 'M'
+				</if>
+				<if test="STYPE=='E'">
+					STYPE = 'E'
+				</if>
+				<if test="STYPE=='H'">
+					STYPE = 'H'
+				</if>
+				<if test="STYPE=='W'">
+					STYPE = 'W'
+				</if>
+				<if test="STYPE=='N'">
+					STYPE = 'N'
+				</if>
+			</if>			
+		</trim>	
 	</select>
 
 	<!-- 단축키 게시판 입력 -->

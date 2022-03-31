@@ -10,9 +10,9 @@ public interface ShortService {
 	
 	public int countShortList() throws Exception;
 	
-	public List<Short> shortListSearchPaging(int START, int END) throws Exception;
+	public List<Short> shortListSearchPaging(int START, int END, String KEYWORD, String STYPE) throws Exception;
 	
-	public int countShortListSearch() throws Exception;
+	public int countShortListSearch(String KEYWORD, String STYPE) throws Exception;
 	
 	public void insertShortList(Short SHORTCUT) throws Exception;
 	
