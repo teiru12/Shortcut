@@ -38,7 +38,7 @@ public class MailService {
         }
     }
     
-    public void sendAuthMail2(String email,String password) {
+    public void sendAuthMail2(String email, String password) {
         //인증메일 보내기
         try {
             MailUtils sendMail = new MailUtils(mailSender);
@@ -46,7 +46,7 @@ public class MailService {
             sendMail.setText(new StringBuffer().append("<h1>[이메일 인증]</h1>")
             .append("<p>아래 비밀번호로 로그인후 비밀번호 변경하시길 권장드립니다.</p>")
             .append(password)
-            .append("<p><a href='http://localhost:9003/SC/testFindPw.cut?EMAIL=")
+            .append("<p><a href='http://localhost:9003/SC/loginForm.cut?EMAIL=")
             .append(email)
             .append("'>링크</a></p>")
             .toString());
