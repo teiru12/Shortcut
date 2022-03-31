@@ -57,7 +57,7 @@ $(document).ready(function(){
 	
 	//쿠키 삭제
 	function deleteCookie(cookieName) {
-		var exprireDate = new Date();
+		var expireDate = new Date();
 		expireDate.setDate(expireDate.getDate() - 1);
 		document.cookie = cookieName + "=" + "; expires=" 
 								+ expireDate.toGMTString();
@@ -90,15 +90,6 @@ $(document).ready(function(){
 		
 		var ID = $("#ID").val();
 		var PASSWORD = $("#PASSWORD").val();
-		
-		if($("#SAVEID").is(":checked")){
-			var userInputId = ID
-			setCookie("userInputId", userInputId, 60);
-			setCookie("setCookieYN", "Y", 60);
-		} else {
-			deleteCookie("userInputId");
-			deleteCookie("setCookieYN", "Y", 60);
-		}
 		
 		if(ID == null || ID.trim() == "") {
 			 swal({
