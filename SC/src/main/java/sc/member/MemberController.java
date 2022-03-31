@@ -157,20 +157,28 @@ public class MemberController {
 	// 비밀번호 찾기 실행
 	@ResponseBody
 	@RequestMapping(value = "/findPw.cut")
-	public String findPw(String ID,String EMAIL)throws Exception{
+	public Map<String, String> findPw(String ID,String EMAIL)throws Exception{
+		Map<String, String> msg = new HashMap<String, String>();
 		
-		Map<String,Object> map = new HashMap<String,Object>();
+		// ID와 EMAIL을 이용해서 회원 정보를 읽어옴
+		Map<String, Object> map = new HashMap<String,Object>(); 
 		Member memberInfo = new Member();
-		
-		//EMAIL, ID 읽어옴
+		//EMAIL, ID 읽어옴 
 		map.put("EMAIL",EMAIL);
-		map.put("ID",ID);
-		
+		map.put("ID",ID); 
 		memberInfo = memberService.selectMemberFindPw(map);
-		String PASSWORD = memberService.selectMemberFindPw(map).getPASSWORD();
-		mailService.sendAuthMail2(EMAIL,PASSWORD);
-		return "findPw";
-	
+		
+		// 회원 정보가 없을 때
+		if(memberInfo == null) {
+			msg.put("result", "notFound");
+		} else { // 회원 정보가 있을 때
+			msg.put("result", "success");
+			
+			String PASSWORD = memberInfo.getPASSWORD();
+			mailService.sendAuthMail2(EMAIL,PASSWORD);
+		}
+		  
+		return msg;		
 	}
 	
 	// 마이 페이지
