@@ -119,19 +119,33 @@
 							    					<th scope="col" width="15%">조회수</th>
 							    				</tr>
 							    			</thead>
-							    			<table class="table">
 												<c:if test = "${empty shortList}">
 													<tr>
 														<th width="100%">게시글이 없습니다.</th>
 													</tr>		
 												</c:if>
-											</table>
 					    					<c:forEach var="shortItem" items="${shortList}">
 												<tr>
-													<td width="15%">${shortItem.STYPE}</td>
-													<td width="30%"><a href="shortDetail.cut?SHORTIDX=${shortItem.SHORTIDX}">${shortItem.TITLE}</a></td>
-													<td width="40%">${shortItem.CONTENT}</td>
-													<td width="15%">${shortItem.READCOUNT}</td>
+													<td>
+													<c:if test="${shortItem.STYPE eq 'M'}">
+													마이크로소프트
+													</c:if>
+													<c:if test="${shortItem.STYPE eq 'W'}">
+													윈도우
+													</c:if>
+													<c:if test="${shortItem.STYPE eq 'E'}">
+													이클립스
+													</c:if>
+													<c:if test="${shortItem.STYPE eq 'H'}">
+													한글
+													</c:if>
+													<c:if test="${shortItem.STYPE eq 'N'}">
+													노트패드++
+													</c:if>
+													</td>
+													<td><a href="shortDetail.cut?SHORTIDX=${shortItem.SHORTIDX}">${shortItem.TITLE}</a></td>
+													<td>${shortItem.CONTENT}</td>
+													<td>${shortItem.READCOUNT}</td>
 												</tr>
 											</c:forEach>
 										</table>
