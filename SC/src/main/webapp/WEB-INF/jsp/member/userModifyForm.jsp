@@ -242,7 +242,7 @@ function selectImage(imgNumber) {
                                                         <div class="form-group has-icon-left">
                                                             <div class="position-relative">
                                                                 <input type="email" class="form-control" placeholder="Email" id="EMAIL" name="EMAIL"
-                                                                	value="${member.ID}" disabled>
+                                                                	value="${member.EMAIL}" disabled>
                                                                 <div class="form-control-icon">
                                                                     <i class="bi bi-envelope"></i>
                                                                 </div>
@@ -256,7 +256,7 @@ function selectImage(imgNumber) {
                                                         <div class="form-group has-icon-left">
                                                             <div class="position-relative">
                                                                 <input type="text" class="form-control" placeholder="Name" id="NAME" name="NAME"
-                                                                	value="${member.NAME}">
+                                                                	value="${member.NAME}" disabled>
                                                                 <div class="form-control-icon">
                                                                     <i class="bi bi-person"></i>
                                                                 </div>
