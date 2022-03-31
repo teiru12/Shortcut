@@ -39,7 +39,7 @@
 							<li class="submenu-item ">
 								<a href="infoList.cut">정보교류 게시판</a>
 							</li>
-							<li class="submenu-item active">
+							<li class="submenu-item ">
 								<a href="newsList.cut">뉴스 게시판</a>
 							</li>
 							<li class="submenu-item ">

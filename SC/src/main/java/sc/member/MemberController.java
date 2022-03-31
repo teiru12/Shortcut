@@ -262,4 +262,19 @@ public class MemberController {
 		
 		return msg;
 	}	
+	
+	@RequestMapping("/writerDetail.cut")
+	public String writerDetail(HttpServletRequest request, Model model, String ID) throws Exception {
+		/* 아무 작성자 정보나 일단 넣음*/
+		String id = "ADMIN";
+		Member member = memberService.selectMemberId(id);
+		
+		/* 회원의 레벨 계산 */
+		CalculateExp cal = new CalculateExp(member.getEXP());
+		int level = cal.getLevel();
+		
+		model.addAttribute("member", member);
+		model.addAttribute("level", level);
+		return "/member/writerDetail";
+	}
 }

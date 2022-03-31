@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="/WEB-INF/jsp/include/memMenu.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,6 +42,9 @@ function followDelete(FOLLOWIDX, FOLLOWID, currentPage) {
 					$("#pageBody").remove();
 					$("#pagination").append(data.newPage);
 					
+					$("#countBody").remove();
+					$("#followCount").append(data.newCount);
+					
 					swal({
 						title				: '삭제하셨습니다',
 						closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
@@ -73,21 +77,43 @@ function followDelete(FOLLOWIDX, FOLLOWID, currentPage) {
 								<div style="text-align:center">
 									<div class="col-md-8 ftco-animate mx-auto">
 										<div class="cart-list col-md-12 mx-auto" style="text-align:center">
+											<H6>팔로우</H6>
 											<table id="followTable" class="table">
- 												<thead class="thead-primary">
-  													<tr> 
-  														<th scope="col" width="100%" colspan="2">팔로우</th>
-  													</tr> 
-  												</thead>
+  												<tbody>
+  													<tr id="followCount">
+  														<td colspan="2" style="text-align:right" id="countBody">
+															<span>팔로우 : ${followCount}명</span>
+														</td>
+													</tr>
+  												</tbody>
   												<tbody id="followBody">
 													<c:if test = "${empty followList}">
 														<tr>
 															<td>팔로우한 사람이 없습니다.</td>
 														</tr>					
 													</c:if>
-													<c:forEach var="follow" items="${followList}">
+													<c:forEach var="follow" items="${followList}" varStatus="vs">
 														<tr id="follow${follow.FOLLOWIDX}">
-															<td width="50%">${follow.FOLLOWID}</td>
+															<td width="50%">
+																<div class="btn-group dropend me-1 mb-1">
+																	
+																	<button type="button" class="btn btn-icon-default"
+																		data-bs-toggle="dropdown" aria-haspopup="false"
+																		aria-expanded="false">
+																		${follow.FOLLOWID}
+																	</button>
+																	<div class="dropdown-menu">
+																		<button class="btn btn-icon-default" onClick="writerDetail('${follow.FOLLOWID}')">회원 정보</button><br>
+																		<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
+																		data-bs-target="#inlineForm"
+																		id="sendModal${vs.index}"
+																		data-s="${follow.ID}" data-g="${follow.FOLLOWID}">
+																			쪽지 보내기
+																		</button><br>
+																		<a class="btn btn-icon-default" href="chat.cut">1:1 채팅</a>
+																	</div>
+																</div>
+															</td>
 															<td width="50%">
 															<button class="btn btn-sm btn-light"
 																onClick="followDelete(${follow.FOLLOWIDX},'${follow.FOLLOWID}',${currentPage})">
@@ -119,6 +145,5 @@ function followDelete(FOLLOWIDX, FOLLOWID, currentPage) {
 		</section>
 	</div>
 </div>
-
 </body>
 </html>
