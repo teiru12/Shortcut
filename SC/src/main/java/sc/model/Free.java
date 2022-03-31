@@ -8,7 +8,7 @@ public class Free {
 	private String TYPE;
 	private String TITLE;
 	private String CONTENT;
-	private Date DATE;
+	private Date FREEDATE;
 	private String ID;
 	private String IP;
 	private String PASSWORD;
@@ -41,11 +41,11 @@ public class Free {
 	public void setCONTENT(String cONTENT) {
 		CONTENT = cONTENT;
 	}
-	public Date getDATE() {
-		return DATE;
+	public Date getFREEDATE() {
+		return FREEDATE;
 	}
-	public void setDATE(Date dATE) {
-		DATE = dATE;
+	public void setDATE(Date fREEDATE) {
+		FREEDATE = fREEDATE;
 	}
 	public String getID() {
 		return ID;
