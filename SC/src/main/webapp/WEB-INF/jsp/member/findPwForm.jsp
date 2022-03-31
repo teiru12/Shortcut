@@ -5,9 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>숏컷</title>
-<script>
+<!-- SweetAlert -->
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script type="text/javascript">
 //비밀번호 찾기
-function findPw() {
+/* function findPw() {
 	var email = $("#EMAIL").val();
 	var id = $("#ID").val();
 
@@ -23,8 +25,99 @@ function findPw() {
 			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 }
     });
-}
+} */
 
+//비밀번호 찾기
+function findPw_click(){		
+	let ID = $("#ID").val(); 
+	let EMAIL = $("#EMAIL").val();
+
+	//이메일 형식 검증을 위한 변수
+	let regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; 
+	if(ID != null && ID != "") {
+		if(EMAIL != null && EMAIL != ""){
+			if (EMAIL.match(regExp) != null) {
+				$.ajax({
+					 url : "findPw.cut",
+					 contentType : "application/json; charset=UTF-8",
+					 data : {"ID" : ID, "EMAIL" : EMAIL}, 
+					 success : function(data){
+						 
+						 if(data.result != 'success') { // 실패
+							 let failMsg = "회원 정보를 찾을 수 없습니다";
+							 swal({
+									title				: '비밀번호 찾기',
+									text 				: failMsg,
+									closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+									buttons				: {
+										confirm : {
+											text 		: '확인',
+											value 		: true,
+											className 	: 'btn btn-primary' 
+										}
+									}
+								}).then((result) => {
+									$('#EMAIL').focus();
+									return false;
+								});
+						} else { // 성공
+							 location.href="/SC/loginForm.cut";
+						}
+
+					 }
+				 })
+			} else {
+				swal({
+					title				: '아이디 찾기',
+					text 				: '이메일 형식이 맞지않습니다.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				}).then((result) => {
+					$('#EMAIL').focus();
+					return false;
+				});
+			}
+		} else {
+			swal({
+				title				: '비밀번호 찾기',
+				text 				: '이메일을 입력해주세요.',
+				closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+				buttons				: {
+					confirm : {
+						text 		: '확인',
+						value 		: true,
+						className 	: 'btn btn-primary' 
+					}
+				}
+			}).then((result) => {
+				$('#EMAIL').focus();
+				return false;
+			});
+		}
+	} else {
+		swal({
+			title				: '비밀번호 찾기',
+			text 				: '아이디을 입력해주세요.',
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		}).then((result) => {
+			$('#ID').focus();
+			return false;
+		});
+	}	
+}
 </script>
 </head>
 <body>
@@ -52,8 +145,8 @@ function findPw() {
 									<i class="bi bi-envelope"></i>
 								</div>
 							</div>
-							<button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" onclick="findPw()">찾기</button>
-
+							<!-- <button class="btn btn-primary btn-block btn-lg shadow-lg mt-5" onclick="findPw()">찾기</button> -->
+							<a href="#" onclick="findPw_click()" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">비밀번호 찾기</a>
 						</form>
 
 						<div class="text-center mt-5 text-lg fs-4">
