@@ -54,6 +54,10 @@ public class ShortController {
 		KEYWORD = request.getParameter("KEYWORD");
 		STYPE = request.getParameter("STYPE");
 		
+		if(STYPE != null ) {
+			searchUrl += "&STYPE=" + STYPE;
+		}
+		
 		if((KEYWORD == null || KEYWORD.trim() =="") && (STYPE == null || STYPE.trim() =="")) { // 검색 미적용일때
 			shortCount = shortService.countShortList();
 		}else { // 감색했을때
