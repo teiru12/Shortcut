@@ -33,13 +33,11 @@ public class ShortController {
 		int END = pageSize;
 		int currentPage = 1;
 		
-		
 		int shortCount;
 		int pageBlock = 10;
 		String url = "shortcutList.cut";
 		String searchUrl = "";
 		
-
 		/* 기본 페이지가 아닐 경우 */
 		if(request.getParameter("page") != null) {
 			currentPage = Integer.parseInt(request.getParameter("page"));
@@ -58,6 +56,9 @@ public class ShortController {
 			searchUrl += "&STYPE=" + STYPE;
 		}
 		
+		System.out.println(STYPE);
+		
+
 		if((KEYWORD == null || KEYWORD.trim() =="") && (STYPE == null || STYPE.trim() =="")) { // 검색 미적용일때
 			shortCount = shortService.countShortList();
 		}else { // 감색했을때
@@ -79,7 +80,6 @@ public class ShortController {
 		/* 페이징을 위한 값 삽입 */
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("paging", paging);
-		
 		
 		/* 상단 공지사항 불러오기 및 조건 */
 		noticeTopList = noticeService.noticeListPaging(1, 3);
