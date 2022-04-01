@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="/WEB-INF/jsp/include/memMenu.jspf" %>
 <!DOCTYPE html>
 <html>  
 <head>
@@ -53,7 +54,24 @@
 	                        			<tr>
 	                               			<td class="list-group-horizontal-sm">${freeItem.FREEIDX }</td>
 	                               			<td class="list-group-horizontal-sm"><a href="freeDetail.cut?FREEIDX=${freeItem.FREEIDX}">${freeItem.TITLE }</a></td>
-	                               			<td class="list-group-horizontal-sm">${freeItem.ID }</td>
+	                               			<td class="list-group-horizontal-sm">
+												<button type="button" class="btn btn-icon-default"
+													data-bs-toggle="dropdown" aria-haspopup="false"
+													aria-expanded="false">
+													<b>${freeItem.ID}</b>
+												</button>
+												<div class="dropdown-menu">
+													<button class="btn btn-icon-default" onClick="writerDetail('${freeItem.ID}')">회원 정보</button><br>
+													<c:if test="${! empty sessionScope.id}">
+														<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
+														data-bs-target="#inlineForm"
+														data-s="<%= request.getSession().getAttribute("id") %>" data-g="${freeItem.ID}">
+															쪽지 보내기
+														</button><br>
+														<a class="btn btn-icon-default" href="chat.cut">1:1 채팅</a>
+													</c:if>
+												</div>
+	                               			</td>
 	                               			<td class="list-group-horizontal-sm">${freeItem.READCOUNT }</td>
 	                               			<td class="list-group-horizontal-sm">${freeItem.GOOD }</td>
 	                               			<td class="list-group-horizontal-sm">${freeItem.BAD }</td>
@@ -81,8 +99,5 @@
 	    </section>
 	</div>
 </div>
-
-
-
 </body>
 </html>

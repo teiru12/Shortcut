@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>shortcutList</title>
+<title>숏컷</title>
 </head>
 <body>
 <div id="main">
@@ -90,7 +90,21 @@
 		                                    <div class="input-group mb-3">
 		                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
 		                                        <input type="text" name="KEYWORD" id="KEYWORD" value="${KEYWORD}" class="form-control" placeholder="검색어 ...">
-		                                        <input type="hidden" name="STYPE" id="STYPE" value="M">
+		                                        <c:if test="${STYPE == 'M'}">
+		                                        	<input type="hidden" name="STYPE" id="STYPE" value="M">
+		                                        </c:if>
+		                                        <c:if test="${STYPE == 'W'}">
+		                                        	<input type="hidden" name="STYPE" id="STYPE" value="W">
+		                                        </c:if>
+		                                        <c:if test="${STYPE == 'E'}">
+		                                        	<input type="hidden" name="STYPE" id="STYPE" value="E">
+		                                        </c:if>
+		                                        <c:if test="${STYPE == 'H'}">
+		                                        	<input type="hidden" name="STYPE" id="STYPE" value="H">
+		                                        </c:if>
+		                                        <c:if test="${STYPE == 'N'}">
+		                                        	<input type="hidden" name="STYPE" id="STYPE" value="N">
+		                                        </c:if>
 		                                        <button class="btn btn-outline-secondary">검색</button>
 		                                    </div>
 		                                </div>

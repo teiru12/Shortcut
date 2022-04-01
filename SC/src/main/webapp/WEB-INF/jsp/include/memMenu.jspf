@@ -8,8 +8,22 @@ function sendMessage() {
 	let SENDID = $('#SENDID').val();
 	let GETID = $('#GETID').val();
 	let CONTENT = $('#CONTENT').val();
-
-	if(CONTENT == null || CONTENT.trim() == "") {
+	
+	/* 보내는 사람과 받는 사람이 같을 때 */
+	if(SENDID == GETID) {
+		swal({
+			title				: '자기 자신에게 보낼 수 없습니다.',
+			dangerMode			: true, // 확인 버튼 빨갛게
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: false,
+					className 	: 'btn btn-outline-primary' 
+				}
+			}
+		});	
+	} else if(CONTENT == null || CONTENT.trim() == "") {
 		swal({
 			title				: '내용을 입력해주세요.',
 			dangerMode			: true, // 확인 버튼 빨갛게
