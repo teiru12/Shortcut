@@ -47,31 +47,29 @@
 					SHORTIDX, TYPE, TITLE, CONTENT, SHORTDATE, READCOUNT, GOOD, BAD, STYPE
 				FROM
 					SHORT
-				<trim prefix="WHERE" prefixOverrides="OR">
+				<trim prefix="WHERE" prefixOverrides="AND">
 					<!-- 단축키 검색 : 검색어 입력 -->
 					<if test="KEYWORD != NULL">
-						TITLE LIKE '%'||#{KEYWORD}||'%'
+						(TITLE LIKE '%'||#{KEYWORD}||'%'
 						OR
-						CONTENT LIKE '%'||#{KEYWORD}||'%'
+						CONTENT LIKE '%'||#{KEYWORD}||'%')
 					</if>
 					<!-- STYPE이 NULL이 아닐때 -->
-					<if test="STYPE!=NULL">
-						<if test="STYPE=='M'">
-							STYPE = 'M'
-						</if>
-						<if test="STYPE=='E'">
-							STYPE = 'E'
-						</if>
-						<if test="STYPE=='H'">
-							STYPE = 'H'
-						</if>
-						<if test="STYPE=='W'">
-							STYPE = 'W'
-						</if>
-						<if test="STYPE=='N'">
-							STYPE = 'N'
-						</if>
-					</if>			
+					<if test="STYPE.equals('M')">
+						AND STYPE = 'M'
+					</if>
+					<if test="STYPE.equals('E')">
+						AND STYPE = 'E'
+					</if>
+					<if test="STYPE.equals('H')">
+						AND STYPE = 'H'
+					</if>
+					<if test="STYPE.equals('W')">
+						AND STYPE = 'W'
+					</if>
+					<if test="STYPE.equals('N')">
+						AND STYPE = 'N'
+					</if>
 				</trim>	
 				
 				<!-- ORDER가 NULL이 아닐 때 -->
@@ -105,31 +103,29 @@
 			COUNT(*)
 		FROM
 			SHORT
-		<trim prefix="WHERE" prefixOverrides="OR">
+		<trim prefix="WHERE" prefixOverrides="AND">
 			<!-- 단축키 검색 : 검색어 입력 -->
 			<if test="KEYWORD != NULL">
-				TITLE LIKE '%'||#{KEYWORD}||'%'
+				(TITLE LIKE '%'||#{KEYWORD}||'%'
 				OR
-				CONTENT LIKE '%'||#{KEYWORD}||'%'
+				CONTENT LIKE '%'||#{KEYWORD}||'%')
 			</if>
 			<!-- STYPE이 NULL이 아닐때 -->
-			<if test="STYPE!=NULL">
-				<if test="STYPE=='M'">
-					STYPE = 'M'
-				</if>
-				<if test="STYPE=='E'">
-					STYPE = 'E'
-				</if>
-				<if test="STYPE=='H'">
-					STYPE = 'H'
-				</if>
-				<if test="STYPE=='W'">
-					STYPE = 'W'
-				</if>
-				<if test="STYPE=='N'">
-					STYPE = 'N'
-				</if>
-			</if>			
+			<if test="STYPE.equals('M')">
+				AND STYPE = 'M'
+			</if>
+			<if test="STYPE.equals('E')">
+				AND STYPE = 'E'
+			</if>
+			<if test="STYPE.equals('H')">
+				AND STYPE = 'H'
+			</if>
+			<if test="STYPE.equals('W')">
+				AND STYPE = 'W'
+			</if>
+			<if test="STYPE.equals('N')">
+				AND STYPE = 'N'
+			</if>
 		</trim>	
 	</select>
 
