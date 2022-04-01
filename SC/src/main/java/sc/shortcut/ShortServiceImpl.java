@@ -36,7 +36,13 @@ public class ShortServiceImpl implements ShortService {
 	public List<Short> shortListSearchPaging(int START, int END, String KEYWORD, String STYPE) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		char s = STYPE.charAt(0);
+		char s;
+		
+		if(STYPE == null) {
+			s = ' ';
+		}else {
+			s = STYPE.charAt(0);
+		}
 		
 		map.put("START", START);
 		map.put("END", END);
@@ -50,7 +56,13 @@ public class ShortServiceImpl implements ShortService {
 	public int countShortListSearch(String KEYWORD, String STYPE) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
-		char s = STYPE.charAt(0);
+		char s;
+		
+		if(STYPE == null) {
+			s = ' ';
+		}else {
+			s = STYPE.charAt(0);
+		}
 		
 		map.put("KEYWORD", KEYWORD);
 		map.put("STYPE", s);

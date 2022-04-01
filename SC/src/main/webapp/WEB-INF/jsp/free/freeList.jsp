@@ -19,7 +19,7 @@
 	                    	<div style="text-align:center"><h5>자유게시판</h5></div>
 	                    </div>
 	                    <div class="card-content">
-	                    	<a href="freeWriteForm.cut" class="btn btn-outline-primary" style="float:right;">글쓰기</a>
+	                    	<a href="freeWriteForm.cut" class="btn btn-outline-primary" style="margin-left: 1440px;">글쓰기</a>
 	                        <div class="card-body">
                         		<table class="table">
 	                        		<tr>
