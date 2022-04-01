@@ -76,7 +76,7 @@ function sendMessage() {
 					<label>내용: </label>
 					<div class="form-group">
 						<textarea placeholder="내용을 입력해주세요"
-						class="form-control"
+						class="form-control" maxlength="400"
 						id="CONTENT" name="CONTENT"></textarea>
 					</div>
 				</div>

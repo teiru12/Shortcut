@@ -19,6 +19,8 @@
 					MESSAGE
 				WHERE 
 					SENDID = #{SENDID}
+					AND
+					ISDEL = 'N'
 				ORDER BY MSGIDX DESC
 			)
 		)
@@ -36,6 +38,8 @@
 			MESSAGE
 		WHERE
 			SENDID = #{SENDID}
+			AND
+			ISDEL = 'N'
 	]]>
 	</select>
 
@@ -54,6 +58,8 @@
 					MESSAGE
 				WHERE 
 					GETID = #{GETID}
+					AND
+					ISDEL = 'N'
 				ORDER BY MSGIDX DESC
 			)
 		)
@@ -71,6 +77,8 @@
 			MESSAGE
 		WHERE
 			GETID = #{GETID}
+			AND
+			ISDEL = 'N'
 	]]>
 	</select>
 
@@ -94,7 +102,7 @@
 		SET
 			ISDEL = 'Y'
 		WHERE
-			MEMIDX = #{MEMIDX}
+			MSGIDX = #{MSGIDX}
 	]]>           
 	</update>
 

@@ -16,7 +16,7 @@ public class MessageDAO {
 	private SqlSessionTemplate sqlSessionTemplate;
 	
 	/* 회원의 보낸 쪽지 리스트 페이징 */
-	public List<Map<String, Object>> sendMessageListPagingById(Map<String, Object> map) throws Exception {
+	public List<Message> sendMessageListPagingById(Map<String, Object> map) throws Exception {
 		return sqlSessionTemplate.selectList("message.sendMessageListPagingById", map);
 	}
 	
@@ -26,7 +26,7 @@ public class MessageDAO {
 	}
 	
 	/* 회원의 받은 쪽지 리스트 페이징 */
-	public List<Map<String, Object>> getMessageListPagingById(Map<String, Object> map) throws Exception {
+	public List<Message> getMessageListPagingById(Map<String, Object> map) throws Exception {
 		return sqlSessionTemplate.selectList("message.getMessageListPagingById", map);
 	}
 	
