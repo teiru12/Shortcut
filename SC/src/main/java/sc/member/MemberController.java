@@ -110,10 +110,12 @@ public class MemberController {
 	@RequestMapping(value="/checkID.cut")
 	public boolean checkID(String ID) throws Exception{		
 		
+		// ID가 존재할 경우 false
 		if(memberService.selectMemberId(ID) != null) {
 			return false;
 		}
 		
+		// ID가 존재하지 않을 경우 true
 		return true;
 	}
 	
