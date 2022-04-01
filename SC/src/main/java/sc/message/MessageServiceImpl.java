@@ -17,7 +17,7 @@ public class MessageServiceImpl implements MessageService{
 	private MessageDAO messageDAO;
 	
 	@Override
-	public List<Map<String, Object>> sendMessageListPagingById(int START, int END, String SENDID) throws Exception {
+	public List<Message> sendMessageListPagingById(int START, int END, String SENDID) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("START", START);
@@ -33,12 +33,12 @@ public class MessageServiceImpl implements MessageService{
 	}
 
 	@Override
-	public List<Map<String, Object>> getMessageListPagingById(int START, int END, String GETID) throws Exception {
+	public List<Message> getMessageListPagingById(int START, int END, String GETID) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("START", START);
 		map.put("END", END);
-		map.put("SENDID", GETID);
+		map.put("GETID", GETID);
 		
 		return messageDAO.getMessageListPagingById(map);
 	}

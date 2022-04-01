@@ -6,11 +6,11 @@ import java.util.Map;
 import sc.model.Message;
 
 public interface MessageService {
-	public List<Map<String, Object>> sendMessageListPagingById(int START, int END, String SENDID) throws Exception;
+	public List<Message> sendMessageListPagingById(int START, int END, String SENDID) throws Exception;
 	
 	public int countSendMessageList(String SENDID) throws Exception;
 	
-	public List<Map<String, Object>> getMessageListPagingById(int START, int END, String GETID) throws Exception;
+	public List<Message> getMessageListPagingById(int START, int END, String GETID) throws Exception;
 	
 	public int countGetMessageList(String GETID) throws Exception;
 	
