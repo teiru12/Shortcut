@@ -2,15 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>숏컷</title>
 <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="assets/js/detail.js"></script>
 <script type="text/javascript">
-	
 </script>
 </head>
 <body>
@@ -26,16 +25,72 @@
 					<span class="text-subtitle text-muted">${freeDetail.ID} &nbsp; 
 								<fmt:formatDate pattern="yyyy-MM-dd" value="${freeDetail.FREEDATE}"/> &nbsp;
 								조회수 ${freeDetail.READCOUNT} &emsp;
-						<a href="#">
-							<svg class="bi" width="1em" height="1em" fill="currentColor">
-	                        	<use xlink:href="assets/vendors/bootstrap-icons/bootstrap-icons.svg#hand-thumbs-up" />
-	                    	</svg>
-	                    </a>${freeDetail.GOOD} &nbsp;
-						<a href="#">
-						    <svg class="bi" width="1em" height="1em" fill="currentColor">
-						        <use xlink:href="assets/vendors/bootstrap-icons/bootstrap-icons.svg#hand-thumbs-down" />
-						    </svg>
-						</a>${freeDetail.BAD} &nbsp;
+								
+						
+						<!-- 좋아요 -->		
+						<span id="goodSpan">
+							<!-- 좋아요를 이미 했을 경우 -->
+							<c:if test="${goodUsed == 'Y'}">
+								<a href="#">
+									<svg class="bi" width="1em" height="1em" fill="currentColor">
+			                        	<use xlink:href="assets/vendors/bootstrap-icons/bootstrap-icons.svg#hand-thumbs-up-fill" />
+			                    	</svg>
+			                    </a>							
+							</c:if>
+							<!-- 좋아요를 하지 않았을 경우 -->
+							<c:if test="${goodUsed != 'Y'}">
+								<!-- 로그인했을 경우 좋아요 버튼 활성화 -->
+								<% if(request.getSession().getAttribute("id") != null) { %>
+								<a id="goodButton" href="javascript:addGood('<%= request.getSession().getAttribute("id") %>',
+									'FRE', ${freeDetail.FREEIDX}, ${freeDetail.GOOD})">
+									<svg class="bi" width="1em" height="1em" fill="currentColor">
+			                        	<use xlink:href="assets/vendors/bootstrap-icons/bootstrap-icons.svg#hand-thumbs-up" />
+			                    	</svg>
+			                    </a>
+								<% } else { %>
+			                    <!-- 로그인하지 않았을 경우 좋아요 버튼 비활성화 -->
+								<a href="#">
+									<svg class="bi" width="1em" height="1em" fill="currentColor">
+			                        	<use xlink:href="assets/vendors/bootstrap-icons/bootstrap-icons.svg#hand-thumbs-up" />
+			                    	</svg>
+			                    </a>
+								<% } %>
+							</c:if>
+						</span> <!-- end goodSpan -->
+	                    <span id="goodValue">${freeDetail.GOOD}</span>&nbsp;
+	                    
+	                    <!-- 싫어요 -->
+	                    <span id="badSpan">
+							<!-- 싫어요를 이미 했을 경우 -->
+							<c:if test="${badUsed == 'Y'}">
+								<a href="#">
+									<svg class="bi" width="1em" height="1em" fill="currentColor">
+			                        	<use xlink:href="assets/vendors/bootstrap-icons/bootstrap-icons.svg#hand-thumbs-down-fill" />
+			                    	</svg>
+			                    </a>							
+							</c:if>
+							<!-- 싫어요를 하지 않았을 경우 -->
+							<c:if test="${badUsed != 'Y'}">
+								<!-- 로그인했을 경우 싫어요 버튼 활성화 -->
+								<% if(request.getSession().getAttribute("id") != null) { %>
+								<a id="badButton" href="javascript:addBad('<%= request.getSession().getAttribute("id") %>',
+								'FRE', ${freeDetail.FREEIDX}, ${freeDetail.BAD})">
+									<svg class="bi" width="1em" height="1em" fill="currentColor">
+			                        	<use xlink:href="assets/vendors/bootstrap-icons/bootstrap-icons.svg#hand-thumbs-down" />
+			                    	</svg>
+			                    </a>
+								<% } else { %>
+			                    <!-- 로그인하지 않았을 경우 싫어요 버튼 비활성화 -->
+								<a href="#">
+									<svg class="bi" width="1em" height="1em" fill="currentColor">
+			                        	<use xlink:href="assets/vendors/bootstrap-icons/bootstrap-icons.svg#hand-thumbs-down" />
+			                    	</svg>
+			                    </a>
+								<% } %>
+							</c:if>
+						</span> <!-- end goodSpan -->
+						<span id="badValue">${freeDetail.BAD}</span>&nbsp;
+						
 						<a href="#">
                             <svg class="bi" width="1em" height="1em" fill="currentColor">
                                 <use xlink:href="assets/vendors/bootstrap-icons/bootstrap-icons.svg#star" />
