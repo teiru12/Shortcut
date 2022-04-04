@@ -237,4 +237,36 @@ public class BookmarkController {
 		
 		return msg;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/bookmarkDetailDelete.cut")
+	public Map<String, String> bookmarkDetailDelete(String ID, String TYPE, int IDX) throws Exception {
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		Bookmark bk = bookmarkService.selectBookmark(ID, TYPE, IDX);
+		
+		if(bk == null) { // 검색된 즐겨찾기가 없으므로 삭제 불가
+			msg.put("message", "즐겨찾기를 삭제할 수 없습니다.");
+		} else {
+			bookmarkService.deleteBookmarkById(bk.getBOOKMARKIDX());
+			msg.put("message", "즐겨찾기를 삭제하였습니다.");
+		}
+		
+		return msg;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/bookmark.cut")
+	public Map<String, String> bookmark(String ID, String TYPE, int IDX) throws Exception {
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		Bookmark bk = new Bookmark();
+		bk.setID(ID);
+		bk.setTYPE(TYPE);
+		bk.setIDX(IDX);
+		
+		bookmarkService.insertBookmarkById(bk);
+		
+		return msg;		
+	}	
 }

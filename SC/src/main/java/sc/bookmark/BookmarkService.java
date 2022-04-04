@@ -23,4 +23,7 @@ public interface BookmarkService {
 	
 	/* 회원의 즐겨찾기 삭제 */
 	public void deleteBookmarkById(int BOOKMARKIDX) throws Exception;
+	
+	/* 즐겨찾기 정보 검색 by ID, TYPE, IDX */
+	public Bookmark selectBookmark(String ID, String TYPE, int IDX) throws Exception;
 }

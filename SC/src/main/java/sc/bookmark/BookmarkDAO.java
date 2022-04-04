@@ -44,4 +44,9 @@ public class BookmarkDAO {
 	public void deleteBookmarkById(int BOOKMARKIDX) throws Exception {
 		sqlSessionTemplate.delete("bookmark.deleteBookmarkById", BOOKMARKIDX);
 	}
+	
+	/* 즐겨찾기 정보 검색 by ID, TYPE, IDX */
+	public Bookmark selectBookmark(Map<String, Object> map) throws Exception {
+		return sqlSessionTemplate.selectOne("bookmark.selectBookmark", map);
+	}
 }

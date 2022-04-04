@@ -91,11 +91,33 @@
 						</span> <!-- end goodSpan -->
 						<span id="badValue">${freeDetail.BAD}</span>&nbsp;
 						
-						<a href="#">
-                            <svg class="bi" width="1em" height="1em" fill="currentColor">
-                                <use xlink:href="assets/vendors/bootstrap-icons/bootstrap-icons.svg#star" />
-                            </svg>
-						</a>&emsp;
+						<!-- 즐겨찾기 -->
+						<!-- 로그인하지 않았을 경우 보여주지 않음 -->
+						<% if(request.getSession().getAttribute("id") != null) { %>
+							<span id="bookSpan">
+							<!-- 즐겨찾기를 했을 경우 꽉찬 별표 -->
+							<c:if test="${! empty bookmark}">
+								<a id="bookStar" href="javascript:updateBookmark('<%= request.getSession().getAttribute("id") %>',
+								'FRE', ${freeDetail.FREEIDX}, 'DEL')">
+		                            <svg class="bi" width="1em" height="1em" fill="currentColor">
+		                                <use xlink:href="assets/vendors/bootstrap-icons/bootstrap-icons.svg#star-fill" />
+		                            </svg>
+								</a>
+							</c:if>
+							<!-- 즐겨찾기를 하지 않았을 경우 빈 별표 -->
+							<c:if test="${empty bookmark}">
+								<a id="bookStar" href="javascript:updateBookmark('<%= request.getSession().getAttribute("id") %>',
+								'FRE', ${freeDetail.FREEIDX}, 'ADD')">
+		                            <svg class="bi" width="1em" height="1em" fill="currentColor">
+		                                <use xlink:href="assets/vendors/bootstrap-icons/bootstrap-icons.svg#star" />
+		                            </svg>
+								</a>
+							</c:if>
+							</span>
+						<% } %>
+						&emsp;
+						
+						<!-- 신고 -->
 						<a href="#"><span style="color:#C00000">신고</span></a>
 					</span><hr>
 					<p>${freeDetail.CONTENT}</p>

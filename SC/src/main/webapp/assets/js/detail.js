@@ -1,5 +1,5 @@
+/* 좋아요 증가 */
 function addGood(userName, boardType, boardIdx, count) {
-	
 	/* 해당 게시판의 게시글에 대한 user의 좋아요나 싫어요가 있는지 Goodbad 테이블에서검색 */
 	$.ajax({
 		url 		: "/SC/selectGoodbad.cut",
@@ -65,8 +65,8 @@ function addGood(userName, boardType, boardIdx, count) {
 	});
 }
 
+/* 싫어요 증가 */
 function addBad(userName, boardType, boardIdx, count) {
-	
 	/* 해당 게시판의 게시글에 대한 user의 좋아요나 싫어요가 있는지 Goodbad 테이블에서검색 */
 	$.ajax({
 		url 		: "/SC/selectGoodbad.cut",
@@ -130,4 +130,40 @@ function addBad(userName, boardType, boardIdx, count) {
 			}
 		}				
 	});
+}
+
+/* 즐겨찾기 추가/삭제 */
+function updateBookmark(userName,boardType, boardIdx, process) {
+
+	// process 값에 따라 즐겨찾기 추가 또는 삭제
+	// process : 'ADD' 추가, process : 'DEL' 삭제 
+	/* 즐겨찾기 추가 */
+	let bookUrl ="";
+	if(process == 'ADD'){
+		bookUrl = "/SC/bookmark.cut";
+	} else if(process == 'DEL') {
+		bookUrl = "/SC/bookmarkDetailDelete.cut";
+	}
+	$.ajax({
+		url 		: bookUrl,
+		data		: {"ID" : userName, "TYPE" : boardType, "IDX" : boardIdx},
+		contentType	: "application/json",
+		success		: function(data) {
+		
+			// 게시글 상세보기 페이지에서 즐겨찾기 모양 변화 
+			let newStar = "";
+			if(process == 'ADD'){
+				newStar += "<a id='bookStar' href=\"javascript:updateBookmark('" + userName + "','FRE'," + boardIdx + ",'DEL')\">";  
+				newStar += "<svg class='bi' width='1em' height='1em' fill='currentColor'>";
+				newStar += "<use xlink:href='assets/vendors/bootstrap-icons/bootstrap-icons.svg#star-fill' /></svg></a>"; 				
+			} else if(process == 'DEL') {
+				newStar += "<a id='bookStar' href=\"javascript:updateBookmark('" + userName +"','FRE'," + boardIdx + ",'ADD')\">";  
+				newStar += "<svg class='bi' width='1em' height='1em' fill='currentColor'>";
+				newStar += "<use xlink:href='assets/vendors/bootstrap-icons/bootstrap-icons.svg#star' /></svg></a>"; 	
+			}
+													
+			$('#bookStar').remove();
+			$('#bookSpan').append(newStar);							
+		}				
+	});	
 }
