@@ -13,7 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import sc.bookmark.BookmarkService;
 import sc.goodbad.GoodbadService;
+import sc.model.Bookmark;
 import sc.model.Free;
 import sc.model.FreeCom;
 import sc.model.Goodbad;
@@ -32,6 +34,9 @@ public class FreeController {
 	
 	@Resource(name = "goodbadService")
 	private GoodbadService goodbadService;
+	
+	@Resource(name = "bookmarkService")
+	private BookmarkService bookmarkService;
 	
 	@RequestMapping(value = "/freeList.cut")
 	public String freeList(HttpServletRequest request, Model model) throws Exception {
@@ -88,7 +93,7 @@ public class FreeController {
 		model.addAttribute("freeList", freeList);
 		model.addAttribute("noticeTopList", noticeTopList);
 		
-	return "freeList";
+		return "freeList";
 	}	
 	
 	@RequestMapping(value = "freeDetail.cut")
@@ -99,11 +104,14 @@ public class FreeController {
 		/* 게시글 상세 정보 읽어옴 */
 		Free freeDetail = freeService.selectFreeIDX(FREEIDX);
 		
+		/* 좋아요 싫어요를 했는지, 즐겨찾기를 했는지 여부 검사 */
 		Goodbad gb = new Goodbad();
-		/* 좋아요 싫어요를 했는지 여부 검사 */
+		Bookmark bk = new Bookmark();
 		if(id != null) {
 			gb = goodbadService.selectGoodbad(id, "FRE", FREEIDX);
-		}
+			bk = bookmarkService.selectBookmark(id, "FRE", FREEIDX);
+		}		
+		
 		
 		/* 페이징 변수 설정 */
 		int pageSize = 5; // 페이지당 출력할 포인트 정보의 수
@@ -139,9 +147,14 @@ public class FreeController {
 		model.addAttribute("freeComList", freeComList);
 
 		model.addAttribute("freeDetail", freeDetail);
+		/* 좋아요/싫어요가 있을 경우 모델에 삽입 */
 		if(id != null && gb != null) {
 			model.addAttribute("goodUsed", gb.getGOOD());
 			model.addAttribute("badUsed", gb.getBAD());
+		}
+		/* 즐겨찾기가 있을 경우 모델에 삽입 */
+		if(id !=null && bk != null) {
+			model.addAttribute("bookmark", bk);
 		}
 		
 		return "freeDetail";

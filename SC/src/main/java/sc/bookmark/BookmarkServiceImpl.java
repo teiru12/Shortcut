@@ -63,4 +63,16 @@ public class BookmarkServiceImpl implements BookmarkService {
 	public void deleteBookmarkById(int BOOKMARKIDX) throws Exception {
 		bookmarkDAO.deleteBookmarkById(BOOKMARKIDX);
 	}
+
+	/* 즐겨찾기 정보 검색 by ID, TYPE, IDX */
+	@Override
+	public Bookmark selectBookmark(String ID, String TYPE, int IDX) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("ID", ID);
+		map.put("TYPE", TYPE);
+		map.put("IDX", IDX);
+		
+		return bookmarkDAO.selectBookmark(map);
+	}	
 }

@@ -97,4 +97,22 @@
 			BOOKMARKIDX = #{BOOKMARKIDX}
 	]]>
 	</delete>
+	
+	<!-- 즐겨찾기 정보 검색 by ID, TYPE, IDX -->
+	<select id="selectBookmark" parameterType="hashmap" resultType="sc.model.Bookmark">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			BOOKMARK
+		WHERE
+			ID = #{ID}
+			AND
+			TYPE = #{TYPE}
+			AND
+			IDX = #{IDX}
+	]]>
+	</select>
+	
+	
 </mapper>
