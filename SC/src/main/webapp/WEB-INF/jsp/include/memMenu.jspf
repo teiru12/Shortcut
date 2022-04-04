@@ -78,8 +78,30 @@ function sendMessage() {
 function chat() {
 	
 }
-function addFollow() {
-	
+function addFollow(FOLLOWID) {
+	$.ajax({
+		url 		: "/SC/addFollow.cut",
+		data		: {"FOLLOWID" : FOLLOWID},
+		contentType	: "application/json",
+		success		: function(data) {
+			
+			let newButton = "<button class='btn btn-block btn-xl btn-success font-bold mt-3'>팔로우 중</button>";
+			$("#followButton").remove();
+			$("#followButtonDiv").append(newButton);
+			
+			swal({
+				title				: data.message,
+				closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+				buttons				: {
+					confirm : {
+						text 		: '확인',
+						value 		: true,
+						className 	: 'btn btn-primary' 
+					}
+				}
+			});
+		}				
+	});	
 }
 </script>
 

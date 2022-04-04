@@ -32,7 +32,7 @@ public class GoodbadServiceImpl implements GoodbadService{
 
 	//좋아요 선택
 	@Override
-	public Goodbad selectGoodbad(int TYPE, int IDX, String ID) throws Exception {
+	public Goodbad selectGoodbad(String ID, String TYPE, int IDX) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("TYPE", TYPE);
@@ -61,7 +61,5 @@ public class GoodbadServiceImpl implements GoodbadService{
 	public List<Map<String, Object>> selectGoodShortByDate(Map<String, Object> map) throws Exception {
 		
 		return goodbadDAO.selectGoodShortByDate(map);
-	}
-	
-	
+	}	
 }
