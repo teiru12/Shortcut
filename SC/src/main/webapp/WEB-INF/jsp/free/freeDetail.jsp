@@ -9,8 +9,6 @@
 <title>숏컷</title>
 <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="assets/js/detail.js"></script>
-<script type="text/javascript">
-</script>
 </head>
 <body>
 <div id="main">
@@ -121,27 +119,21 @@
 						<a href="#"><span style="color:#C00000">신고</span></a>
 					</span><hr>
 					<p>${freeDetail.CONTENT}</p>
-					<c:if test="${id == null}">
 					<div style="text-align:right;">
 						<a href="/SC/freeList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
-						<a href="/SC/freeModifyForm.cut" class="btn btn-sm btn-outline-secondary">수정하기</a>
-						<a href="/SC/freeDelete.cut" class="btn btn-sm btn-outline-secondary">삭제하기</a>
+
+						<c:if test="${id == null}">
+							<input type="password" id="detailPassword" name="detailPassword" placeholder="비밀번호를 입력해주세요">
+							<a href="javascript:modifyDetailCheck('nonMember', 'NO', 'FRE', ${freeDetail.FREEIDX})" class="btn btn-sm btn-outline-secondary">수정하기</a>
+							<a href="javascript:deleteDetailCheck('nonMember', 'NO', 'FRE', ${freeDetail.FREEIDX})" class="btn btn-sm btn-outline-secondary">삭제하기</a>
+						</c:if>
+						<c:if test="${id != null}">
+							<c:if test="${id == freeDetail.ID}">
+								<a href="javascript:modifyDetailCheck('member', '${id}', 'FRE', ${freeDetail.FREEIDX})" class="btn btn-sm btn-outline-secondary">수정하기</a>
+								<a href="javascript:deleteDetailCheck('member', '${id}', 'FRE', ${freeDetail.FREEIDX})" class="btn btn-sm btn-outline-secondary">삭제하기</a>
+							</c:if>
+						</c:if>
 					</div>
-					</c:if>
-					<c:if test="${id != null}">
-						<c:if test="${id == freeDetail.ID}">
-						<div style="text-align:right;">
-							<a href="/SC/freeList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
-							<a href="/SC/freeModifyForm.cut" class="btn btn-sm btn-outline-secondary">수정하기</a>
-							<a href="/SC/freeDelete.cut" class="btn btn-sm btn-outline-secondary">삭제하기</a>
-						</div>
-						</c:if>
-						<c:if test="${id != freeDetail.ID}">
-						<div style="text-align:right;">
-							<a href="/SC/freeList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
-						</div>
-						</c:if>
-					</c:if>
 				</div>
 			</div>
 		</div>

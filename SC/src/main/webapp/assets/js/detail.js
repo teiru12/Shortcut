@@ -167,3 +167,15 @@ function updateBookmark(userName,boardType, boardIdx, process) {
 		}				
 	});	
 }
+
+/* 게시글 수정 체크 */
+// 비회원인지 회원인지에 따라서 수정폼으로 보내준다
+function modifyDetailCheck(memberCheck, ID, TYPE, IDX) {
+	
+}
+
+/* 게시글 삭제 체크 */
+// 비회원인지 회원인지에 따라서 삭제폼으로 보내준다
+function deleteDetailCheck(memberCheck, ID, TYPE, IDX) {
+	
+}
