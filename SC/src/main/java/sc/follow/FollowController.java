@@ -30,7 +30,7 @@ public class FollowController {
 		String id = (String) request.getSession().getAttribute("id");
 		
 		/* 페이징 변수 설정 */
-		int pageSize = 2; // 페이지당 출력할 포인트 정보의 수
+		int pageSize = 10; // 페이지당 출력할 포인트 정보의 수
 		int START = 1;
 		int END = pageSize;
 		int currentPage = 1; // 현재 페이지
@@ -79,7 +79,7 @@ public class FollowController {
 		String id = (String) request.getSession().getAttribute("id");
 		
 		/* 페이징 변수 설정 */
-		int pageSize = 2; // 페이지당 출력할 포인트 정보의 수
+		int pageSize = 10; // 페이지당 출력할 포인트 정보의 수
 		// int currentPage // currentPage는 파라미터로 전달받음
 		int START = 1 + pageSize * (currentPage - 1);
 		int END = pageSize * currentPage;
@@ -103,7 +103,6 @@ public class FollowController {
 		
 		/* StringBuffer에 새로 생성할 팔로우 테이블 생성 */
 		StringBuffer sb = new StringBuffer();
-
 		sb.append("<tbody id=\"followBody\">");
 		for(int i=0;i<followList.size();i++) {
 			sb.append("<tr>");
@@ -114,18 +113,23 @@ public class FollowController {
 			sb.append(")\">삭제</button></td></tr>");
 		}		
 		sb.append("<tbody>");
-		
 		String newFollow = sb.toString();
 		
 		StringBuffer pb = new StringBuffer();
-		
 		pb.append("<span id=\"pageBody\">");
 		pb.append(paging.getPageHtml().toString());
 		pb.append("</span>");
 		String newPage = pb.toString();
+
+		StringBuffer cb = new StringBuffer();
+		cb.append("<td colspan=\"2\" style=\"text-align:right\" id=\"countBody\">");
+		cb.append("<span>팔로우 : " + countFollowAll+ "명</span>");
+		cb.append("</td>");
+		String newCount = cb.toString(); 
 		
 		msg.put("newFollow", newFollow);
 		msg.put("newPage", newPage);
+		msg.put("newCount", newCount);
 		
 		msg.put("message", FOLLOWID + "회원을 팔로우 삭제하였습니다.");
 		
