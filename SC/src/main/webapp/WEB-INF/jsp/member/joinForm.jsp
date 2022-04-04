@@ -120,12 +120,12 @@
                                                             </div>
                                                         </div>
                                                     </div> -->
-                                                    <div class="g-recaptcha" data-sitekey="6Ldp5h4fAAAAANhHE8kOrxz-elPrw9FeYxSx-SHK"></div>
+                                                    <div class="g-recaptcha" data-sitekey="6Ldp5h4fAAAAANhHE8kOrxz-elPrw9FeYxSx-SHK" data-callback="recaptchacallback"></div>
                                                     <br/><br/>
                                                     <br/><br/>
                                                     <div class="col-sm-9 col-md-7 col-lg-5 mx-auto d-flex justify-content-end">
                                                         <button type="submit" class="btn btn-primary me-1 mb-1" id="join">회원가입</button>
-                                                        <button type="button" class="btn btn-light-secondary me-1 mb-1">취소</button>
+                                                        <a class="btn btn-light-secondary me-1 mb-1" href="/SC/main.cut">취소</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -147,6 +147,7 @@
     
     $(document).ready(function(){
 	    $("#join").on("click", function(e){ //회원가입버튼 버튼
+	    	e.preventDefault();
 	    	let id = $("#ID").val();
 	    	let password = $("#PASSWORD").val();
 	    	let password2 = $("#PASSWORD2").val();
@@ -156,37 +157,125 @@
 	    	let regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;//이메일 체크 정규식
 
 	    	
-	    	if(id == null || id == ""){
-	    		alert("id 확인");
-	    		$("#ID").focus();
+	    	if(id == null || id == ""){	    		
+	    		swal({
+					title				: 'ID를 확인해주세요.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				}).then(function(){
+					$("#ID").focus();
+	    		});
 	    		return false;
 	    	}else if(password == null || password == ""){
-	    		alert("비밀번호 확인");
-	    		$("#PASSWORD").focus();
+	    		swal({
+					title				: '비밀번호를 확인해주세요.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				}).then(function(){
+					$("#PASSWORD").focus();
+	    		});
 	    		return false;
 	    	}else if(email == null || email == ""){
-	    		alert("email 확인");
-	    		$("#EMAIL").focus();
+	    		swal({
+					title				: '이메일을 확인해주세요.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				}).then(function(){
+					$("#EMAIL").focus();
+	    		});
 	    		return false;
 	    	}else if(email.match(regExp) == null){
-	    		alert("email 형식 확인");
-	    		$("#EMAIL").focus();
+	    		swal({
+					title				: '이메일형식이 옳바르지 않습니다.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				}).then(function(){
+					$("#EMAIL").focus();
+	    		});
 	    		return false;
 	    	}else if(name == null || name == ""){
-	    		alert("이름 확인");
-	    		$("#NAME").focus();
+	    		swal({
+					title				: '이름을 확인해주세요.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				}).then(function(){
+					$("#NAME").focus();
+	    		});
 	    		return false;
 	    	}else if(nickname == null || nickname == ""){
-	    		alert("닉네임 확인");
-	    		$("#NICKNAME").focus();
+	    		swal({
+					title				: '닉네임을 확인해주세요.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				}).then(function(){
+					$("#NICKNAME").focus();
+	    		});
 	    		return false;
 	    	}else if(!checkId){
-	    		alert("아이디 중복 확인");
-	    		$("#ID").focus();
+	    		swal({
+					title				: 'ID 중복을 확인해주세요.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				}).then(function(){
+					$("#ID").focus();
+	    		});
 	    		return false;
 	    	}else if(!checkPw){
-	    		alert("비밀번호 사용가능 확인");
-	    		$("#PASSWORD").focus();
+	    		swal({
+					title				: '사용가능한 비밀번호인지 확인해주세요.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				}).then(function(){
+					$("#PASSWORD").focus();
+	    		});
 	    		return false;
 	    	}else{
 				$.ajax({
@@ -200,7 +289,6 @@
 			      	},
 			      	contentType : "application/json; charset=UTF-8",
 			      	success : function(result){
-			      		alert(result);
 			      		location.href="testemail.cut";
 			      		location.href="loginForm.cut";
 			      	},
@@ -251,6 +339,10 @@
 	      		}
 	      	}
 		})
+    }
+    
+    function recaptchacallback(){
+    	alert("오나");
     }
     </script>
 </body>
