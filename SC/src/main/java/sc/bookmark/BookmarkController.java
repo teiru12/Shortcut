@@ -81,6 +81,7 @@ public class BookmarkController {
 		return "bookmarkList";
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/bookmarkshortDelete.cut")
 	@ResponseBody
 	public Map<String, String> bookmarkshortDelete(HttpServletRequest request, int BOOKMARKIDX, String ID, int currentPage) throws Exception {
@@ -159,6 +160,7 @@ public class BookmarkController {
 		return msg;
 	}
 	
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value="/bookmarkboardDelete.cut")
 	@ResponseBody
 	public Map<String, String> bookmarkboardDelete(HttpServletRequest request, int BOOKMARKIDX, String ID, int currentPage) throws Exception {
@@ -179,8 +181,8 @@ public class BookmarkController {
 		
 		int bookmarkboardListCount; // 전체 팔로우의 수
 		int pageBlock = 5; // 표시할 페이지의 수
-		String url = "bookmarkList.cut?STYPE=B";
-		String searchUrl = "";
+		String url = "bookmarkList.cut";
+		String searchUrl = "&STYPE=B";
 		/* 페이징을 위한 값 계산 */
 		bookmarkboardListCount = bookmarkService.countBookmarkBoard(ID);
 		
@@ -214,7 +216,7 @@ public class BookmarkController {
 			}			
 			sb.append("<td width=\"15%\">");
 			sb.append("<button class=\"btn btn-sm btn-light\" onClick=\"bookmarkboardDelete(");
-			sb.append(((Map<String, Object>)bookmarkboardList.get(i)).get("BOOKMARKIDX") + ",'" + ((Map<String, Object>)bookmarkboardList.get(i)).get("ID") + "'," + currentPage);
+			sb.append(((Map<String, Object>)bookmarkboardList.get(i)).get("BOOKMARKIDX") + ",'" + ((Map<String, Object>)bookmarkboardList.get(i)).get("BID") + "'," + currentPage);
 			sb.append(")\">삭제</button></td></tr>");
 		}		
 		sb.append("</tbody>");
@@ -235,5 +237,4 @@ public class BookmarkController {
 		
 		return msg;
 	}
-	
 }
