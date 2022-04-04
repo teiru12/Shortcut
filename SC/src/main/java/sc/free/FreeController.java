@@ -1,7 +1,9 @@
 package sc.free;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import sc.goodbad.GoodbadService;
 import sc.model.Free;
 import sc.model.FreeCom;
+import sc.model.Goodbad;
 import sc.model.Notice;
 import sc.notice.NoticeService;
 import sc.util.Paging;
@@ -25,6 +30,8 @@ public class FreeController {
 	@Resource(name = "noticeService")
 	private NoticeService noticeService;
 	
+	@Resource(name = "goodbadService")
+	private GoodbadService goodbadService;
 	
 	@RequestMapping(value = "/freeList.cut")
 	public String freeList(HttpServletRequest request, Model model) throws Exception {
@@ -34,7 +41,6 @@ public class FreeController {
 		int START = 1;
 		int END = pageSize;
 		int currentPage = 1;
-		
 		
 		int freeCount;
 		int pageBlock = 10;
@@ -82,21 +88,22 @@ public class FreeController {
 		model.addAttribute("freeList", freeList);
 		model.addAttribute("noticeTopList", noticeTopList);
 		
-		
 	return "freeList";
-	}
-	
+	}	
 	
 	@RequestMapping(value = "freeDetail.cut")
 	public String freeDetail(int FREEIDX, Free free, FreeCom freeCom, Model model, HttpServletRequest request) throws Exception {
 		
 		String id = (String) request.getSession().getAttribute("id");
 		
-		
+		/* 게시글 상세 정보 읽어옴 */
 		Free freeDetail = freeService.selectFreeIDX(FREEIDX);
 		
-		model.addAttribute("freeDetail", freeDetail);
-		
+		Goodbad gb = new Goodbad();
+		/* 좋아요 싫어요를 했는지 여부 검사 */
+		if(id != null) {
+			gb = goodbadService.selectGoodbad(id, "FRE", FREEIDX);
+		}
 		
 		/* 페이징 변수 설정 */
 		int pageSize = 5; // 페이지당 출력할 포인트 정보의 수
@@ -131,7 +138,34 @@ public class FreeController {
 		model.addAttribute("paging", paging);		
 		model.addAttribute("freeComList", freeComList);
 
+		model.addAttribute("freeDetail", freeDetail);
+		if(id != null && gb != null) {
+			model.addAttribute("goodUsed", gb.getGOOD());
+			model.addAttribute("badUsed", gb.getBAD());
+		}
 		
 		return "freeDetail";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/freeGood.cut")
+	public Map<String, String> freeGood(int IDX) throws Exception {
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		// 자유게시판의 IDX의 게시글의 좋아요 1 증가
+		freeService.updateFreeGood(IDX);
+		
+		return msg;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/freeBad.cut")
+	public Map<String, String> freeBad(int IDX) throws Exception {
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		// 자유게시판의 IDX의 게시글의 싫어요 1 증가
+		freeService.updateFreeBad(IDX);
+		
+		return msg;
 	}
 }
