@@ -57,6 +57,7 @@ public class FollowController {
 		List<Follow> followList = followService.followListPaging(id, START, END);
 		
 		model.addAttribute("followList", followList);
+		model.addAttribute("followCount", countFollowAll);
 		
 		/* 페이징을 위한 값 삽입 */
 		model.addAttribute("currentPage", currentPage);
@@ -135,4 +136,45 @@ public class FollowController {
 		
 		return msg;
 	}	
+	
+	@ResponseBody
+	@RequestMapping("/isFollow.cut")
+	public boolean isFollow(HttpServletRequest request, String FOLLOWID) throws Exception {
+		
+		/* 세션으로부터 로그인 id를 읽어옴 */
+		String id = (String) request.getSession().getAttribute("id");
+		
+		/* 이미 팔로우한 ID인지 검사 */
+		// 팔로우 했을 경우 true, 아닐 경우 false
+		if(followService.findFollowId(id, FOLLOWID) != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping("/addFollow.cut")
+	public Map<String, String> addFollow(HttpServletRequest request, String FOLLOWID) throws Exception {
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		/* 세션으로부터 로그인 id를 읽어옴 */
+		String id = (String) request.getSession().getAttribute("id");
+		
+		/* 이미 팔로우한 ID인지 검사 */
+		if(followService.findFollowId(id, FOLLOWID) != null) {
+			/* 팔로우했을 경우 팔로우하지 않음, 오류 메세지 전달*/	
+			msg.put("message", "이미 팔로우한 아이디입니다.");
+		} else {
+			/* 팔로우하지 않았을 경우 팔로우 */
+			Follow fol = new Follow();
+			fol.setID(id);
+			fol.setFOLLOWID(FOLLOWID);
+			
+			followService.insertFollow(fol);
+			
+			msg.put("message", FOLLOWID + "님을 팔로우하였습니다.");
+		}
+		return msg;
+	}
 }
