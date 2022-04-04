@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import sc.follow.FollowService;
 import sc.mail.MailService;
 import sc.model.Member;
 import sc.util.CalculateExp;
@@ -26,6 +27,9 @@ public class MemberController {
 	
 	@Resource(name="mailService")
 	private MailService mailService;
+	
+	@Resource(name="followService")
+	private FollowService followService;
 	
 	@RequestMapping(value = "/loginForm.cut")
 	public String loginForm(Model model) throws Exception {
@@ -267,14 +271,25 @@ public class MemberController {
 	
 	@RequestMapping("/writerDetail.cut")
 	public String writerDetail(HttpServletRequest request, Model model, String ID) throws Exception {
-		Member member = memberService.selectMemberId(ID);
 		
+		/* 세션으로부터 로그인 id를 읽어와 해당 id의 회원정보를 읽어옴 */
+		String id = (String) request.getSession().getAttribute("id");
+		
+		Member member = memberService.selectMemberId(ID);
 		/* 회원의 레벨 계산 */
 		CalculateExp cal = new CalculateExp(member.getEXP());
 		int level = cal.getLevel();
 		
+		/* 팔로우 여부 */
+		boolean isFollow = false;
+		if(followService.findFollowId(id, ID) != null) {
+			isFollow = true;
+		}
+				
 		model.addAttribute("member", member);
 		model.addAttribute("level", level);
+		model.addAttribute("isFollow", isFollow);
+		
 		return "/member/writerDetail";
 	}
 }

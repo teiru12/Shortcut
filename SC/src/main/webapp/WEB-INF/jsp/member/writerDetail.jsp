@@ -69,7 +69,12 @@
 						<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' onClick="chat()">채팅하기</button>
 					</div>
 					<div class="px-4">
-						<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' onClick="follow()">팔로우하기</button>
+						<c:if test="${isFollow != true}">
+							<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' onClick="addFollow()">팔로우하기</button>
+						</c:if>
+						<c:if test="${isFollow == true}">
+							<button class='btn btn-block btn-xl btn-success font-bold mt-3'>팔로우 중</button>
+						</c:if>
 					</div>
 
 				</div>
