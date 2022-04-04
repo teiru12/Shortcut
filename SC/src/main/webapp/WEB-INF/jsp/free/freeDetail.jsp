@@ -123,7 +123,7 @@
                             <div class="input-group mb-3">
                                 <textarea class="form-control" id="reply" placeholder="댓글을 입력해주세요"></textarea>
                                 <button class="btn btn-outline-secondary" type="button"
-                                    id="button-addon2">Button</button>
+                                    id="button-addon2">댓글입력</button>
                             </div>
                         </div>
 					</div>
