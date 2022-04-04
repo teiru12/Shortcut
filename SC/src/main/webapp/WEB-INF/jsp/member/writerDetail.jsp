@@ -70,7 +70,8 @@
 					</div>
 					<div class="px-4">
 						<c:if test="${isFollow != true}">
-							<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' onClick="addFollow()">팔로우하기</button>
+							<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' id="followButton" 
+								onClick="addFollow('${member.ID}')">팔로우하기</button>
 						</c:if>
 						<c:if test="${isFollow == true}">
 							<button class='btn btn-block btn-xl btn-success font-bold mt-3'>팔로우 중</button>

@@ -14,7 +14,7 @@ public interface GoodbadService {
 	public void insertBad(Goodbad goodbad) throws Exception;
 	
 	//좋아요 선택
-	public Goodbad selectGoodbad(int TYPE, int IDX, String ID) throws Exception;
+	public Goodbad selectGoodbad(String ID, String TYPE, int IDX) throws Exception;
 	
 	//좋아요 검색 자유게시판
 	public List<Map<String, Object>> selectGoodFreeByDate(Map<String, Object> map) throws Exception;

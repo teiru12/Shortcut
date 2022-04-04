@@ -75,6 +75,7 @@ function checkIdAndSendMsg() {
 <script>
 $(document).ready(function(){
 	$('#sendMsg').hide();
+	$('#msgId').focus();
 	
 	const url = new URL(window.location.href);
 	const urlParams = url.searchParams;
@@ -98,6 +99,12 @@ $(document).ready(function(){
 		sendTab.css("background", "none");
 		sendTab.css("color", "#222");
 	}
+	
+	$('#msgId').keydown(function(event) {
+		if(event.keyCode == '13') {
+			checkIdAndSendMsg();	
+		}		
+	});
 });
 </script>
 </head>
@@ -212,22 +219,20 @@ $(document).ready(function(){
 											<span>${paging.pageHtml}</span>
 										</div>
 									</c:if>
-									<form action="messageList.cut">
-		                                <div class="col-md-6 mb-1" style="float:right;">
-		                                    <div class="input-group mb-3">
-		                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-		                                        <input type="text" name="msgId" id="msgId" class="form-control" placeholder="받을 사람">
-		                                        <button type="button" class="openModal btn btn-icon-default"
-		                                        	onClick="checkIdAndSendMsg()">
-													<b>쪽지 보내기</b>
-												</button>
-												<!-- 보이지 않는 모달 버튼 -->
-												<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
-												data-bs-target="#inlineForm" style="display:block;"
-												id ="sendMsg"></button>
-		                                    </div>
-		                                </div>
-                               		</form>
+	                                <div class="col-md-6 mb-1" style="float:right;">
+	                                    <div class="input-group mb-3">
+	                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+	                                        <input type="text" name="msgId" id="msgId" class="form-control" placeholder="받을 사람">
+	                                        <button type="button" class="openModal btn btn-icon-default"
+	                                        	onClick="checkIdAndSendMsg()">
+												<b>쪽지 보내기</b>
+											</button>
+											<!-- 보이지 않는 모달 버튼 -->
+											<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
+											data-bs-target="#inlineForm" style="display:block;"
+											id ="sendMsg"></button>
+	                                    </div>
+	                                </div>
                             	</div>
                         	</div>
                     	</div>
