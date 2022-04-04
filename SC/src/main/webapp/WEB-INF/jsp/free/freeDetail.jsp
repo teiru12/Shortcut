@@ -2,11 +2,16 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>숏컷</title>
+<script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+	
+</script>
 </head>
 <body>
 <div id="main">
@@ -39,11 +44,27 @@
 						<a href="#"><span style="color:#C00000">신고</span></a>
 					</span><hr>
 					<p>${freeDetail.CONTENT}</p>
+					<c:if test="${id == null}">
 					<div style="text-align:right;">
 						<a href="/SC/freeList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
 						<a href="/SC/freeModifyForm.cut" class="btn btn-sm btn-outline-secondary">수정하기</a>
 						<a href="/SC/freeDelete.cut" class="btn btn-sm btn-outline-secondary">삭제하기</a>
 					</div>
+					</c:if>
+					<c:if test="${id != null}">
+						<c:if test="${id == freeDetail.ID}">
+						<div style="text-align:right;">
+							<a href="/SC/freeList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
+							<a href="/SC/freeModifyForm.cut" class="btn btn-sm btn-outline-secondary">수정하기</a>
+							<a href="/SC/freeDelete.cut" class="btn btn-sm btn-outline-secondary">삭제하기</a>
+						</div>
+						</c:if>
+						<c:if test="${id != freeDetail.ID}">
+						<div style="text-align:right;">
+							<a href="/SC/freeList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
+						</div>
+						</c:if>
+					</c:if>
 				</div>
 			</div>
 		</div>
@@ -66,11 +87,27 @@
 								<c:forEach var="comment" items="${freeComList}" varStatus="status">
 									<tr>
 									    <td class="text-bold-500">
+									    	<c:if test="${id == null}">
 									    	<div style="text-align:right;">
 	                                          	<a href="#" style="font-size:small">답댓글</a>&nbsp; 
 									    		<a href="#" style="font-size:small">수정</a>&nbsp; 
 									    		<a href="#" style="font-size:small">삭제</a>
 									    	</div>
+									    	</c:if>
+									    	<c:if test="${id != null}">
+									    		<c:if test="${id == comment.ID}">
+									    			<div style="text-align:right;">
+			                                          	<a href="#" style="font-size:small">답댓글</a>&nbsp; 
+											    		<a href="#" style="font-size:small">수정</a>&nbsp; 
+											    		<a href="#" style="font-size:small">삭제</a>
+											    	</div>
+									    		</c:if>
+									    		<c:if test="${id != comment.ID}">
+									    			<div style="text-align:right;">
+									    				<a href="#" style="font-size:small">답댓글</a>
+									    			</div>
+									    		</c:if>
+									    	</c:if>
 									    	<div>
 										    	<span class="text-subtitle text-muted">${comment.ID}</span>
 										    	<p class="text-subtitle text-muted" style="font-size:x-small">${comment.FREECOMDATE}</p>
@@ -84,7 +121,7 @@
 						</table>
 						<div class="col-12 mx-auto">
                             <div class="input-group mb-3">
-                                <textarea class="form-control" placeholder="Leave a comment here"></textarea>
+                                <textarea class="form-control" id="reply" placeholder="댓글을 입력해주세요"></textarea>
                                 <button class="btn btn-outline-secondary" type="button"
                                     id="button-addon2">Button</button>
                             </div>
