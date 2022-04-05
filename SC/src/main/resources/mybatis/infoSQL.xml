@@ -54,10 +54,10 @@
 					</if>				
 				</trim>	
 				<if test="ORDER!=NULL and ORDER.equals('IDX')">
-						ORDER BY INFOIDX DESC
+					ORDER BY INFOIDX DESC
 				</if>
 				<if test="ORDER!=NULL and ORDER.equals('GOOD')">
-						ORDER BY GOOD DESC
+					ORDER BY GOOD DESC
 				</if>
 			)
 		)
@@ -71,12 +71,9 @@
 			COUNT(*)
 		FROM
 			INFO
-		<trim prefix="WHERE" prefixOverrides="OR">
-			<!-- 정보교류 검색 : 검색어 입력 -->
-			<if test="KEYWORD != NULL">
-				ID LIKE '%'||#{KEYWORD}||'%'
-			</if>				
-		</trim>
+		WHERE
+			<!-- 자유게시판 검색 : 검색어 입력 -->
+			TITLE LIKE '%'||#{KEYWORD}||'%'
 	</select>
 
 	<!-- 정보교류 게시판 입력 -->
