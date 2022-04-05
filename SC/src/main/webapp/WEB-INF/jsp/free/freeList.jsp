@@ -51,32 +51,51 @@
 	                               		</tr>
 		                        	</c:forEach>
 		                        	<c:forEach var="freeItem" items="${freeList}">
-	                        			<tr>
-	                               			<td class="list-group-horizontal-sm">${freeItem.FREEIDX }</td>
-	                               			<td class="list-group-horizontal-sm"><a href="freeDetail.cut?FREEIDX=${freeItem.FREEIDX}">${freeItem.TITLE }</a></td>
-	                               			<td class="list-group-horizontal-sm">
-												<button type="button" class="btn btn-icon-default"
-													data-bs-toggle="dropdown" aria-haspopup="false"
-													aria-expanded="false">
-													<b>${freeItem.ID}</b>
-												</button>
-												<div class="dropdown-menu">
-													<button class="btn btn-icon-default" onClick="writerDetail('${freeItem.ID}')">회원 정보</button><br>
-													<c:if test="${! empty sessionScope.id}">
-														<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
-														data-bs-target="#inlineForm"
-														data-s="<%= request.getSession().getAttribute("id") %>" data-g="${freeItem.ID}">
-															쪽지 보내기
-														</button><br>
-														<a class="btn btn-icon-default" href="chat.cut">1:1 채팅</a>
-													</c:if>
-												</div>
-	                               			</td>
-	                               			<td class="list-group-horizontal-sm">${freeItem.READCOUNT }</td>
-	                               			<td class="list-group-horizontal-sm">${freeItem.GOOD }</td>
-	                               			<td class="list-group-horizontal-sm">${freeItem.BAD }</td>
-	                               			<td class="list-group-horizontal-sm"><fmt:formatDate pattern="yyyy-MM-dd" value="${freeItem.FREEDATE }"/></td>
-	                               		</tr>
+										<c:choose>
+											<%-- 삭제되지 않은 게시글 --%>		
+	                               			<c:when test="${freeItem.ISDEL == 'N'}">
+			                        			<tr>
+			                               			<td class="list-group-horizontal-sm">${freeItem.FREEIDX }</td>
+			                               			<td class="list-group-horizontal-sm"><a href="freeDetail.cut?FREEIDX=${freeItem.FREEIDX}">${freeItem.TITLE }</a></td>
+			                               			<td class="list-group-horizontal-sm">
+														<button type="button" class="btn btn-icon-default"
+															data-bs-toggle="dropdown" aria-haspopup="false"
+															aria-expanded="false">
+															<b>${freeItem.ID}</b>
+														</button>
+														<div class="dropdown-menu">
+															<button class="btn btn-icon-default" onClick="writerDetail('${freeItem.ID}')">회원 정보</button><br>
+															<c:if test="${! empty sessionScope.id}">
+																<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
+																data-bs-target="#inlineForm"
+																data-s="<%= request.getSession().getAttribute("id") %>" data-g="${freeItem.ID}">
+																	쪽지 보내기
+																</button><br>
+																<a class="btn btn-icon-default" href="chat.cut">1:1 채팅</a>
+															</c:if>
+														</div>
+			                               			</td>
+			                               			<td class="list-group-horizontal-sm">${freeItem.READCOUNT }</td>
+			                               			<td class="list-group-horizontal-sm">${freeItem.GOOD }</td>
+			                               			<td class="list-group-horizontal-sm">${freeItem.BAD }</td>
+			                               			<td class="list-group-horizontal-sm"><fmt:formatDate pattern="yyyy-MM-dd" value="${freeItem.FREEDATE }"/></td>
+			                               		</tr>
+			                               	</c:when>
+	                               		
+	                               			<%-- 삭제된 게시글 --%>
+	                               			<c:otherwise>
+			                        			<tr>
+			                               			<td class="list-group-horizontal-sm">${freeItem.FREEIDX }</td>
+			                               			<td class="list-group-horizontal-sm"><span style="color:red">삭제된 글입니다.</span></td>
+			                               			<td class="list-group-horizontal-sm">
+			                               			</td>
+			                               			<td class="list-group-horizontal-sm"></td>
+			                               			<td class="list-group-horizontal-sm"></td>
+			                               			<td class="list-group-horizontal-sm"></td>
+			                               			<td class="list-group-horizontal-sm"></td>
+			                               		</tr>
+	                               			</c:otherwise>
+	                               		</c:choose>
 		                        	</c:forEach>
                         		</table>
                         		<div class="card-body mx-auto">
