@@ -18,6 +18,9 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-header">
+					<h4 class="card-title">${freeDetail.TITLE}</h4>
+				</div>
+				<div class="card-body">
 					<div class="btn-group dropend me-1 mb-1">
 						<button type="button" class="btn btn-icon-default"
 							data-bs-toggle="dropdown" aria-haspopup="false"
@@ -160,37 +163,29 @@
 				</div>
 				<div class="card-body">
 					<div class="table-responsive">
-						<table class="table table-lg">
-							<tbody>
+						<table class="table table-lg" id="comBody">
+							<tbody id="comDiv">
 								<c:if test = "${empty freeComList}">
 									<tr>
 										<td><div style="text-align:center">댓글이 없습니다. 댓글을 남겨주세요!</div></td>
 									</tr>					
 								</c:if>
 								<c:forEach var="comment" items="${freeComList}" varStatus="status">
-									<tr>
-									    <td class="text-bold-500">
-									    	<c:if test="${id == null}">
-									    	<div style="text-align:right;">
-	                                          	<a href="#" style="font-size:small">답댓글</a>&nbsp; 
-									    		<a href="#" style="font-size:small">수정</a>&nbsp; 
-									    		<a href="#" style="font-size:small">삭제</a>
+									<tr id="comItemBody">
+									    <td class="text-bold-500" id="comItemDiv">
+											<div style="text-align:right;">
+	                                          	<a href="#" style="font-size:small">답댓글</a>&nbsp;
+												<%-- 비회원상태 --%>
+												<c:if test="${id == null && comment.PASSWORD != null}">
+										    		<a href="#" style="font-size:small">수정</a>&nbsp; 
+										    		<a href="#" style="font-size:small">삭제</a>
+												</c:if>
+												<%-- 로그인상태 --%>
+												<c:if test="${id == comment.ID}">
+										    		<a href="#" style="font-size:small">수정</a>&nbsp; 
+										    		<a href="#" style="font-size:small">삭제</a>
+												</c:if> 
 									    	</div>
-									    	</c:if>
-									    	<c:if test="${id != null}">
-									    		<c:if test="${id == comment.ID}">
-									    			<div style="text-align:right;">
-			                                          	<a href="#" style="font-size:small">답댓글</a>&nbsp; 
-											    		<a href="#" style="font-size:small">수정</a>&nbsp; 
-											    		<a href="#" style="font-size:small">삭제</a>
-											    	</div>
-									    		</c:if>
-									    		<c:if test="${id != comment.ID}">
-									    			<div style="text-align:right;">
-									    				<a href="#" style="font-size:small">답댓글</a>
-									    			</div>
-									    		</c:if>
-									    	</c:if>
 									    	<div>
 										    	<span class="text-subtitle text-muted">${comment.ID}</span>
 										    	<p class="text-subtitle text-muted" style="font-size:x-small">${comment.FREECOMDATE}</p>
@@ -199,14 +194,26 @@
 	                                    </td>
 									</tr>
 								</c:forEach>
-								
 							</tbody>
 						</table>
 						<div class="col-12 mx-auto">
                             <div class="input-group mb-3">
                                 <textarea class="form-control" id="reply" placeholder="댓글을 입력해주세요"></textarea>
+								<%-- 비회원상태 --%>
+								<c:if test="${id == null}">
                                 <button class="btn btn-outline-secondary" type="button"
-                                    id="button-addon2">댓글입력</button>
+                                    id="button-addon2"
+                                    onClick="comWrite('비회원','FRE', '${freeDetail.FREEIDX}', 0)">
+                                    댓글입력</button>
+								</c:if>
+								<%-- 로그인상태 --%>
+								<c:if test="${id != null}">
+                                <button class="btn btn-outline-secondary" type="button"
+                                    id="button-addon2"
+                                    onClick="comWrite('${id}','FRE', '${freeDetail.FREEIDX}', 0)">
+                                    댓글입력</button>
+								</c:if>
+								
                             </div>
                         </div>
 					</div>
