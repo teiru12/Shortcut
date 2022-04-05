@@ -161,6 +161,31 @@ public class FreeController {
 	}
 	
 	@ResponseBody
+	@RequestMapping("/freeDelete.cut")
+	public Map<String, String> freeDelete(int IDX) throws Exception {
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		// 자유게시판의 게시글 삭제 : ISDEL을 'Y'로 변환
+		freeService.updateFreeListDel(IDX);
+		
+		return msg;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/freeDetailPassword.cut")
+	public String freeDetailPassword(int IDX) throws Exception {
+
+		/* 자유게시판의 IDX 게시글의 비밀번호를 리턴 */
+		Free free = freeService.selectFreeIDX(IDX);
+		String password = null;
+		if(free != null) {
+			password = free.getPASSWORD();
+		}
+		
+		return password;		
+	}
+	
+	@ResponseBody
 	@RequestMapping("/freeGood.cut")
 	public Map<String, String> freeGood(int IDX) throws Exception {
 		Map<String, String> msg = new HashMap<String, String>();

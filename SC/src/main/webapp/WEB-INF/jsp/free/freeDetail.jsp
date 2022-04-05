@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="/WEB-INF/jsp/include/memMenu.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,13 +18,27 @@
 		<div class="col-12">
 			<div class="card">
 				<div class="card-header">
-					<h4 class="card-title">${freeDetail.TITLE}</h4>
-				</div>
-				<div class="card-body">
-					<span class="text-subtitle text-muted">${freeDetail.ID} &nbsp; 
-								<fmt:formatDate pattern="yyyy-MM-dd" value="${freeDetail.FREEDATE}"/> &nbsp;
-								조회수 ${freeDetail.READCOUNT} &emsp;
-								
+					<div class="btn-group dropend me-1 mb-1">
+						<button type="button" class="btn btn-icon-default"
+							data-bs-toggle="dropdown" aria-haspopup="false"
+							aria-expanded="false">
+							${freeDetail.ID}
+						</button>
+						<div class="dropdown-menu">
+							<button class="btn btn-icon-default" onClick="writerDetail('${freeDetail.ID}')">회원 정보</button><br>
+							<c:if test="${! empty sessionScope.id}">
+								<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
+								data-bs-target="#inlineForm"
+								data-s="<%= request.getSession().getAttribute("id") %>" data-g="${freeDetail.ID}">
+									쪽지 보내기
+								</button><br>
+								<a class="btn btn-icon-default" href="chat.cut">1:1 채팅</a>
+							</c:if>
+						</div>
+					</div> &nbsp; 
+					<span class="text-subtitle text-muted">
+						<fmt:formatDate pattern="yyyy-MM-dd" value="${freeDetail.FREEDATE}"/> &nbsp;
+							조회수 ${freeDetail.READCOUNT} &emsp;
 						
 						<!-- 좋아요 -->		
 						<span id="goodSpan">
@@ -122,16 +137,16 @@
 					<div style="text-align:right;">
 						<a href="/SC/freeList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
 
-						<c:if test="${id == null}">
+						<!-- 비회원상태 -->
+						<c:if test="${id == null && freeDetail.PASSWORD != null}">
 							<input type="password" id="detailPassword" name="detailPassword" placeholder="비밀번호를 입력해주세요">
-							<a href="javascript:modifyDetailCheck('nonMember', 'NO', 'FRE', ${freeDetail.FREEIDX})" class="btn btn-sm btn-outline-secondary">수정하기</a>
-							<a href="javascript:deleteDetailCheck('nonMember', 'NO', 'FRE', ${freeDetail.FREEIDX})" class="btn btn-sm btn-outline-secondary">삭제하기</a>
+							<a href="javascript:modifyDetailCheck('nonMember', 'FRE', ${freeDetail.FREEIDX})" class="btn btn-sm btn-outline-secondary">수정하기</a>
+							<a href="javascript:deleteDetailCheck('nonMember', 'FRE', ${freeDetail.FREEIDX})" class="btn btn-sm btn-outline-secondary">삭제하기</a>
 						</c:if>
-						<c:if test="${id != null}">
-							<c:if test="${id == freeDetail.ID}">
-								<a href="javascript:modifyDetailCheck('member', '${id}', 'FRE', ${freeDetail.FREEIDX})" class="btn btn-sm btn-outline-secondary">수정하기</a>
-								<a href="javascript:deleteDetailCheck('member', '${id}', 'FRE', ${freeDetail.FREEIDX})" class="btn btn-sm btn-outline-secondary">삭제하기</a>
-							</c:if>
+						<!-- 로그인상태 -->
+						<c:if test="${id != null && id == freeDetail.ID}"> 
+							<a href="javascript:modifyDetailCheck('member', 'FRE', ${freeDetail.FREEIDX})" class="btn btn-sm btn-outline-secondary">수정하기</a>
+							<a href="javascript:deleteDetailCheck('member', 'FRE', ${freeDetail.FREEIDX})" class="btn btn-sm btn-outline-secondary">삭제하기</a>
 						</c:if>
 					</div>
 				</div>
