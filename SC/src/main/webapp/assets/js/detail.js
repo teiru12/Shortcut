@@ -372,3 +372,69 @@ function delArticle(delUrl, TYPE, IDX) {
 		}
 	});
 } 
+
+function comWrite(ID, TYPE, ARTICLEIDX, reType) { // reType : 0 이면 일반 댓글, reType 이 값을 가지면 해당 댓글 그룹 
+
+	let comWriteUrl ="";
+	if(TYPE == 'SHO') {
+		comWriteUrl = "/SC/shortComWrite.cut";	
+	} else if(TYPE == 'FRE') {
+		comWriteUrl = "/SC/freeComWrite.cut";	
+	} else if(TYPE == 'INF') {
+		comWriteUrl = "/SC/infoComWrite.cut";
+	} else if(TYPE == 'REP') {
+		comWriteUrl = "/SC/reportComWrite.cut";
+	}		
+	let inputData ="";
+	
+	if(ID != '비회원') { // 로그인 회원이 댓글을 달 때
+		
+	} else {
+		
+		/* 비밀번호 입력 */
+		swal({
+			title				: '비밀번호 입력',
+			dangerMode			: true, // 확인 버튼 빨갛게
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			content				: {
+				element : 'input',
+				attributes : {
+					placeholder : '비밀번호를 입력해주세요.',
+					type : 'password'					
+				}
+			},
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: false,
+					className 	: 'btn btn-outline-primary' 
+				}
+			}
+		}).then((result) => { // result : 입력한 비밀번호
+			
+			let content = $('#reply').val();
+			inputData = {"ARTICLEIDX" : ARTICLEIDX, "CONTENT" : content , 'ID' : '비회원', "PASSWORD" : result, "RETYPE" : 0};
+			
+			// 게시판의 게시글의 비밀번호를 읽어온다.
+			$.ajax({
+				url 		: comWriteUrl,
+				data		: inputData, 
+				contentType	: "application/json",
+				success		: function(data) {
+					
+					alert("댓글 달기 성공");
+					
+					// 댓글 입력 작업 시작
+					
+					
+					
+					
+					
+					
+					
+				}				
+			});	
+		});
+	}
+	
+}
