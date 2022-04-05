@@ -9,9 +9,7 @@
 <meta charset="UTF-8">
 <title>숏컷</title>
 <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript">
-	
-</script>
+<script src="assets/js/detail.js"></script>
 </head>
 <body>
 <div id="main">
@@ -44,27 +42,21 @@
 						<a href="#"><span style="color:#C00000">신고</span></a>
 					</span><hr>
 					<p>${infoDetail.CONTENT}</p>
-					<c:if test="${id == null}">
 					<div style="text-align:right;">
-						<a href="/SC/infoList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
-						<a href="/SC/infoModifyForm.cut" class="btn btn-sm btn-outline-secondary">수정하기</a>
-						<a href="/SC/infoDelete.cut" class="btn btn-sm btn-outline-secondary">삭제하기</a>
+						<a href="/SC/infoeList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
+
+						<!-- 비회원상태 -->
+						<c:if test="${id == null && infoDetail.PASSWORD != null}">
+							<input type="password" id="detailPassword" name="detailPassword" placeholder="비밀번호를 입력해주세요">
+							<a href="javascript:modifyDetailCheck('nonMember', 'FRE', ${infoDetail.INFOIDX})" class="btn btn-sm btn-outline-secondary">수정하기</a>
+							<a href="javascript:deleteDetailCheck('nonMember', 'FRE', ${infoDetail.INFOIDX})" class="btn btn-sm btn-outline-secondary">삭제하기</a>
+						</c:if>
+						<!-- 로그인상태 -->
+						<c:if test="${id != null && id == infoDetail.ID}"> 
+							<a href="javascript:modifyDetailCheck('member', 'FRE', ${infoDetail.INFOIDX})" class="btn btn-sm btn-outline-secondary">수정하기</a>
+							<a href="javascript:deleteDetailCheck('member', 'FRE', ${infoDetail.INFOIDX})" class="btn btn-sm btn-outline-secondary">삭제하기</a>
+						</c:if>
 					</div>
-					</c:if>
-					<c:if test="${id != null}">
-						<c:if test="${id == infoDetail.ID}">
-						<div style="text-align:right;">
-							<a href="/SC/infoList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
-							<a href="/SC/infoModifyForm.cut" class="btn btn-sm btn-outline-secondary">수정하기</a>
-							<a href="/SC/infoDelete.cut" class="btn btn-sm btn-outline-secondary">삭제하기</a>
-						</div>
-						</c:if>
-						<c:if test="${id != infoDetail.ID}">
-						<div style="text-align:right;">
-							<a href="/SC/infoList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
-						</div>
-						</c:if>
-					</c:if>
 				</div>
 			</div>
 		</div>

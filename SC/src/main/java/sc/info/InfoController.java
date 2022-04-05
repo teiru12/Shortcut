@@ -1,7 +1,9 @@
 package sc.info;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import sc.model.Info;
 import sc.model.InfoCom;
@@ -129,5 +132,30 @@ public class InfoController {
 
 		
 		return "infoDetail";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/infoDelete.cut")
+	public Map<String, String> infoDelete(int IDX) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		
+		//정보교류게시판의 게시글 삭제 : ISDEL을 'Y'로 변환
+		infoService.updateInfoListDEL(IDX);
+		
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/infoDetailPassword.cut")
+	public String infoDetailPassword(int IDX) throws Exception {
+
+		/* 정보교류게시판의 IDX 게시글의 비밀번호를 리턴 */
+		Info info = infoService.selectInfoIDX(IDX);
+		String password = null;
+		if(info != null) {
+			password = info.getPASSWORD();
+		}
+		
+		return password;		
 	}
 }
