@@ -100,6 +100,9 @@ public class FreeController {
 	public String freeDetail(int FREEIDX, Free free, FreeCom freeCom, Model model, HttpServletRequest request) throws Exception {
 		
 		String id = (String) request.getSession().getAttribute("id");
+
+		/* 조회수 증가 */
+		freeService.updateFreeReadcount(FREEIDX);		
 		
 		/* 게시글 상세 정보 읽어옴 */
 		Free freeDetail = freeService.selectFreeIDX(FREEIDX);
@@ -110,8 +113,7 @@ public class FreeController {
 		if(id != null) {
 			gb = goodbadService.selectGoodbad(id, "FRE", FREEIDX);
 			bk = bookmarkService.selectBookmark(id, "FRE", FREEIDX);
-		}		
-		
+		}
 		
 		/* 페이징 변수 설정 */
 		int pageSize = 5; // 페이지당 출력할 포인트 정보의 수

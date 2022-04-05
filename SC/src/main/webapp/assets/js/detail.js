@@ -182,49 +182,67 @@ function modifyDetailCheck(memberCheck, TYPE, IDX) {
 		}		
 	/* 비회원일 경우 패스워드 검사 */
 	} else {
-		
-		let passUrl ="";
-		if(TYPE == 'FRE') {
-			passUrl = "/SC/freeDetailPassword.cut";	
-		} else if(TYPE == 'INF') {
-			passUrl = "/SC/infoDetailPassword.cut";
-		} else if(TYPE == 'NEW') {
-			passUrl = "/SC/newsDetailPassword.cut";
-		}		
-		
-		// 게시판의 게시글의 비밀번호를 읽어온다.
-		$.ajax({
-			url 		: passUrl,
-			data		: {"IDX" : IDX},
-			contentType	: "application/json",
-			success		: function(data) {
-			
-				// 게시글에서 입력한 패스워드 정보를 읽어옴
-				let inputPass = $('#detailPassword').val();
-				if(inputPass == data) { // 패스워드가 일치
-					if(TYPE == 'FRE') {
-						location.href = "/SC/freeModifyForm.cut";	
-					} else if(TYPE == 'INF') {
-						location.href = "/SC/infoModifyForm.cut";
-					} else if(TYPE == 'NEW') {
-						location.href = "/SC/newsModifyForm.cut";
-					}							
-				} else { // 패스워드가 일치하지 않음
-					swal({
-						title				: '비밀번호가 틀립니다.',
-						dangerMode			: true, // 확인 버튼 빨갛게
-						closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
-						buttons				: {
-							confirm : {
-								text 		: '확인',
-								value 		: false,
-								className 	: 'btn btn-outline-primary' 
-							}
-						}
-					});	
+		/* 비밀번호 입력 */
+		swal({
+			title				: '비밀번호 입력',
+			dangerMode			: true, // 확인 버튼 빨갛게
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			content				: {
+				element : 'input',
+				attributes : {
+					placeholder : '비밀번호를 입력해주세요.',
+					type : 'password'					
 				}
-			}				
-		});	
+			},
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: false,
+					className 	: 'btn btn-outline-primary' 
+				}
+			}
+		}).then((result) => { // result : 입력한 비밀번호
+		
+			let passUrl ="";
+			if(TYPE == 'FRE') {
+				passUrl = "/SC/freeDetailPassword.cut";	
+			} else if(TYPE == 'INF') {
+				passUrl = "/SC/infoDetailPassword.cut";
+			} else if(TYPE == 'NEW') {
+				passUrl = "/SC/newsDetailPassword.cut";
+			}		
+			
+			// 게시판의 게시글의 비밀번호를 읽어온다.
+			$.ajax({
+				url 		: passUrl,
+				data		: {"IDX" : IDX},
+				contentType	: "application/json",
+				success		: function(data) {
+					if(result == data) { // 패스워드가 일치
+						if(TYPE == 'FRE') {
+							location.href = "/SC/freeModifyForm.cut";	
+						} else if(TYPE == 'INF') {
+							location.href = "/SC/infoModifyForm.cut";
+						} else if(TYPE == 'NEW') {
+							location.href = "/SC/newsModifyForm.cut";
+						}							
+					} else { // 패스워드가 일치하지 않음
+						swal({
+							title				: '비밀번호가 틀립니다.',
+							dangerMode			: true, // 확인 버튼 빨갛게
+							closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+							buttons				: {
+								confirm : {
+									text 		: '확인',
+									value 		: false,
+									className 	: 'btn btn-outline-primary' 
+								}
+							}
+						});	
+					}
+				}				
+			});	
+		});		
 	}
 }
 
@@ -246,42 +264,60 @@ function deleteDetailCheck(memberCheck, TYPE, IDX) {
 		delArticle(delUrl, TYPE, IDX);
 	/* 비회원일 경우 패스워드 검사 */
 	} else {
-		let passUrl ="";
-		if(TYPE == 'FRE') {
-			passUrl = "/SC/freeDetailPassword.cut";	
-		} else if(TYPE == 'INF') {
-			passUrl = "/SC/infoDetailPassword.cut";
-		} else if(TYPE == 'NEW') {
-			passUrl = "/SC/newsDetailPassword.cut";
-		}		
-		
-		// 게시판의 게시글의 비밀번호를 읽어온다.
-		$.ajax({
-			url 		: passUrl,
-			data		: {"IDX" : IDX},
-			contentType	: "application/json",
-			success		: function(data) {
-			
-				// 게시글에서 입력한 패스워드 정보를 읽어옴
-				let inputPass = $('#detailPassword').val();
-				if(inputPass == data) { // 패스워드가 일치하면 삭제 확인 메세지 출력 후 삭제
-					delArticle(delUrl, TYPE, IDX);
-				} else { // 패스워드가 일치하지 않음
-					swal({
-						title				: '비밀번호가 틀립니다.',
-						dangerMode			: true, // 확인 버튼 빨갛게
-						closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
-						buttons				: {
-							confirm : {
-								text 		: '확인',
-								value 		: false,
-								className 	: 'btn btn-outline-primary' 
-							}
-						}
-					});	
+		/* 비밀번호 입력 */
+		swal({
+			title				: '비밀번호 입력',
+			dangerMode			: true, // 확인 버튼 빨갛게
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			content				: {
+				element : 'input',
+				attributes : {
+					placeholder : '비밀번호를 입력해주세요.',
+					type : 'password'					
 				}
-			}				
-		});	
+			},
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: false,
+					className 	: 'btn btn-outline-primary' 
+				}
+			}
+		}).then((result) => { // result : 입력한 비밀번호
+			let passUrl ="";
+			if(TYPE == 'FRE') {
+				passUrl = "/SC/freeDetailPassword.cut";	
+			} else if(TYPE == 'INF') {
+				passUrl = "/SC/infoDetailPassword.cut";
+			} else if(TYPE == 'NEW') {
+				passUrl = "/SC/newsDetailPassword.cut";
+			}		
+			
+			// 게시판의 게시글의 비밀번호를 읽어온다.
+			$.ajax({
+				url 		: passUrl,
+				data		: {"IDX" : IDX},
+				contentType	: "application/json",
+				success		: function(data) {
+					if(result == data) { // 패스워드가 일치하면 삭제 확인 메세지 출력 후 삭제
+						delArticle(delUrl, TYPE, IDX);
+					} else { // 패스워드가 일치하지 않음
+						swal({
+							title				: '비밀번호가 틀립니다.',
+							dangerMode			: true, // 확인 버튼 빨갛게
+							closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+							buttons				: {
+								confirm : {
+									text 		: '확인',
+									value 		: false,
+									className 	: 'btn btn-outline-primary' 
+								}
+							}
+						});	
+					}
+				}				
+			});	
+		});
 	}
 }
 
