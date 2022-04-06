@@ -22,6 +22,7 @@ import sc.model.Goodbad;
 import sc.model.Notice;
 import sc.notice.NoticeService;
 import sc.util.GetIP;
+import sc.util.MakeComList;
 import sc.util.Paging;
 
 @Controller 
@@ -210,7 +211,6 @@ public class FreeController {
 		return msg;
 	}
 	
-	@SuppressWarnings("unchecked")
 	@ResponseBody
 	@RequestMapping("/freeComWrite.cut")
 	public Map<String, String> freeComWrite(HttpServletRequest request, int ARTICLEIDX, String CONTENT, 
@@ -287,98 +287,7 @@ public class FreeController {
 		freeComList = freeService.freeListComPagingByFreeIDX(START, END, ARTICLEIDX);
 		
 		/* StringBuffer에 새로 출력해줄 댓글 리스트 생성 */
-		StringBuffer sb = new StringBuffer();
-		sb.append("<tbody id=\"comDiv\">");
-		for(int i=0;i<freeComList.size();i++) {
-			sb.append("<tr id=\"comItemBody\">");
-			sb.append("<td class=\"text-bold-500\" id=\"comItemDiv\">");
-			sb.append("<div style=\"text-align:right;\">");
-			
-			sb.append("<a href=\"javascript:openComWriteForm(" + i + ")\" style=\"font-size:small\">답댓글</a>&nbsp;");
-			
-			if((request.getSession().getAttribute("id") == null) &&
-					(((Map<String, Object>)freeComList.get(i)).get("PASSWORD") != null)
-					) { // 비회원 상태 & 해당 댓글의 비밀번호가 존재할 때
-				sb.append("<a href=\"javascript:comModify('비회원','FRE', "
-					+ ((Map<String, Object>)freeComList.get(i)).get("FREECOMIDX")
-					+ ", " + i + ",'MOD')\" style=\"font-size:small\">수정</a>&nbsp;");
-				sb.append("<a href=\"javascript:comModify('비회원','FRE', "
-					+ ((Map<String, Object>)freeComList.get(i)).get("FREECOMIDX")
-					+ ", " + i + ",'DEL')\" style=\"font-size:small\">삭제</a>&nbsp;");
-			} else if((request.getSession().getAttribute("id") != null) &&
-					(((String)(request.getSession().getAttribute("id"))).equals(((Map<String, Object>)freeComList.get(i)).get("ID")))
-					){ // 댓글의 작성자가 로그인 한 사람일 때 
-				sb.append("<a href=\"javascript:comModify('" + (String)(request.getSession().getAttribute("id"))
-					+ "','FRE', "
-					+ ((Map<String, Object>)freeComList.get(i)).get("FREECOMIDX")
-					+ ", " + i + ",'MOD')\" style=\"font-size:small\">수정</a>&nbsp;");
-				sb.append("<a href=\"javascript:comModify('" + (String)(request.getSession().getAttribute("id"))
-					+ "','FRE', "
-					+ ((Map<String, Object>)freeComList.get(i)).get("FREECOMIDX")
-					+ ", " + i + ",'DEL')\" style=\"font-size:small\">삭제</a>&nbsp;");
-			}
-			sb.append("</div>");
-			sb.append("<div>");
-			
-			for(int j=0;j<=Integer.parseInt(String.valueOf(((Map<String, Object>)freeComList.get(i)).get("RELEVEL")));j++) {
-				sb.append("&nbsp;");
-			}
-			if(Integer.parseInt(String.valueOf(((Map<String, Object>)freeComList.get(i)).get("RELEVEL")))>0) {
-				sb.append("∟");
-			}
-			sb.append("<span class=\"text-subtitle text-muted\" id=\"comID" + i + "\">");
-			if(((String)((Map<String, Object>)freeComList.get(i)).get("ISDEL")).equals("N")) {
-				sb.append(((Map<String, Object>)freeComList.get(i)).get("ID"));
-			} else {
-				sb.append("삭제");
-			}		
-			sb.append("</span>");			
-			sb.append("<p class=\"text-subtitle text-muted\" style=\"font-size:x-small\">"
-				+ ((Map<String, Object>)freeComList.get(i)).get("FREECOMDATE") + "</p>");
-			sb.append("<p class=\"card-text\" id=\"comCONTENT" + i + "\">");
-			if(((String)((Map<String, Object>)freeComList.get(i)).get("ISDEL")).equals("N")) {
-				sb.append(((Map<String, Object>)freeComList.get(i)).get("CONTENT"));
-			} else {
-				sb.append("삭제된 댓글입니다.");
-			}			
-			sb.append("</p></div>");
-			
-			sb.append("<div id=\"reForm" + i + "\" class=\"col-12 mx-auto\" style=\"display:none\">");
-			sb.append("<div class=\"input-group mb-3\">");
-			sb.append("<textarea class=\"form-control\" id=\"reply"
-				+ ((Map<String, Object>)freeComList.get(i)).get("FREECOMIDX") 
-				+ "\" placeholder=\"댓글을 입력해주세요\"></textarea>");
-			if(request.getSession().getAttribute("id") == null) {
-				sb.append("<button class=\"btn btn-outline-secondary\" type=\"button\" ");
-				sb.append(" id=\"button-addon2\" ");
-				sb.append(" onClick=\"comWrite('비회원','FRE', '" + ARTICLEIDX + "',");
-				if(Integer.parseInt(String.valueOf(((Map<String, Object>)freeComList.get(i)).get("RETYPE")))==0) {
-					sb.append(((Map<String, Object>)freeComList.get(i)).get("FREECOMIDX"));
-				} else {
-					sb.append(((Map<String, Object>)freeComList.get(i)).get("RETYPE"));
-				}
-				sb.append(", " + ((Map<String, Object>)freeComList.get(i)).get("FREECOMIDX"));
-				sb.append(", " + currentPage + ")\">댓글입력</button>");
-			} else {
-				sb.append("<button class=\"btn btn-outline-secondary\" type=\"button\" ");
-				sb.append(" id=\"button-addon2\" ");
-				sb.append(" onClick=\"comWrite('" + request.getSession().getAttribute("id")
-					+ "','FRE', '" + ARTICLEIDX + "',");
-				if(Integer.parseInt(String.valueOf(((Map<String, Object>)freeComList.get(i)).get("RETYPE")))==0) {
-					sb.append(((Map<String, Object>)freeComList.get(i)).get("FREECOMIDX"));
-				} else {
-					sb.append(((Map<String, Object>)freeComList.get(i)).get("RETYPE"));
-				}
-				sb.append(", " + ((Map<String, Object>)freeComList.get(i)).get("FREECOMIDX"));
-				sb.append(", " + currentPage + ")\">댓글입력</button>");
-			}
-			sb.append("</div></div></td></tr>");
-
-		}
-		sb.append("</tbody>");
-		String newComList = sb.toString();
-		
-System.out.println(newComList);
+		String newComList = MakeComList.make(freeComList, request, "FRE", ARTICLEIDX, currentPage);
 		
 		/* 새로 출력할 페이징 생성*/
 		StringBuffer pb = new StringBuffer();
