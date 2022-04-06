@@ -119,14 +119,57 @@ public class FreeServiceImpl implements FreeService {
 
 	/*자유 게시판 댓글 입력 BY 게시글번호*/
 	@Override
-	public void insertFreeListComByFreeIDX(Free free) throws Exception {
-		freeDAO.insertFreeListComByFreeIDX(free);
+	public void insertFreeListComByFreeIDX(FreeCom freeCom) throws Exception {
+		freeDAO.insertFreeListComByFreeIDX(freeCom);
+	}
+	
+	/*자유 게시판 대댓글이 아닌 댓글 입력 BY 게시글번호*/
+	@Override
+	public void insertFreeListFirstComByFreeIDX(FreeCom freeCom) throws Exception {
+		freeDAO.insertFreeListFirstComByFreeIDX(freeCom);
+	}
+	
+	/*다음 RESTEP값을 찾음*/
+	@Override
+	public int nextReStep(int RETYPE, int RELEVEL, int PCOMIDX, int FREEIDX) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("RETYPE", RETYPE);
+		map.put("RELEVEL", RELEVEL);
+		map.put("PCOMIDX", PCOMIDX);
+		map.put("FREEIDX", FREEIDX);
+		
+		Object obj =  freeDAO.nextReStep(map);
+		
+		if(obj == null) {
+			return 0;
+		} else {
+			return (int) obj;
+		}
+	}
+	
+	/*자유 게시판 댓글 하나의 정보 BY FREECOMIDX*/
+	@Override
+	public FreeCom selectFreeCom(int FREECOMIDX) throws Exception {
+		return freeDAO.selectFreeCom(FREECOMIDX);
+	}
+	
+	/*RETYPE이 같은 입력받은 RESTEP값보다 같거나 큰 모든 댓글들의 RESTEP을 1씩 증가*/
+	@Override
+	public void increaseReStepEqAndGreater(int RESTEP, int RETYPE, int FREEIDX) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("RESTEP", RESTEP);
+		map.put("RETYPE", RETYPE);
+		map.put("FREEIDX", FREEIDX);
+		
+		freeDAO.increaseReStepEqAndGreater(map);
 	}
 
 	/*자유 게시판 댓글 수정 BY 게시글번호*/
 	@Override
-	public void updateFreeListComByFreeIDX(Free free) throws Exception {
-		freeDAO.updateFreeListComByFreeIDX(free);
+	public void updateFreeListComByFreeIDX(FreeCom freeCom) throws Exception {
+		freeDAO.updateFreeListComByFreeIDX(freeCom);
 	}
 
 	/*자유 게시판 댓글 수정 (삭제) BY 게시글번호*/
@@ -134,7 +177,4 @@ public class FreeServiceImpl implements FreeService {
 	public void updateFreeListComDelByFreeIDX(int FREECOMIDX) throws Exception {
 		freeDAO.updateFreeListComDelByFreeIDX(FREECOMIDX);
 	}
-
-	
-	
 }
