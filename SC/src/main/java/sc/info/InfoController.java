@@ -120,7 +120,6 @@ public class InfoController {
 		int START = 1;
 		int END = pageSize;
 		int currentPage = 1; // 현재 페이지
-
 		int countInfoCom; // 전체 댓글의 수
 		int pageBlock = 5; // 표시할 페이지의 수
 		String url = "infoDetail.cut";

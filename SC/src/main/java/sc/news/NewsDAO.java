@@ -28,7 +28,7 @@ public class NewsDAO {
 	
 	//뉴스 게시판 검색 리스트 페이징
 	public List<News> newsListSearchPaging(Map<String,Object> map) throws Exception {
-		return sqlSessionTemplate.selectList("news.newsListSearchPaing", map);
+		return sqlSessionTemplate.selectList("news.newsListSearchPaging", map);
 	}
 	
 	//뉴스 게시판 검색한 글 수

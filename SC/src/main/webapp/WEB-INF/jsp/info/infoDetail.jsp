@@ -55,6 +55,7 @@
 							</c:if>
 							<!-- 좋아요를 하지 않았을 경우 -->
 							<c:if test="${goodUsed != 'Y'}">
+							
 								<!-- 로그인했을 경우 좋아요 버튼 활성화 -->
 								<% if(request.getSession().getAttribute("id") != null) { %>
 								<a id="goodButton" href="javascript:addGood('<%= request.getSession().getAttribute("id") %>',
