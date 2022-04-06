@@ -63,7 +63,7 @@ function logout() {
 						}
 					}).then((result) => {
 						/* 회원 탈퇴 후 loginForm으로 리다이렉트 */
-						location.href="/SC/loginForm.cut";
+						location.href="/SC/main.cut";
 					});
 				}				
 			});
@@ -76,7 +76,11 @@ function logout() {
 <div id="main"> <!-- main div를 사용하면 좌우 패딩이 생김 -->
 
 	<div id="app">
-	
+		<header class="mb-3">
+		    <a href="#" class="burger-btn d-block d-xl-none">
+		        <i class="bi bi-justify fs-3"></i>
+		    </a>
+		</header>
 		<div class="page-title">
 			<div class="row">
 				<div class="col-12 col-md-6 order-md-1 order-last">
