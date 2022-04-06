@@ -213,6 +213,27 @@
 			value="/WEB-INF/jsp/news/newsModifyForm.jsp" />
 	</definition>
 	
+	<!-- notice -->
+	
+	<definition name="noticeList" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/notice/noticeList.jsp" />
+	</definition>
+	
+	<definition name="noticeDetail" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/notice/noticeDetail.jsp" />
+	</definition>
+	
+	<definition name="noticeWriteForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/notice/noticeWriteForm.jsp" />
+	</definition>
+	
+	<definition name="noticeModifyForm" extends="main_layout">		
+		<put-attribute name="body"
+			value="/WEB-INF/jsp/notice/noticeModifyForm.jsp" />
+	</definition>
 	
 	<!-- report -->
 	

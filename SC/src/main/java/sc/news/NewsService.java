@@ -13,10 +13,10 @@ public interface NewsService {
 	public int countNewsList() throws Exception;
 	
 	//뉴스 게시판 검색 리스트
-	public List<News> newsListSearchPaging(int START, int END) throws Exception;
+	public List<News> newsListSearchPaging(int START, int END, String KEYWORD, String ORDER) throws Exception;
 	
 	//뉴스 게시판 검색 글 수 
-	public int countNewsListSearch() throws Exception;
+	public int countNewsListSearch(String KEYWORD) throws Exception;
 	
 	//뉴스 게시판 입력
 	public void insertNewsList(News news) throws Exception;

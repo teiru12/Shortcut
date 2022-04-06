@@ -35,17 +35,20 @@ public class NewsServiceImpl implements NewsService {
 
 	//뉴스 게시판 검색 리스트 페이징
 	@Override
-	public List<News> newsListSearchPaging(int START, int END) throws Exception {
+	public List<News> newsListSearchPaging(int START, int END, String KEYWORD, String ORDER) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("START", START);
 		map.put("END", END);
+		map.put("KEYWORD", KEYWORD);
+		map.put("ORDER", ORDER);
+		
 		return newsDAO.newsListSearchPaging(map);
 	}
 
 	//뉴스 게시판 검색 글 수
 	@Override
-	public int countNewsListSearch() throws Exception {
+	public int countNewsListSearch(String KEYWORD) throws Exception {
 		return Integer.parseInt(String.valueOf(newsDAO.countNewsListSearch()));
 	}
 

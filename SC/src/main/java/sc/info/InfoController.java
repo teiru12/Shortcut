@@ -13,6 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import sc.bookmark.BookmarkService;
+import sc.goodbad.GoodbadService;
+import sc.model.Bookmark;
+import sc.model.Goodbad;
 import sc.model.Info;
 import sc.model.InfoCom;
 import sc.model.Notice;
@@ -27,6 +31,12 @@ public class InfoController {
 
 	@Resource(name = "noticeService")
 	private NoticeService noticeService;
+	
+	@Resource(name = "goodbadService")
+	private GoodbadService goodbadService;
+	
+	@Resource(name = "bookmarkService")
+	private BookmarkService bookmarkService;
 
 	@RequestMapping(value = "infoList.cut")
 	public String infoList(HttpServletRequest request, Model model) throws Exception {
@@ -91,18 +101,25 @@ public class InfoController {
 		
 		String id = (String) request.getSession().getAttribute("id");
 		
+		/* 조회수 증가 */
+		infoService.updateInfoReadcount(INFOIDX);
 		
+		/* 게시글 상세 정보 */
 		Info infoDetail = infoService.selectInfoIDX(INFOIDX);
 		
-		model.addAttribute("infoDetail", infoDetail);
-		
+		/* 좋아요 싫어요를 했는지, 즐겨찾기를 했는지 여부 검사 */
+		Goodbad gb = new Goodbad();
+		Bookmark bk = new Bookmark();
+		if(id != null) {
+			gb = goodbadService.selectGoodbad(id, "INF", INFOIDX);
+			bk = bookmarkService.selectBookmark(id, "INF", INFOIDX);
+		}
 		
 		/* 페이징 변수 설정 */
 		int pageSize = 5; // 페이지당 출력할 포인트 정보의 수
 		int START = 1;
 		int END = pageSize;
 		int currentPage = 1; // 현재 페이지
-
 		int countInfoCom; // 전체 댓글의 수
 		int pageBlock = 5; // 표시할 페이지의 수
 		String url = "infoDetail.cut";
@@ -129,7 +146,18 @@ public class InfoController {
 		model.addAttribute("currentPage", currentPage);
 		model.addAttribute("paging", paging);		
 		model.addAttribute("infoComList", infoComList);
-
+		
+		model.addAttribute("infoDetail", infoDetail);
+		
+		/* 좋아요/싫어요가 있을 경우 모델에 삽입 */
+		if(id != null && gb != null) {
+			model.addAttribute("goodUsed", gb.getGOOD());
+			model.addAttribute("badUsed", gb.getBAD());
+		}
+		/* 즐겨찾기가 있을 경우 모델에 삽입 */
+		if(id !=null && bk != null) {
+			model.addAttribute("bookmark", bk);
+		}
 		
 		return "infoDetail";
 	}
@@ -157,5 +185,27 @@ public class InfoController {
 		}
 		
 		return password;		
+	}
+	
+	@ResponseBody
+	@RequestMapping("/infoGood.cut")
+	public Map<String, String> infoGood(int IDX) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		
+		// 정보교류게시판 IDX 게시글의 좋아요 1 증가
+		infoService.updateInfoGood(IDX);
+		
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/infoBad.cut")
+	public Map<String, String> infoBad(int IDX) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		
+		// 정보교류게시판 IDX 게시글의 좋아요 1 증가
+		infoService.updateInfoBad(IDX);
+		
+		return map;
 	}
 }
