@@ -181,15 +181,15 @@
 			* 
 		FROM (
 			SELECT
-				FREECOMIDX, FREEIDX, CONTENT, FREECOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, ISDEL, ROWNUM R
+				FREECOMIDX, FREEIDX, CONTENT, FREECOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, PCOMIDX, ISDEL, ROWNUM R
 			FROM (
 				SELECT 
-					FREECOMIDX, FREEIDX, CONTENT, FREECOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, ISDEL
+					FREECOMIDX, FREEIDX, CONTENT, FREECOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, PCOMIDX, ISDEL
 				FROM
 					FREECOM
 				WHERE 
 					FREEIDX = #{FREEIDX}
-				ORDER BY FREECOMIDX DESC
+				ORDER BY RETYPE, RESTEP
 			)
 		)
 		WHERE 
@@ -211,7 +211,6 @@
 
 	<!-- 자유 게시판 댓글 입력 BY 게시글번호 -->
 	<insert id="insertFreeListComByFreeIDX" parameterType="sc.model.FreeCom">
-	<![CDATA[
 		INSERT INTO
 			FREECOM
 		VALUES(
@@ -220,15 +219,79 @@
 			#{CONTENT},
 			SYSDATE,
 			#{ID},
-			#{IP},
-			#{PASSWORD},
+			#{IP, jdbcType = VARCHAR},
+			#{PASSWORD, jdbcType = VARCHAR},
 			#{RETYPE},
 			#{RESTEP},
 			#{RELEVEL},
+			#{PCOMIDX},
 			'N'
 		)
-	]]>
 	</insert>
+
+	<!-- 자유 게시판 대댓글이 아닌 댓글 입력 BY 게시글번호 -->
+	<insert id="insertFreeListFirstComByFreeIDX" parameterType="sc.model.FreeCom">
+		INSERT INTO
+			FREECOM
+		VALUES(
+			FREECOMIDX_SEQ.NEXTVAL,
+			#{FREEIDX},
+			#{CONTENT},
+			SYSDATE,
+			#{ID},
+			#{IP, jdbcType = VARCHAR},
+			#{PASSWORD, jdbcType = VARCHAR},
+			FREECOMIDX_SEQ.CURRVAL,
+			#{RESTEP},
+			#{RELEVEL},
+			FREECOMIDX_SEQ.CURRVAL,
+			'N'
+		)
+	</insert>	
+
+	<!-- 다음 RESTEP값을 찾음 -->
+	<select id="nextReStep" parameterType="hashmap" resultType="int">
+	<![CDATA[
+		SELECT
+			MAX(RESTEP)
+		FROM
+			FREECOM
+		WHERE
+			RETYPE = #{RETYPE}
+			AND
+			RELEVEL = #{RELEVEL}
+			AND
+			PCOMIDX = #{PCOMIDX}
+			AND
+			FREEIDX = #{FREEIDX}
+	]]>
+	</select>
+	
+	<!-- 자유 게시판 댓글 하나의 정보 BY FREECOMIDX -->
+	<select id="selectFreeCom" parameterType="int" resultType="sc.model.FreeCom">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			FREECOM
+		WHERE
+			FREECOMIDX = #{FREECOMIDX}
+	]]>      
+	</select>
+	
+	<!-- RETYPE이 같은 입력받은 RESTEP값보다 같거나 큰 모든 댓글들의 RESTEP을 1씩 증가 -->
+	<update id="increaseReStepEqAndGreater" parameterType="hashmap">
+		UPDATE
+			FREECOM
+		SET
+			RESTEP = RESTEP + 1
+		WHERE
+			RESTEP >= #{RESTEP}	
+			AND
+			RETYPE = ${RETYPE}
+			AND
+			FREEIDX = #{FREEIDX}
+	</update>
 
 	<!-- 자유 게시판 댓글 수정 BY 게시글번호 -->
 	<update id="updateFreeListComByFreeIDX" parameterType="sc.model.FreeCom">
@@ -241,7 +304,7 @@
 			FREECOMIDX = #{FREECOMIDX}
 	]]>           
 	</update>
-
+	
 	<!-- 자유 게시판 댓글 수정 (삭제) BY 게시글번호 -->
 	<update id="updateFreeListComDelByFreeIDX" parameterType="int">
 	<![CDATA[

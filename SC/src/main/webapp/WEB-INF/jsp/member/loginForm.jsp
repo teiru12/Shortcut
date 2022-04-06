@@ -8,8 +8,12 @@
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<%
+	/* 로그인 전 페이지 정보 */
+	String referer = request.getHeader("referer");
+	if(referer==null)referer = "/";
+%>
 <script>
-
 /* 첫 화면 로딩 시 포커스 */
 window.onload = function() {
 	document.getElementById("ID").focus();
@@ -150,7 +154,7 @@ $(document).ready(function(){
 				} else { // 로그인에 성공했을 경우
 					swal({
 						title				: '로그인에 성공했습니다',
-						text 				: '메인 페이지로 이동합니다.',
+						// text 				: '메인 페이지로 이동합니다.',
 						closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
 						buttons				: {
 							confirm : {
@@ -160,7 +164,9 @@ $(document).ready(function(){
 							}
 						}
 					}).then((result) => {
-						location.href="/SC/main.cut";
+						location.href='<%=referer%>';
+						// history.go(-1);
+						// location.href="/SC/main.cut";
 					});
 				}
 			},

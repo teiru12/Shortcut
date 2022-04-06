@@ -14,6 +14,8 @@ public class FreeCom {
 	private int RETYPE;
 	private int RESTEP;
 	private int RELEVEL;
+	private int PCOMIDX;
+
 	private String ISDEL;
 	
 	public int getFREECOMIDX() {
@@ -75,6 +77,12 @@ public class FreeCom {
 	}
 	public void setRELEVEL(int rELEVEL) {
 		RELEVEL = rELEVEL;
+	}
+	public int getPCOMIDX() {
+		return PCOMIDX;
+	}
+	public void setPCOMIDX(int pCOMIDX) {
+		PCOMIDX = pCOMIDX;
 	}
 	public String getISDEL() {
 		return ISDEL;

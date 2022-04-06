@@ -174,23 +174,74 @@
 									<tr id="comItemBody">
 									    <td class="text-bold-500" id="comItemDiv">
 											<div style="text-align:right;">
-	                                          	<a href="#" style="font-size:small">답댓글</a>&nbsp;
-												<%-- 비회원상태 --%>
+											
+												<a href="javascript:openComWriteForm(${status.index})"
+	                                          			style="font-size:small">답댓글</a>&nbsp;
+	                                          	
+	                                          	<%-- 비회원 상태 & 해당 댓글의 비밀번호가 존재할 때 --%>
 												<c:if test="${id == null && comment.PASSWORD != null}">
-										    		<a href="#" style="font-size:small">수정</a>&nbsp; 
-										    		<a href="#" style="font-size:small">삭제</a>
+										    		<a href="javascript:comModify('비회원','FRE', ${comment.FREECOMIDX}, ${status.index}, 'MOD')"
+										    			style="font-size:small">수정</a>&nbsp; 
+										    		<a href="javascript:comModify('비회원','FRE', ${comment.FREECOMIDX}, ${status.index}, 'DEL')"
+														style="font-size:small">삭제</a>
 												</c:if>
-												<%-- 로그인상태 --%>
+												<%-- 댓글의 작성자가 로그인 한 사람일 때 --%>
 												<c:if test="${id == comment.ID}">
-										    		<a href="#" style="font-size:small">수정</a>&nbsp; 
-										    		<a href="#" style="font-size:small">삭제</a>
+										    		<a href="javascript:comModify('${id}','FRE', ${comment.FREECOMIDX}, ${status.index}, 'MOD')"
+										    			style="font-size:small">수정</a>&nbsp; 
+										    		<a href="javascript:comModify('${id}','FRE', ${comment.FREECOMIDX}, ${status.index}, 'DEL')"
+										    			style="font-size:small">삭제</a>
 												</c:if> 
 									    	</div>
 									    	<div>
-										    	<span class="text-subtitle text-muted">${comment.ID}</span>
+									    		 <c:forEach begin="1" end="${comment.RELEVEL}">
+									    			&nbsp;
+									    		</c:forEach>
+									    		<c:if test="${comment.RELEVEL>0}"><%-- 'ㄴ' 아님 특수문자 --%>
+									    			∟
+									    		</c:if>
+										    	<span class="text-subtitle text-muted" id="comID${status.index}">
+											    	<c:if test="${comment.ISDEL == 'N'}">
+											    		${comment.ID}
+											    	</c:if>
+											    	<c:if test="${comment.ISDEL == 'Y'}">
+											    		삭제
+											    	</c:if>
+										    	</span>
 										    	<p class="text-subtitle text-muted" style="font-size:x-small">${comment.FREECOMDATE}</p>
-	                                            <p class="card-text">${comment.CONTENT}</p>
+	                                            <p class="card-text" id="comCONTENT${status.index}">
+	                                            	<c:if test="${comment.ISDEL == 'N'}">
+	                                            		${comment.CONTENT}
+	                                            	</c:if>
+											    	<c:if test="${comment.ISDEL == 'Y'}">
+											    		삭제된 댓글입니다.
+											    	</c:if>
+	                                            </p>
 	                                        </div>
+											<div id="reForm${status.index}" class="col-12 mx-auto" style="display:none">
+					                            <div class="input-group mb-3">
+					                                <textarea class="form-control" id="reply${comment.FREECOMIDX}" placeholder="댓글을 입력해주세요"></textarea>
+													<%-- 비회원상태 --%>
+													<c:if test="${id == null}">
+					                                <button class="btn btn-outline-secondary" type="button"
+					                                    id="button-addon2"
+					                                    onClick="comWrite('비회원','FRE', '${freeDetail.FREEIDX}',
+					                                    	${comment.RETYPE eq 0 ? comment.FREECOMIDX : comment.RETYPE},
+					                                    	${comment.FREECOMIDX}, ${currentPage})">
+					                                    댓글입력</button>
+													</c:if>
+													<%-- 로그인상태 --%>
+													<c:if test="${id != null}">
+					                                <button class="btn btn-outline-secondary" type="button"
+					                                    id="button-addon2"
+					                                    onClick="comWrite('${id}','FRE', '${freeDetail.FREEIDX}',
+					                                    	 ${comment.RETYPE eq 0 ? comment.FREECOMIDX : comment.RETYPE},
+					                                    	 ${comment.FREECOMIDX}, ${currentPage})">
+					                                    댓글입력</button>
+													</c:if>
+													
+					                            </div>
+					                        </div>
 	                                    </td>
 									</tr>
 								</c:forEach>
@@ -203,14 +254,14 @@
 								<c:if test="${id == null}">
                                 <button class="btn btn-outline-secondary" type="button"
                                     id="button-addon2"
-                                    onClick="comWrite('비회원','FRE', '${freeDetail.FREEIDX}', 0)">
+                                    onClick="comWrite('비회원','FRE', '${freeDetail.FREEIDX}', 0, 0, ${currentPage})">
                                     댓글입력</button>
 								</c:if>
 								<%-- 로그인상태 --%>
 								<c:if test="${id != null}">
                                 <button class="btn btn-outline-secondary" type="button"
                                     id="button-addon2"
-                                    onClick="comWrite('${id}','FRE', '${freeDetail.FREEIDX}', 0)">
+                                    onClick="comWrite('${id}','FRE', '${freeDetail.FREEIDX}', 0, 0, ${currentPage})">
                                     댓글입력</button>
 								</c:if>
 								

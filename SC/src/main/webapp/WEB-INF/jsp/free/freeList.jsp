@@ -6,7 +6,7 @@
 <html>  
 <head>
 <meta charset="UTF-8">
-<title>freeList</title>
+<title>숏컷</title>
 </head>
 <body>
 

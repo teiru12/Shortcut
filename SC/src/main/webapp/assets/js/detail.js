@@ -373,24 +373,140 @@ function delArticle(delUrl, TYPE, IDX) {
 	});
 } 
 
-function comWrite(ID, TYPE, ARTICLEIDX, reType) { // reType : 0 이면 일반 댓글, reType 이 값을 가지면 해당 댓글 그룹 
+function comWrite(ID, TYPE, ARTICLEIDX, reType, COMIDX, currentPage) { // reType : 0 이면 일반 댓글, reType 이 값을 가지면 해당 댓글 그룹 
 
-	let comWriteUrl ="";
-	if(TYPE == 'SHO') {
-		comWriteUrl = "/SC/shortComWrite.cut";	
-	} else if(TYPE == 'FRE') {
-		comWriteUrl = "/SC/freeComWrite.cut";	
-	} else if(TYPE == 'INF') {
-		comWriteUrl = "/SC/infoComWrite.cut";
-	} else if(TYPE == 'REP') {
-		comWriteUrl = "/SC/reportComWrite.cut";
-	}		
-	let inputData ="";
-	
-	if(ID != '비회원') { // 로그인 회원이 댓글을 달 때
-		
+	let content = $('#reply').val().trim();
+	let	content2;
+	if($('#reply' + COMIDX).val() == null) {
+		content2 = "";
 	} else {
+		content2 = $('#reply' + COMIDX).val().trim();
+	}
+	
+	if(content == "" && content2 == "") {
+		swal({
+			title				: "본문을 입력해주세요.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});	
+	} else {
+		if(content =="") {
+			content = content2;
+		}
 		
+		let comWriteUrl ="";
+		if(TYPE == 'SHO') {
+			comWriteUrl = "/SC/shortComWrite.cut";	
+		} else if(TYPE == 'FRE') {
+			comWriteUrl = "/SC/freeComWrite.cut";	
+		} else if(TYPE == 'INF') {
+			comWriteUrl = "/SC/infoComWrite.cut";
+		} else if(TYPE == 'REP') {
+			comWriteUrl = "/SC/reportComWrite.cut";
+		}		
+		let inputData ="";
+		
+		if(ID != '비회원') { // 로그인 회원이 댓글을 달 때
+			inputData = {"ARTICLEIDX" : ARTICLEIDX, "CONTENT" : content , 'ID' : ID, "PASSWORD" : "", "RETYPE" : reType, "COMIDX" : COMIDX, "currentPage" : currentPage};
+			
+			comWriteProcess(comWriteUrl, inputData);
+		} else {
+			/* 비밀번호 입력 */
+			swal({
+				title				: '비밀번호 입력',
+				dangerMode			: true, // 확인 버튼 빨갛게
+				closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+				content				: {
+					element : 'input',
+					attributes : {
+						placeholder : '비밀번호를 입력해주세요.',
+						type : 'password'					
+					}
+				},
+				buttons				: {
+					confirm : {
+						text 		: '확인',
+						value 		: false,
+						className 	: 'btn btn-outline-primary' 
+					}
+				}
+			}).then((result) => { // result : 입력한 비밀번호
+			
+				if(result == null || result == "") {
+					swal({
+						title				: "비밀번호를 입력해주세요.",
+						closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+						buttons				: {
+							confirm : {
+								text 		: '확인',
+								value 		: true,
+								className 	: 'btn btn-primary' 
+							}
+						}
+					});	
+				} else {
+					inputData = {"ARTICLEIDX" : ARTICLEIDX, "CONTENT" : content , 'ID' : '비회원', "PASSWORD" : result, "RETYPE" : reType, "COMIDX" : COMIDX, "currentPage" : currentPage};						
+		
+					comWriteProcess(comWriteUrl, inputData);				
+				}
+			});
+		}		
+	}
+}
+
+function comWriteProcess(comWriteUrl, inputData) {
+	$.ajax({
+		url 		: comWriteUrl,
+		data		: inputData,
+		contentType	: "application/json",
+		success		: function(data) {
+			// 게시글 내의 댓글 리스트 새로 구성
+			$('#comDiv').remove();
+			$('#comBody').append(data.newComList);		
+			
+			$("#pageBody").remove();
+			$("#pagination").append(data.newComPage);
+			
+			// 입력창 초기화
+			$('#reply').val("");
+		}				
+	});	
+}
+
+function comModify(ID, TYPE, COMIDX, index, MODDEL){
+	
+	let comModifyUrl ="";
+	if(MODDEL == 'MOD') {
+		if(TYPE == 'SHO') {
+			comModifyUrl = "/SC/shortComModify.cut";	
+		} else if(TYPE == 'FRE') {
+			comModifyUrl = "/SC/freeComModify.cut";	
+		} else if(TYPE == 'INF') {
+			comModifyUrl = "/SC/infoComModify.cut";
+		} else if(TYPE == 'REP') {
+			comModifyUrl = "/SC/reportComModify.cut";
+		}
+	} else {
+		if(TYPE == 'SHO') {
+			comModifyUrl = "/SC/shortComDelete.cut";	
+		} else if(TYPE == 'FRE') {
+			comModifyUrl = "/SC/freeComDelete.cut";	
+		} else if(TYPE == 'INF') {
+			comModifyUrl = "/SC/infoComDelete.cut";
+		} else if(TYPE == 'REP') {
+			comModifyUrl = "/SC/reportComDelete.cut";
+		}
+	}
+	
+	if(ID != '비회원') { // 로그인 회원이 댓글을 수정할 때
+		comModifyProcess(comModifyUrl, COMIDX, index, MODDEL);
+	} else {
 		/* 비밀번호 입력 */
 		swal({
 			title				: '비밀번호 입력',
@@ -411,30 +527,141 @@ function comWrite(ID, TYPE, ARTICLEIDX, reType) { // reType : 0 이면 일반 �
 				}
 			}
 		}).then((result) => { // result : 입력한 비밀번호
-			
-			let content = $('#reply').val();
-			inputData = {"ARTICLEIDX" : ARTICLEIDX, "CONTENT" : content , 'ID' : '비회원', "PASSWORD" : result, "RETYPE" : 0};
-			
-			// 게시판의 게시글의 비밀번호를 읽어온다.
-			$.ajax({
-				url 		: comWriteUrl,
-				data		: inputData, 
-				contentType	: "application/json",
-				success		: function(data) {
-					
-					alert("댓글 달기 성공");
-					
-					// 댓글 입력 작업 시작
-					
-					
-					
-					
-					
-					
-					
-				}				
-			});	
+		
+			if(result == null || result == "") {
+				swal({
+					title				: "비밀번호를 입력해주세요.",
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				});	
+			} else {
+				/* 비밀번호가 일치하는지 검사 */
+				let passUrl ="";
+				if(TYPE == 'SHO') {	
+					passUrl = "/SC/shortComPassword.cut";	
+				} else if(TYPE == 'FRE') {
+					passUrl = "/SC/freeComPassword.cut";		
+				} else if(TYPE == 'INF') {
+					passUrl = "/SC/infoComPassword.cut";	
+				} else if(TYPE == 'REP') {
+					passUrl = "/SC/reportComPassword.cut";	
+				}	
+				$.ajax({
+					url 		: passUrl,
+					data		: {"COMIDX" : COMIDX},
+					contentType	: "application/json",
+					success		: function(data) {
+						if(data == result) { // 비밀번호가 일치 수정 프로세스
+							comModifyProcess(comModifyUrl, COMIDX, index, MODDEL);		
+						} else { // 비밀번호가 일치하지 않음
+							swal({
+								title				: "비밀번호가 일치하지 않습니다.",
+								closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+								buttons				: {
+									confirm : {
+										text 		: '확인',
+										value 		: true,
+										className 	: 'btn btn-primary' 
+									}
+								}
+							});	
+						}
+					}
+				});	
+			}
 		});
 	}
-	
 }
+
+function comModifyProcess(comModifyUrl, COMIDX, index, MODDEL) {
+	if(MODDEL == 'MOD') {
+		swal({
+			title				: '댓글 수정',
+			dangerMode			: true, // 확인 버튼 빨갛게
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			content				: {
+				element : 'input',
+				attributes : {
+					placeholder : '댓글을 입력해주세요.',
+					type : 'text'					
+				}
+			},
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: false,
+					className 	: 'btn btn-outline-primary' 
+				}
+			}
+		}).then((result) => { // result : 입력한 댓글
+			if(result.trim() == ""){
+				swal({
+					title				: "댓글을 입력해주세요",
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				});	
+			} else {
+				$.ajax({
+					url 		: comModifyUrl,
+					data		: {"COMIDX" : COMIDX, "CONTENT" : result},
+					contentType	: "application/json",
+					success		: function(data) {
+						// 수정 후 내용 반영
+						$('#comCONTENT' + index).html(result);
+					},
+				});				
+			}
+	
+		});
+	} else {
+		swal({
+			title				: '삭제하시겠습니까?',
+			dangerMode			: true, // 확인 버튼 빨갛게
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				cancle : {
+					text 		: '취소',
+					value 		: false,
+					className 	: 'btn btn-primary' 
+				},
+				confirm : {
+					text 		: '삭제',
+					value 		: true,
+					className 	: 'btn btn-outline-primary' 
+				}
+			}	
+		}).then((result) => {
+			if(result) {
+				/* 뎃글 삭제 */
+				$.ajax({
+					url 		: comModifyUrl,
+					data		: {"COMIDX" : COMIDX},
+					contentType	: "application/json",
+					success		: function(data) {
+	
+						/* 삭제 후 게시판 제목 내용 삭제함으로 변경 */
+						$('#comID' + index).html("삭제");
+						$('#comCONTENT' + index).html("삭제된 댓글입니다.");
+					}	
+				});
+			}
+		});
+	}
+}
+
+/* 대댓글 클릭시 숨겨진 입력폼 보이기 */
+function openComWriteForm(index) {
+	$('#reForm'+index).css("display", "block");
+}	

@@ -74,9 +74,7 @@ public class FreeDAO {
 		sqlSessionTemplate.update("free.updateFreeBad", FREEIDX);
 	}
 	
-	
-//자유 게시판 댓글
-
+	//자유 게시판 댓글
 	/*자유 게시판 댓글 리스트 페이징 BY 게시글번호*/
 	public List<FreeCom> freeListComPagingByFreeIDX(Map<String, Object> map) throws Exception {
 		return sqlSessionTemplate.selectList("free.freeListComPagingByFreeIDX", map);
@@ -88,13 +86,33 @@ public class FreeDAO {
 	}
 	
 	/*자유 게시판 댓글 입력 BY 게시글번호*/
-	public void insertFreeListComByFreeIDX(Free free) throws Exception {
-		sqlSessionTemplate.insert("free.insertFreeListComByFreeIDX", free);
+	public void insertFreeListComByFreeIDX(FreeCom freeCom) throws Exception {
+		sqlSessionTemplate.insert("free.insertFreeListComByFreeIDX", freeCom);
+	}
+	
+	/*자유 게시판 대댓글이 아닌 댓글 입력 BY 게시글번호*/
+	public void insertFreeListFirstComByFreeIDX(FreeCom freeCom) throws Exception {
+		sqlSessionTemplate.insert("free.insertFreeListFirstComByFreeIDX", freeCom);
+	}
+	
+	/*다음 RESTEP값을 찾음*/
+	public Object nextReStep(Map<String, Object> map) throws Exception {
+		return sqlSessionTemplate.selectOne("free.nextReStep", map);
+	}
+	
+	/*자유 게시판 댓글 하나의 정보 BY FREECOMIDX*/
+	public FreeCom selectFreeCom(int FREECOMIDX) throws Exception {
+		return sqlSessionTemplate.selectOne("free.selectFreeCom", FREECOMIDX);
+	}
+	
+	/*RETYPE이 같은 입력받은 RESTEP값보다 같거나 큰 모든 댓글들의 RESTEP을 1씩 증가*/
+	public void increaseReStepEqAndGreater(Map<String, Object> map) throws Exception {
+		sqlSessionTemplate.update("free.increaseReStepEqAndGreater", map);
 	}
 	
 	/*자유 게시판 댓글 수정 BY 게시글번호*/
-	public void updateFreeListComByFreeIDX(Free free) throws Exception {
-		sqlSessionTemplate.update("free.updateFreeListComByFreeIDX", free);
+	public void updateFreeListComByFreeIDX(FreeCom freeCom) throws Exception {
+		sqlSessionTemplate.update("free.updateFreeListComByFreeIDX", freeCom);
 	}
 	
 	/*자유 게시판 댓글 수정 (삭제) BY 게시글번호*/

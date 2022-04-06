@@ -40,9 +40,7 @@ public interface FreeService {
 	/*자유 게시판 싫어요*/
 	public void updateFreeBad(int FREEIDX) throws Exception;
 	
-	
-//자유 게시판 댓글
-
+	//자유 게시판 댓글
 	/*자유 게시판 댓글 리스트 페이징 BY 게시글번호*/
 	public List<FreeCom> freeListComPagingByFreeIDX(int START, int END, int FREEIDX) throws Exception;
 	
@@ -50,10 +48,22 @@ public interface FreeService {
 	public int countFreeComByFreeIDX(int FREEIDX) throws Exception;
 	
 	/*자유 게시판 댓글 입력 BY 게시글번호*/
-	public void insertFreeListComByFreeIDX(Free free) throws Exception;
+	public void insertFreeListComByFreeIDX(FreeCom freeCom) throws Exception;
+	
+	/*자유 게시판 대댓글이 아닌 댓글 입력 BY 게시글번호*/
+	public void insertFreeListFirstComByFreeIDX(FreeCom freeCom) throws Exception;
+	
+	/*다음 RESTEP값을 찾음*/
+	public int nextReStep(int RETYPE, int RELEVEL, int PCOMIDX, int ARTICLEIDX) throws Exception;
+
+	/*자유 게시판 댓글 하나의 정보 BY FREECOMIDX*/
+	public FreeCom selectFreeCom(int FREECOMIDX) throws Exception;
+	
+	/*RETYPE이 같은 입력받은 RESTEP값보다 같거나 큰 모든 댓글들의 RESTEP을 1씩 증가*/
+	public void increaseReStepEqAndGreater(int RESTEP, int RETYPE, int ARTICLEIDX) throws Exception;
 	
 	/*자유 게시판 댓글 수정 BY 게시글번호*/
-	public void updateFreeListComByFreeIDX(Free free) throws Exception;
+	public void updateFreeListComByFreeIDX(FreeCom freeCom) throws Exception;
 	
 	/*자유 게시판 댓글 수정 (삭제) BY 게시글번호*/
 	public void updateFreeListComDelByFreeIDX(int FREECOMIDX) throws Exception;
