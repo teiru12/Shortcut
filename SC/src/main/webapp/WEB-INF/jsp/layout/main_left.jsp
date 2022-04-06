@@ -1,23 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <head>
-<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-<script>
-/* $('#btn').click(function(e) {
-	
-	let word = $("#word").val();
-	
-	let url = 'https://www.google.com/search?q='+word;
-	window.open(url);
-})
-  
-$("#word").keydown(function(key) {
-	if (key.keyCode == 13) {
-		$("#btn").click();
-	}
-}); */
-</script>
 </head>
 <div id="sidebar" class="active">
 	<div class="sidebar-wrapper active">
@@ -40,7 +23,7 @@ $("#word").keydown(function(key) {
 					<div class="col-12">
 				         <form method=get action="http://www.google.co.kr/search" target="_blank" >   
 				         	<div class="input-group mb-3">
-				         		<input type=text class="form-control" name=q size=25 maxlength=255 value="" /> <!-- 구글 검색 입력 창 --> 
+				         		<input type=text class="form-control" name=q size=25 maxlength=255 value="" placeholder="구글 검색"/> <!-- 구글 검색 입력 창 --> 
 				         		<button type="submit" id="btn" name=btnG class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></button>
 				         	</div>
 				         </form>
