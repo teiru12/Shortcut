@@ -89,9 +89,9 @@
 			#{CONTENT},
 			SYSDATE,
 			#{ID},
-			#{IP},
-			#{PASSWORD},
-			'N'
+			#{IP, jdbcType = VARCHAR},
+			#{PASSWORD, jdbcType = VARCHAR},
+			'N',
 			0,
 			0,
 			0

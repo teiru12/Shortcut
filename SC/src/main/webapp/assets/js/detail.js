@@ -174,11 +174,11 @@ function modifyDetailCheck(memberCheck, TYPE, IDX) {
 	/* 회원일 경우 바로 리다이렉트 */
 	if(memberCheck == 'member') {
 		if(TYPE == 'FRE') {
-			location.href = "/SC/freeModifyForm.cut";	
+			location.href = "/SC/freeModifyForm.cut?IDX="+IDX;	
 		} else if(TYPE == 'INF') {
-			location.href = "/SC/infoModifyForm.cut";
+			location.href = "/SC/infoModifyForm.cut?IDX="+IDX;
 		} else if(TYPE == 'NEW') {
-			location.href = "/SC/newsModifyForm.cut";
+			location.href = "/SC/newsModifyForm.cut?IDX="+IDX;
 		}		
 	/* 비회원일 경우 패스워드 검사 */
 	} else {
@@ -220,11 +220,11 @@ function modifyDetailCheck(memberCheck, TYPE, IDX) {
 				success		: function(data) {
 					if(result == data) { // 패스워드가 일치
 						if(TYPE == 'FRE') {
-							location.href = "/SC/freeModifyForm.cut";	
+							location.href = "/SC/freeModifyForm.cut?IDX="+IDX;	
 						} else if(TYPE == 'INF') {
-							location.href = "/SC/infoModifyForm.cut";
+							location.href = "/SC/infoModifyForm.cut?IDX="+IDX;
 						} else if(TYPE == 'NEW') {
-							location.href = "/SC/newsModifyForm.cut";
+							location.href = "/SC/newsModifyForm.cut?IDX="+IDX;
 						}							
 					} else { // 패스워드가 일치하지 않음
 						swal({
