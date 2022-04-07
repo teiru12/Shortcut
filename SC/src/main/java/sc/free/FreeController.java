@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import sc.bookmark.BookmarkService;
 import sc.goodbad.GoodbadService;
+import sc.member.MemberService;
 import sc.model.Bookmark;
 import sc.model.Free;
 import sc.model.FreeCom;
 import sc.model.Goodbad;
+import sc.model.Member;
 import sc.model.Notice;
 import sc.notice.NoticeService;
 import sc.util.GetIP;
@@ -33,6 +35,9 @@ public class FreeController {
 	
 	@Resource(name = "noticeService")
 	private NoticeService noticeService;
+	
+	@Resource(name = "memberService")
+	private MemberService memberService;
 	
 	@Resource(name = "goodbadService")
 	private GoodbadService goodbadService;
@@ -97,6 +102,71 @@ public class FreeController {
 		
 		return "freeList";
 	}	
+	
+	@RequestMapping(value = "freeWrite.cut")
+	@ResponseBody
+	public Map<String,String> freeWrite(String TITLE, String CONTENT,String PASSWORD, HttpServletRequest request) throws Exception{
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		Free free = new Free();
+		String ID;
+		String password;
+		String ip;
+		  
+		if(request.getSession().getAttribute("id") == null ) {//비회원일때
+			ID = "비회원";
+			password = PASSWORD;
+			ip = GetIP.get(request);
+		}else {//회원일때
+			ID = (String)request.getSession().getAttribute("id");
+			password = null;
+			ip = null;
+		  }
+			
+		free.setID(ID);
+		free.setPASSWORD(password);
+		free.setIP(ip);
+		free.setTITLE(TITLE);
+		free.setCONTENT(CONTENT);
+		
+		freeService.insertFreeList(free);
+		
+		msg.put("ID", ID);
+		
+		return msg;
+	}
+	
+	@RequestMapping(value = "freeWriteForm.cut")
+	public String freeWriteForm(Model model) throws Exception{
+		
+		return "freeWriteForm";
+	}
+	
+	@RequestMapping(value = "freeModify.cut")
+	@ResponseBody
+	public Map<String, String> freeModify(String TITLE, String CONTENT,int IDX, HttpServletRequest request) throws Exception{
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		Free free = new Free();
+		
+		free.setFREEIDX(IDX);
+		free.setTITLE(TITLE);
+		free.setCONTENT(CONTENT);
+		
+		freeService.updateFreeList(free);
+		
+		return msg;
+	}
+	
+	@RequestMapping(value = "freeModifyForm.cut")
+	public String freeModifyForm(HttpServletRequest request,Model model) throws Exception{
+		int IDX = Integer.parseInt(request.getParameter("IDX"));
+		
+		Free free = freeService.selectFreeIDX(IDX);
+		model.addAttribute("free",free);
+		
+		return "freeModifyForm";
+	}
 	
 	@RequestMapping(value = "freeDetail.cut")
 	public String freeDetail(int FREEIDX, Free free, FreeCom freeCom, Model model, HttpServletRequest request) throws Exception {
