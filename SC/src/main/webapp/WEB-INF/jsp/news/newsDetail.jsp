@@ -141,7 +141,7 @@
 						<a href="/SC/newsList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
 
 						<!-- 로그인상태 -->
-						<c:if test="${id == freeDetail.ID}"> 
+						<c:if test="${id == newsDetail.ID}"> 
 							<a href="javascript:modifyDetailCheck('member', 'NEW', ${newsDetail.NEWSIDX})" class="btn btn-sm btn-outline-secondary">수정하기</a>
 							<a href="javascript:deleteDetailCheck('member', 'NEW', ${newsDetail.NEWSIDX})" class="btn btn-sm btn-outline-secondary">삭제하기</a>
 						</c:if>
