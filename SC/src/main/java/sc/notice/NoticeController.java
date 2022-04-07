@@ -1,7 +1,9 @@
 package sc.notice;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -9,9 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import sc.bookmark.BookmarkService;
 import sc.goodbad.GoodbadService;
+import sc.model.Bookmark;
+import sc.model.Goodbad;
 import sc.model.Notice;
 import sc.util.Paging;
 
@@ -65,5 +70,71 @@ public class NoticeController {
 		
 		return "noticeList";
 	}	
+	
+	@RequestMapping(value = "noticeDetail.cut")
+	public String noticeDetail(int NOTICEIDX, Notice notice, Model model, HttpServletRequest request) throws Exception {
+		
+		String id = (String) request.getSession().getAttribute("id");
+
+		/* 조회수 증가 */
+		noticeService.updateNoticeReadcount(NOTICEIDX);		
+		
+		/* 게시글 상세 정보 읽어옴 */
+		Notice noticeDetail = noticeService.selectNoticeIDX(NOTICEIDX);
+		
+		/* 좋아요 싫어요를 했는지, 즐겨찾기를 했는지 여부 검사 */
+		Goodbad gb = new Goodbad();
+		Bookmark bk = new Bookmark();
+		if(id != null) {
+			gb = goodbadService.selectGoodbad(id, "NOT", NOTICEIDX);
+			bk = bookmarkService.selectBookmark(id, "NOT", NOTICEIDX);
+		}
+		
+		model.addAttribute("noticeDetail", noticeDetail);
+		/* 좋아요/싫어요가 있을 경우 모델에 삽입 */
+		if(id != null && gb != null) {
+			model.addAttribute("goodUsed", gb.getGOOD());
+			model.addAttribute("badUsed", gb.getBAD());
+		}
+		/* 즐겨찾기가 있을 경우 모델에 삽입 */
+		if(id !=null && bk != null) {
+			model.addAttribute("bookmark", bk);
+		}
+		
+		return "noticeDetail";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/noticeDelete.cut")
+	public Map<String, String> noticeDelete(int IDX) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		
+		// 공지게시판의 게시글 삭제 : ISDEL을 'Y'로 변환
+		noticeService.updateNoticeListDel(IDX);
+		
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/noticeGood.cut")
+	public Map<String, String> noticeGood(int IDX) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		
+		// 공지게시판의 IDX의 게시글의 좋아요 1 증가
+		noticeService.updateNoticeGood(IDX);
+		
+		return map;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/noticeBad.cut")
+	public Map<String, String> noticeBad(int IDX) throws Exception {
+		Map<String, String> map = new HashMap<String, String>();
+		
+		// 공지게시판의 IDX의 게시글의 싫어요 1 증가
+		noticeService.updateNoticeBad(IDX);
+		
+		return map;
+	}
 	
 }

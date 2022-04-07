@@ -86,6 +86,26 @@ public class InfoDAO {
 		sqlSessionTemplate.insert("info.insertInfoListComByInfoIDX", infoCom);
 	}
 	
+	/* 정보교류  게시판 대댓글이 아닌 댓글 입력 BY 게시글번호*/
+	public void insertInfoListFirstComByInfoIDX(InfoCom infoCom) throws Exception {
+		sqlSessionTemplate.insert("info.insertInfoListFirstComByInfoIDX", infoCom);
+	}
+	
+	/* 다음 RESTEP값을 찾음*/
+	public Object nextReStep(Map<String, Object> map) throws Exception {
+		return sqlSessionTemplate.selectOne("info.nextReStep", map);
+	}
+	
+	/* 정보교류  게시판 댓글 하나의 정보 BY INFOCOMIDX*/
+	public InfoCom selectInfoCom(int INFOCOMIDX) throws Exception {
+		return sqlSessionTemplate.selectOne("info.selectInfoCom", INFOCOMIDX);
+	}
+	
+	/* RETYPE이 같은 입력받은 RESTEP값보다 같거나 큰 모든 댓글들의 RESTEP을 1씩 증가*/
+	public void increaseReStepEqAndGreater(Map<String, Object> map) throws Exception {
+		sqlSessionTemplate.update("info.increaseReStepEqAndGreater", map);
+	}
+	
 	/* 정보교류 게시판 댓글 수정 BY 게시글번호 */
 	public void updateInfoListComByInfoIDX(InfoCom infoCom) throws Exception {
 		sqlSessionTemplate.update("info.updateInfoListComByInfoIDX", infoCom);
