@@ -97,4 +97,66 @@ public class CalculateExp {
 			nextExp = 0 - exp;		
 		}
 	}
+	
+	public static int levelToMinExp(int level) {
+		switch(level) {
+			case 0:
+				return -100; 				
+			case 1:
+				return 0;
+			case 2:
+				return 11;
+			case 3:
+				return 21;
+			case 4:
+				return 41; 
+			case 5:
+				return 81;
+			case 6:
+				return 161;
+			case 7:
+				return 321; 
+			case 8:
+				return 641;
+			case 9:
+				return 1281;
+			case 10:
+				return 2561;
+			case 11:
+				return 5121; 			
+			default:
+				return -50000;				
+		}		
+	}
+	
+	public static int levelToMaxExp(int level) {
+		switch(level) {
+			case 0:
+				return -1; 				
+			case 1:
+				return 10;
+			case 2:
+				return 20;
+			case 3:
+				return 40;
+			case 4:
+				return 80; 
+			case 5:
+				return 160;
+			case 6:
+				return 320;
+			case 7:
+				return 640; 
+			case 8:
+				return 1280;
+			case 9:
+				return 2560;
+			case 10:
+				return 5120;
+			case 11:
+				return 10240; 			
+			default:
+				return 50000;				
+		}		
+	}
 }

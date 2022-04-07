@@ -65,7 +65,7 @@ public class MemberDAO {
 		return sqlSessionTemplate.selectList("member.memberListSearchPaging", map);
 	}
 	
-	/* 회원 정보 검색 페이징 */
+	/* 회원 정보 검색 페이징 카운트*/
 	public int countMemberSearch(Map<String, Object> map) throws Exception{
 		return sqlSessionTemplate.selectOne("member.countMemberSearch", map);
 	}

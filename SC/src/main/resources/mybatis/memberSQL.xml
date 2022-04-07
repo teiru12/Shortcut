@@ -41,16 +41,24 @@
 
 	<!-- 회원 상태 수정 (활동, 정지, 삭제) 추가 - 관리자용/탈퇴 - 일반회원 -->
 	<update id="updateMemberStatus" parameterType="sc.model.Member">
+	<![CDATA[
 		UPDATE
 			MEMBER
 		SET
 			PASSWORD = #{PASSWORD},
 			NAME = #{NAME},
 			NICKNAME = #{NICKNAME},
+	]]>		
+		<if test="PROFILE != null">
+			<![CDATA[
 			PROFILE = #{PROFILE},
+			]]>
+		</if>
+	<![CDATA[
 			STATUS = #{STATUS}
 		WHERE
 			MEMIDX = #{MEMIDX}
+	]]>
 	</update>
 
 	<!-- 테스트 -->
@@ -151,6 +159,7 @@
 
 	<!-- 회원 정보 검색 페이징 -->
 	<select id="memberListSearchPaging" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
 		SELECT
 			* 
 		FROM (
@@ -161,44 +170,81 @@
 					MEMIDX, ID, PASSWORD, EMAIL, NAME, NICKNAME, EXP, PROFILE, STATUS
 				FROM
 					MEMBER
-				<trim prefix="WHERE" prefixOverrides="OR">
-					<!-- 아이디 검색 : 검색어 입력 -->
-					<if test="KEYWORD != NULL">
-						ID LIKE '%'||#{KEYWORD}||'%'
-					</if>
-					<!-- 레벨범위 : 최소레벨 EXP, 최대레벨 EXP-->
-					<if test="MINEXP!=NULL">
-						EXP BETWEEN #{MINEXP} AND #{MAXEXP}
-					</if>
-					<!-- 회원 상태 : 체크박스로 선택 -->
-					<if test="STON != NULL">
-						STATUS = 'ON'
-					</if>
-					<if test="STOFF != NULL">	
-						OR STATUS = 'OFF'
-					</if>
-					<if test="STDEL != NULL">
-						OR STATUS = 'DEL'
-					</if>				
-				</trim>		
+				WHERE ID LIKE '%'||#{KEYWORD}||'%'
+	]]>
+				
+				<choose>
+						<when test='STATUS == "ON"'>
+						<![CDATA[
+							AND STATUS = 'ON'
+						]]>
+						</when>
+						<when test='STATUS == "OFF"'>
+						<![CDATA[
+							AND STATUS = 'OFF'
+						]]>
+						</when>
+						<when test='STATUS == "DEL"'>
+						<![CDATA[
+							AND STATUS = 'DEL'
+						]]>
+						</when>
+						<when test='STATUS == "STAY"'>
+						<![CDATA[
+							AND STATUS = 'STAY'
+						]]>
+						</when>
+						<otherwise>
+						<![CDATA[
+							 
+						]]>
+						</otherwise>
+				</choose>
+				<if test="LEVEL1 != null and LEVEL2 != null">
+				<![CDATA[
+					AND EXP BETWEEN #{LEVEL1} AND #{LEVEL2} 
+				]]>
+				</if>		
+				<if test="LEVEL1 == null and LEVEL2 != null">
+				<![CDATA[
+					AND EXP <= #{LEVEL2} 
+				]]>
+				</if>		
+				<if test="LEVEL1 != null and LEVEL2 == null">
+				<![CDATA[
+					AND EXP >= #{LEVEL1} 
+				]]>
+				</if>		
 				<if test="MINEXP!=NULL">
+				<![CDATA[
 					ORDER BY EXP
+				]]>
 				</if>
 				<if test="MINEXP==NULL">
+				<![CDATA[
 					ORDER BY MEMIDX DESC
+				]]>
 				</if>
+		<![CDATA[
 			)
 		)
 		WHERE 
 			R between #{START} and #{END}	
+		]]>
 		<if test="ORDER!=NULL and ORDER.equals('IDX')">
+		<![CDATA[
 			ORDER BY MEMIDX
+		]]>
 		</if>
 		<if test="ORDER!=NULL and ORDER.equals('EXPASC')">
+		<![CDATA[
 			ORDER BY EXP
+		]]>
 		</if>
 		<if test="ORDER!=NULL and ORDER.equals('EXPDESC')">
+		<![CDATA[
 			ORDER BY EXP DESC
+		]]>
 		</if>
 	</select>
 
@@ -208,24 +254,27 @@
 			COUNT(*)
 		FROM
 			MEMBER
-		<trim prefix="WHERE" prefixOverrides="OR">
+		<trim prefix="WHERE">
 			<!-- 아이디 검색 : 검색어 입력 -->
 			<if test="KEYWORD != NULL">
 				ID LIKE '%'||#{KEYWORD}||'%'
 			</if>
-			<!-- 레벨범위 : 최소레벨 EXP, 최대레벨 EXP-->
+			<!-- 레벨범위 : 최소레벨 EXP, 최대레벨 EXP -->
 			<if test="MINEXP!=NULL">
-				EXP BETWEEN #{MINEXP} AND #{MAXEXP}
+				AND EXP BETWEEN #{LEVEL1} AND #{LEVEL2}
 			</if>
 			<!-- 회원 상태 : 체크박스로 선택 -->
-			<if test="STON != NULL">
-				STATUS = 'ON'
+			<if test="STATUS == 'ON'">
+				AND STATUS = 'ON'
 			</if>
-			<if test="STOFF != NULL">	
-				OR STATUS = 'OFF'
+			<if test="STATUS == 'OFF'">	
+				AND STATUS = 'OFF'
 			</if>
-			<if test="STDEL != NULL">
-				OR STATUS = 'DEL'
+			<if test="STATUS == 'DEL'">
+				AND STATUS = 'DEL'
+			</if>				
+			<if test="STATUS == 'STAY'">
+				AND STATUS = 'STAY'
 			</if>				
 		</trim>
 	</select>

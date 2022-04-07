@@ -67,14 +67,15 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public List<Map<String, Object>> memberListSearchPaging(int START, int END, int MINEXP, int MAXEXP, String KEYWORD) throws Exception {
+	public List<Map<String, Object>> memberListSearchPaging(int START, int END, int MINEXP, int MAXEXP, String KEYWORD, String STATUS) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("START", START);
 		map.put("END", END);
-		map.put("MINEXP", MINEXP);
-		map.put("MAXEXP", MAXEXP);
+		map.put("LEVEL1", MINEXP);
+		map.put("LEVEL2", MAXEXP);
 		map.put("KEYWORD", KEYWORD);
+		map.put("STATUS", STATUS);
 		
 		return memberDAO.memberListSearchPaging(map);
 	}
