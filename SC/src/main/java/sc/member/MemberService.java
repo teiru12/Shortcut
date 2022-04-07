@@ -25,7 +25,7 @@ public interface MemberService {
 	
 	public int countMember() throws Exception;
 
-	public List<Map<String, Object>> memberListSearchPaging(int START, int END, int MINEXP, int MAXEXP, String KEYWORD) throws Exception;
+	public List<Map<String, Object>> memberListSearchPaging(int START, int END, int MINEXP, int MAXEXP, String KEYWORD, String STATUS) throws Exception;
 	
 	public int countMemberSearch(Map<String, Object> map) throws Exception;
 	
