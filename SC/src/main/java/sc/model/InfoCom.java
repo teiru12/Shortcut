@@ -13,6 +13,7 @@ public class InfoCom {
 	private int RETYPE;
 	private int RESTEP;
 	private int RELEVEL;
+	private int PCOMIDX;
 	private String ISDEL;
 	
 	public int getINFOCOMIDX() {
@@ -80,5 +81,11 @@ public class InfoCom {
 	}
 	public void setISDEL(String iSDEL) {
 		ISDEL = iSDEL;
+	}
+	public int getPCOMIDX() {
+		return PCOMIDX;
+	}
+	public void setPCOMIDX(int pCOMIDX) {
+		PCOMIDX = pCOMIDX;
 	}
 }
