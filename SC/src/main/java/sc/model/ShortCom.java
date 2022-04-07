@@ -11,6 +11,11 @@ public class ShortCom {
 	private String ID;
 	private String IP;
 	private String PASSWORD;
+	private int RETYPE;
+	private int RESTEP;
+	private int RELEVEL;
+	private int PCOMIDX;
+	private String ISDEL;
 	
 	public int getSHORTCOMIDX() {
 		return SHORTCOMIDX;
@@ -53,5 +58,35 @@ public class ShortCom {
 	}
 	public void setPASSWORD(String pASSWORD) {
 		PASSWORD = pASSWORD;
+	}
+	public int getRETYPE() {
+		return RETYPE;
+	}
+	public void setRETYPE(int rETYPE) {
+		RETYPE = rETYPE;
+	}
+	public int getRESTEP() {
+		return RESTEP;
+	}
+	public void setRESTEP(int rESTEP) {
+		RESTEP = rESTEP;
+	}
+	public int getRELEVEL() {
+		return RELEVEL;
+	}
+	public void setRELEVEL(int rELEVEL) {
+		RELEVEL = rELEVEL;
+	}
+	public int getPCOMIDX() {
+		return PCOMIDX;
+	}
+	public void setPCOMIDX(int pCOMIDX) {
+		PCOMIDX = pCOMIDX;
+	}
+	public String getISDEL() {
+		return ISDEL;
+	}
+	public void setISDEL(String iSDEL) {
+		ISDEL = iSDEL;
 	}
 }

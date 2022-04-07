@@ -230,15 +230,15 @@
 			* 
 		FROM (
 			SELECT
-				SHORTCOMIDX, SHORTIDX, CONTENT, SHORTCOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, ISDEL, ROWNUM R
+				SHORTCOMIDX, SHORTIDX, CONTENT, SHORTCOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, PCOMIDX, ISDEL, ROWNUM R
 			FROM (
 				SELECT 
-					SHORTCOMIDX, SHORTIDX, CONTENT, SHORTCOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, ISDEL
+					SHORTCOMIDX, SHORTIDX, CONTENT, SHORTCOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, PCOMIDX, ISDEL
 				FROM
 					SHORTCOM
 				WHERE 
 					SHORTIDX = #{SHORTIDX}
-				ORDER BY SHORTCOMIDX DESC
+				ORDER BY RETYPE, RESTEP
 			)
 		)
 		WHERE 
@@ -269,15 +269,81 @@
 			#{CONTENT},
 			SYSDATE,
 			#{ID},
-			#{IP},
-			#{PASSWORD},
+			#{IP, jdbcType = VARCHAR},
+			#{PASSWORD, jdbcType = VARCHAR},
 			#{RETYPE},
 			#{RESTEP},
 			#{RELEVEL},
+			#{PCOMIDX},
 			'N'
 		)
 	]]>
 	</insert>
+	
+	<!-- 단축키 게시판 대댓글이 아닌 댓글 입력 BY 게시글번호 -->
+	<insert id="insertShortListFirstComByShortIDX" parameterType="sc.model.ShortCom">
+		INSERT INTO
+			SHORTCOM
+		VALUES(
+			SHORTCOMIDX_SEQ.NEXTVAL,
+			#{SHORTIDX},
+			#{CONTENT},
+			SYSDATE,
+			#{ID},
+			#{IP, jdbcType = VARCHAR},
+			#{PASSWORD, jdbcType = VARCHAR},
+			SHORTCOMIDX_SEQ.CURRVAL,
+			#{RESTEP},
+			#{RELEVEL},
+			SHORTCOMIDX_SEQ.CURRVAL,
+			'N'
+		)
+	</insert>
+	
+	<!-- 다음 RESTEP값을 찾음 -->
+	<select id="nextReStepShort" parameterType="hashmap" resultType="int">
+	<![CDATA[
+		SELECT
+			MAX(RESTEP)
+		FROM
+			SHORTCOM
+		WHERE
+			RETYPE = #{RETYPE}
+			AND
+			RELEVEL = #{RELEVEL}
+			AND
+			PCOMIDX = #{PCOMIDX}
+			AND
+			SHORTIDX = #{SHORTIDX}
+	]]>
+	</select>
+	
+	<!-- 단축키 게시판 댓글 하나의 정보 BY SHORTCOMIDX -->
+	<select id="selectShortCom" parameterType="int" resultType="sc.model.ShortCom">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			SHORTCOM
+		WHERE
+			SHORTCOMIDX = #{SHORTCOMIDX}
+	]]>      
+	</select>
+	
+	<!-- RETYPE이 같은 입력받은 RESTEP값보다 같거나 큰 모든 댓글들의 RESTEP을 1씩 증가 -->
+	<update id="increaseReStepEqAndGreaterShort" parameterType="hashmap">
+		UPDATE
+			SHORTCOM
+		SET
+			RESTEP = RESTEP + 1
+		WHERE
+			RESTEP >= #{RESTEP}	
+			AND
+			RETYPE = ${RETYPE}
+			AND
+			SHORTIDX = #{SHORTIDX}
+	</update>
+	
 
 	<!-- 단축키 게시판 댓글 수정 BY 게시글번호 -->
 	<update id="updateShortListComByShortIDX" parameterType="sc.model.ShortCom">

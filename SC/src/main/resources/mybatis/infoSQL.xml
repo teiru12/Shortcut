@@ -182,15 +182,15 @@
 			* 
 		FROM (
 			SELECT
-				INFOCOMIDX, INFOIDX, CONTENT, INFOCOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, ISDEL, ROWNUM R
+				INFOCOMIDX, INFOIDX, CONTENT, INFOCOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, PCOMIDX, ISDEL, ROWNUM R
 			FROM (
 				SELECT 
-					INFOCOMIDX, INFOIDX, CONTENT, INFOCOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, ISDEL
+					INFOCOMIDX, INFOIDX, CONTENT, INFOCOMDATE, ID, IP, PASSWORD, RETYPE, RESTEP, RELEVEL, PCOMIDX, ISDEL
 				FROM
 					INFOCOM
 				WHERE 
 					INFOIDX = #{INFOIDX}
-				ORDER BY INFOCOMIDX DESC
+				ORDER BY RETYPE, RESTEP
 			)
 		)
 		WHERE 
@@ -221,15 +221,80 @@
 			#{CONTENT},
 			SYSDATE,
 			#{ID},
-			#{IP},
-			#{PASSWORD},
+			#{IP, jdbcType = VARCHAR},
+			#{PASSWORD, jdbcType = VARCHAR},
 			#{RETYPE},
 			#{RESTEP},
 			#{RELEVEL},
+			#{PCOMIDX},
 			'N'
 		)
 	]]>
 	</insert>
+	
+	<!-- 정보교류 게시판 대댓글이 아닌 댓글 입력 BY 게시글번호 -->
+	<insert id="insertInfoListFirstComByInfoIDX" parameterType="sc.model.InfoCom">
+		INSERT INTO
+			INFOCOM
+		VALUES(
+			INFOCOMIDX_SEQ.NEXTVAL,
+			#{INFOIDX},
+			#{CONTENT},
+			SYSDATE,
+			#{ID},
+			#{IP, jdbcType = VARCHAR},
+			#{PASSWORD, jdbcType = VARCHAR},
+			INFOCOMIDX_SEQ.CURRVAL,
+			#{RESTEP},
+			#{RELEVEL},
+			INFOCOMIDX_SEQ.CURRVAL,
+			'N'
+		)
+	</insert>	
+	
+	<!-- 다음 RESTEP값을 찾음 -->
+	<select id="nextReStepInfo" parameterType="hashmap" resultType="int">
+	<![CDATA[
+		SELECT
+			MAX(RESTEP)
+		FROM
+			INFOCOM
+		WHERE
+			RETYPE = #{RETYPE}
+			AND
+			RELEVEL = #{RELEVEL}
+			AND
+			PCOMIDX = #{PCOMIDX}
+			AND
+			INFOIDX = #{INFOIDX}
+	]]>
+	</select>
+	
+	<!-- 정보교류 게시판 댓글 하나의 정보 BY INFOCOMIDX -->
+	<select id="selectInfoCom" parameterType="int" resultType="sc.model.InfoCom">
+	<![CDATA[
+		SELECT
+			*
+		FROM
+			INFOCOM
+		WHERE
+			INFOCOMIDX = #{INFOCOMIDX}
+	]]>      
+	</select>
+	
+	<!-- RETYPE이 같은 입력받은 RESTEP값보다 같거나 큰 모든 댓글들의 RESTEP을 1씩 증가 -->
+	<update id="increaseReStepEqAndGreaterInfo" parameterType="hashmap">
+		UPDATE
+			INFOCOM
+		SET
+			RESTEP = RESTEP + 1
+		WHERE
+			RESTEP >= #{RESTEP}	
+			AND
+			RETYPE = ${RETYPE}
+			AND
+			INFOIDX = #{INFOIDX}
+	</update>
 
 	<!-- 정보교류 게시판 댓글 수정 BY 게시글번호 -->
 	<update id="updateInfoListComByInfoIDX" parameterType="sc.model.InfoCom">
