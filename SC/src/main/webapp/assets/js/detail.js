@@ -179,7 +179,11 @@ function modifyDetailCheck(memberCheck, TYPE, IDX) {
 			location.href = "/SC/infoModifyForm.cut?IDX="+IDX;
 		} else if(TYPE == 'NEW') {
 			location.href = "/SC/newsModifyForm.cut?IDX="+IDX;
-		}		
+		} else if(TYPE == 'NOT') {
+			location.href = "/SC/noticeModifyForm.cut?IDX="+IDX;
+		} else if(TYPE == 'SHO') {
+			location.href = "/SC/shortModifyForm.cut?IDX="+IDX;
+		}
 	/* 비회원일 경우 패스워드 검사 */
 	} else {
 		/* 비밀번호 입력 */
@@ -257,6 +261,12 @@ function deleteDetailCheck(memberCheck, TYPE, IDX) {
 		delUrl = "/SC/infoDelete.cut";
 	} else if(TYPE == 'NEW') {
 		delUrl = "/SC/newsDelete.cut";
+	} else if(TYPE == 'NOT') {
+		delUrl = "/SC/noticeDelete.cut";
+	} else if(TYPE == 'REP') {
+		delUrl = "/SC/reportDelete.cut";
+	} else if(TYPE == 'SHO') {
+		delUrl = "/SC/shortDelete.cut";
 	}
 	
 	/* 회원일 경우 삭제 확인 메세지 출력 후 삭제 */
@@ -365,6 +375,12 @@ function delArticle(delUrl, TYPE, IDX) {
 							location.href="/SC/infoList.cut";
 						} else if(TYPE == 'NEW') {
 							location.href="/SC/newsList.cut";
+						} else if(TYPE == 'NOT') {
+							location.href="/SC/noticeList.cut";
+						} else if(TYPE == 'REP') {
+							location.href="/SC/reportList.cut";
+						} else if(TYPE == 'SHO') {
+							location.href="/SC/shortList.cut";
 						}
 					});
 				}	

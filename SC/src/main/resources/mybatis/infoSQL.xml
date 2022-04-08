@@ -88,8 +88,8 @@
 			#{CONTENT},
 			SYSDATE,
 			#{ID},
-			#{IP},
-			${PASSWORD},
+			#{IP, jdbcType = VARCHAR},
+			#{PASSWORD, jdbcType = VARCHAR},
 			'N',
 			0,
 			0,
@@ -105,7 +105,7 @@
 			INFO
 		SET
 			TITLE = #{TITLE},
-			CONTENT = #{CONTENT},
+			CONTENT = #{CONTENT}
 		WHERE
 			INFOIDX = #{INFOIDX}
 	]]>           

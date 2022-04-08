@@ -165,6 +165,71 @@ public class InfoController {
 		return "infoDetail";
 	}
 	
+	@RequestMapping("/infoWriteForm.cut")
+	public String infoWriteForm(Model model) throws Exception{
+		
+		return "infoWriteForm";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/infoWrite.cut")
+	public Map<String, String> infoWrite(String TITLE, String CONTENT,String PASSWORD, HttpServletRequest request) throws Exception{
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		Info info = new Info();
+		String ID;
+		String password;
+		String ip;
+		  
+		if(request.getSession().getAttribute("id") == null ) {//비회원일때
+			ID = "비회원";
+			password = PASSWORD;
+			ip = GetIP.get(request);
+		}else {//회원일때
+			ID = (String)request.getSession().getAttribute("id");
+			password = null;
+			ip = null;
+		  }
+			
+		info.setID(ID);
+		info.setPASSWORD(password);
+		info.setCONTENT(CONTENT);
+		info.setTITLE(TITLE);
+		info.setIP(ip);
+		
+		infoService.insertInfoList(info);
+		
+		msg.put("ID", ID);
+		
+		return msg;
+	}
+	
+	@RequestMapping("/infoModifyForm.cut")
+	public String infoModifyForm(HttpServletRequest request,Model model) throws Exception{
+		int IDX = Integer.parseInt(request.getParameter("IDX"));
+		
+		Info info = infoService.selectInfoIDX(IDX);
+		model.addAttribute("info",info);
+		
+		return "infoModifyForm";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/infoModify.cut")
+	public Map<String, String> infoModify(String TITLE, String CONTENT,int IDX, HttpServletRequest request) throws Exception{
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		Info info = new Info();
+		
+		info.setINFOIDX(IDX);
+		info.setTITLE(TITLE);
+		info.setCONTENT(CONTENT);
+		
+		infoService.updateInfoList(info);
+		
+		return msg;
+	}
+	
 	@ResponseBody
 	@RequestMapping("/infoDelete.cut")
 	public Map<String, String> infoDelete(int IDX) throws Exception {
