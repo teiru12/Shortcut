@@ -32,6 +32,6 @@ public class VisitDAO {
 	
 	//오늘 방문자 수 카운트
 	public int todayVisitCount() throws Exception{
-		return sqlSessionTemplate.selectOne("visit.totalVisitCount");
+		return sqlSessionTemplate.selectOne("visit.todayVisitCount");
 	}
 }
