@@ -87,8 +87,7 @@ public class ShortServiceImpl implements ShortService {
 	}
 
 	@Override
-	public Short selectShortIDX(int SHORTIDX) throws Exception {
-		
+	public sc.model.Short selectShortIDX(int SHORTIDX) throws Exception {
 		return shortDAO.selectShortIDX(SHORTIDX);
 	}
 
@@ -108,32 +107,75 @@ public class ShortServiceImpl implements ShortService {
 	}
 
 	@Override
-	public List<ShortCom> shortListComPagingByShortIDX(int START, int END) throws Exception {
+	public List<ShortCom> shortListComPagingByShortIDX(int START, int END, int SHORTIDX) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
 		
 		map.put("START", START);
 		map.put("END", END);
+		map.put("SHORTIDX", SHORTIDX);
 		
 		return shortDAO.shortListComPagingByShortIDX(map);
 	}
 
 	@Override
-	public int countShortListComByShortIDX() throws Exception {
-		return shortDAO.countShortListComByShortIDX();
+	public int countShortListComByShortIDX(int SHORTIDX) throws Exception {
+		return shortDAO.countShortListComByShortIDX(SHORTIDX);
 	}
 
 	@Override
-	public void insertShortListComByShortIDX(Short SHORTCUM) throws Exception {
+	public void insertShortListComByShortIDX(ShortCom SHORTCUM) throws Exception {
 		shortDAO.insertShortListComByShortIDX(SHORTCUM);
 	}
 
 	@Override
-	public void updateShortListComByShortIDX(Short SHORTCUM) throws Exception {
+	public void updateShortListComByShortIDX(ShortCom SHORTCUM) throws Exception {
 		shortDAO.updateShortListComByShortIDX(SHORTCUM);
 	}
 
 	@Override
 	public void updateShortListComDelByShortIDX(int SHORTIDX) throws Exception {
 		shortDAO.updateShortListComDelByShortIDX(SHORTIDX);
+	}
+
+	@Override
+	public ShortCom selectShortCom(int SHORTIDX) throws Exception {
+		return shortDAO.selectShortCom(SHORTIDX);
+	}
+	
+	/*다음 RESTEP값을 찾음*/
+	@Override
+	public int nextReStep(int RETYPE, int RELEVEL, int PCOMIDX, int SHORTIDX) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("RETYPE", RETYPE);
+		map.put("RELEVEL", RELEVEL);
+		map.put("PCOMIDX", PCOMIDX);
+		map.put("SHORTIDX", SHORTIDX);
+		
+		Object obj =  shortDAO.nextReStep(map);
+		
+		if(obj == null) {
+			return 0;
+		} else {
+			return (int) obj;
+		}
+	}
+	
+	/*RETYPE이 같은 입력받은 RESTEP값보다 같거나 큰 모든 댓글들의 RESTEP을 1씩 증가*/
+	@Override
+	public void increaseReStepEqAndGreaterShort(int RESTEP, int RETYPE, int SHORTIDX) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("RESTEP", RESTEP);
+		map.put("RETYPE", RETYPE);
+		map.put("SHORTIDX", SHORTIDX);
+		
+		shortDAO.increaseReStepEqAndGreaterShort(map);
+	}
+
+	//단축키 게시판 대댓글 입력
+	@Override
+	public void insertShortListFirstComByShortIDX(ShortCom SHORTCUM) throws Exception {
+		shortDAO.insertShortListFirstComByShortIDX(SHORTCUM);
 	}
 }

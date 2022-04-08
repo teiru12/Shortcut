@@ -27,7 +27,11 @@ public interface MemberService {
 
 	public List<Map<String, Object>> memberListSearchPaging(int START, int END, int MINEXP, int MAXEXP, String KEYWORD, String STATUS) throws Exception;
 	
+	public List<Map<String, Object>> memberLevelListSearchPaging(Map<String, Object> map) throws Exception;
+	
 	public int countMemberSearch(Map<String, Object> map) throws Exception;
+	
+	public int countMemberLevelSearch(Map<String, Object> map) throws Exception;
 	
 	public void testjoin(String Email) throws Exception;
 }

@@ -53,7 +53,12 @@
 									</thead>
 									<c:if test = "${empty memberList}">
 										<tr>
-											<th width="100%">가입한 회원이 없습니다.</th>
+											<td width="20%" class="list-group-horizontal-sm">가입한 회원이 없습니다.</td>
+											<td class="list-group-horizontal-sm"></td>
+											<td class="list-group-horizontal-sm"></td>
+											<td class="list-group-horizontal-sm"></td>
+											<td class="list-group-horizontal-sm"></td>
+											<td class="list-group-horizontal-sm"></td>
 										</tr>		
 									</c:if>
 		                        	<c:forEach var="memberList" items="${memberList}">

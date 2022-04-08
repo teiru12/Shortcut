@@ -52,23 +52,23 @@ public class ShortDAO {
 	}
 	
 	/* 단축키 게시판 선택 */
-	public Short selectShortIDX(int SHORTIDX) throws Exception{
+	public sc.model.Short selectShortIDX(int SHORTIDX) throws Exception{
 		return sqlSessionTemplate.selectOne("short.selectShortIDX",SHORTIDX);
 	}
 	
 	/* 단축키 게시판 조회수 */
 	public void updateShortReadcount(int SHORTIDX) throws Exception{
-		sqlSessionTemplate.update("info.updateShortReadcount", SHORTIDX);
+		sqlSessionTemplate.update("short.updateShortReadcount", SHORTIDX);
 	}
 	
 	/* 단축키 게시판 좋아요 */
 	public void updateShortGood(int SHORTIDX) throws Exception{
-		sqlSessionTemplate.update("info.updateShortGood", SHORTIDX);
+		sqlSessionTemplate.update("short.updateShortGood", SHORTIDX);
 	}	
 	
 	/* 단축키 게시판 싫어요 */
 	public void updateShortBad(int SHORTIDX) throws Exception{
-		sqlSessionTemplate.update("info.updateShortBad", SHORTIDX);
+		sqlSessionTemplate.update("short.updateShortBad", SHORTIDX);
 	}
 	
 	/* 단축키 게시판 댓글 리스트 페이징 BY 게시글번호 */
@@ -77,23 +77,41 @@ public class ShortDAO {
 	}
 	
 	/* 단축키 게시판 댓글 카운트 BY 게시글번호 */
-	public int countShortListComByShortIDX() throws Exception{
-		return sqlSessionTemplate.selectOne("short.countShortListComByShortIDX");
+	public int countShortListComByShortIDX(int SHORTIDX) throws Exception{
+		return sqlSessionTemplate.selectOne("short.countShortListComByShortIDX", SHORTIDX);
 	}
 	
 	/* 단축키 게시판 댓글 입력 BY 게시글번호 */
-	public void insertShortListComByShortIDX(Short SHORTCUM) throws Exception{
+	public void insertShortListComByShortIDX(ShortCom SHORTCUM) throws Exception{
 		sqlSessionTemplate.insert("short.insertShortListComByShortIDX",SHORTCUM);
 	}
 	
 	/* 단축키 게시판 댓글 수정 BY 게시글번호 */
-	public void updateShortListComByShortIDX(Short SHORTCUM) throws Exception{
+	public void updateShortListComByShortIDX(ShortCom SHORTCUM) throws Exception{
 		sqlSessionTemplate.update("short.updateShortListComByShortIDX",SHORTCUM);
 	}
 	
 	/* 단축키 게시판 댓글 수정 (삭제) BY 게시글번호 */
 	public void updateShortListComDelByShortIDX(int SHORTIDX)throws Exception{
 		sqlSessionTemplate.update("short.updateShortListComDelByShortIDX",SHORTIDX);
+	}
+	
+	// 단축키 게시판 댓글하나 정보
+	public ShortCom selectShortCom(int SHORTIDX) throws Exception{
+		return sqlSessionTemplate.selectOne("short.selectShortCom", SHORTIDX);
+	}
+	
+	/*다음 RESTEP값을 찾음*/
+	public Object nextReStep(Map<String, Object> map) throws Exception {
+		return sqlSessionTemplate.selectOne("short.nextReStepShort", map);
+	}
+	
+	public void increaseReStepEqAndGreaterShort(Map<String, Object> map) throws Exception {
+		sqlSessionTemplate.update("short.increaseReStepEqAndGreaterShort",map);
+	}
+	
+	public void insertShortListFirstComByShortIDX(ShortCom SHORTCUM) throws Exception {
+		sqlSessionTemplate.update("short.insertShortListFirstComByShortIDX",SHORTCUM);
 	}
 	
 }

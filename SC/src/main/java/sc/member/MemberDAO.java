@@ -65,9 +65,19 @@ public class MemberDAO {
 		return sqlSessionTemplate.selectList("member.memberListSearchPaging", map);
 	}
 	
+	/* 회원 정보 레벨검색 페이징 */
+	public List<Map<String, Object>> memberLevelListSearchPaging(Map<String, Object> map) throws Exception{
+		return sqlSessionTemplate.selectList("member.memberLevelListSearchPaging", map);
+	}
+	
 	/* 회원 정보 검색 페이징 카운트*/
 	public int countMemberSearch(Map<String, Object> map) throws Exception{
 		return sqlSessionTemplate.selectOne("member.countMemberSearch", map);
+	}
+	
+	/* 회원 정보 레벨검색 페이징 카운트*/
+	public int countMemberLevelSearch(Map<String, Object> map) throws Exception{
+		return sqlSessionTemplate.selectOne("member.countMemberLevelSearch", map);
 	}
 	
 	/* 회원가입 인증 */
