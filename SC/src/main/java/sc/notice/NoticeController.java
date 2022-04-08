@@ -137,4 +137,53 @@ public class NoticeController {
 		return map;
 	}
 	
+	@ResponseBody
+	@RequestMapping("/noticeWrite.cut")
+	public Map<String, String> noticeWrite(String TITLE, String CONTENT, HttpServletRequest request)throws Exception  {
+		Map<String, String> map = new HashMap<String, String>();
+		
+		Notice notice = new Notice();
+		
+		notice.setTITLE(TITLE);
+		notice.setCONTENT(CONTENT);
+		
+		noticeService.insertNoticeList(notice);
+		
+		
+		
+		return map;
+	}
+	
+	@RequestMapping("/noticeWriteForm.cut")
+	public String noticeWriteForm(Model model) throws Exception {
+		
+		return "noticeWriteForm";
+	}
+	
+	@ResponseBody
+	@RequestMapping("noticeModify.cut")
+	public Map<String, String> noticeModify(String TITLE, String CONTENT, int IDX, HttpServletRequest request)throws Exception {
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		Notice notice = new Notice();
+		
+		notice.setNOTICEIDX(IDX);
+		notice.setTITLE(TITLE);
+		notice.setCONTENT(CONTENT);
+		
+		noticeService.updateNoticeList(notice);
+		
+		return msg;
+	}
+	
+	@RequestMapping("noticeModifyForm.cut")
+	public String noticeModifyForm(HttpServletRequest request, Model model)throws Exception {
+		int IDX = Integer.parseInt(request.getParameter("IDX"));
+		
+		Notice notice = noticeService.selectNoticeIDX(IDX);
+		model.addAttribute("notice", notice);
+		
+		return "noticeModifyForm";
+	}
+	
 }
