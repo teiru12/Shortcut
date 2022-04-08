@@ -37,12 +37,12 @@ public class ShortDAO {
 	}
 	
 	/* 단축키 게시판 입력 */
-	public void insertShortList(Short SHORTCUT) throws Exception{
+	public void insertShortList(sc.model.Short SHORTCUT) throws Exception{
 		sqlSessionTemplate.insert("short.insertShortList",SHORTCUT);
 	}
 	
 	/* 단축키 게시판 수정 */
-	public void updateShortList(Short SHORTCUT) throws Exception{
+	public void updateShortList(sc.model.Short SHORTCUT) throws Exception{
 		sqlSessionTemplate.update("short.updateShortList",SHORTCUT);
 	}
 	
@@ -69,6 +69,11 @@ public class ShortDAO {
 	/* 단축키 게시판 싫어요 */
 	public void updateShortBad(int SHORTIDX) throws Exception{
 		sqlSessionTemplate.update("short.updateShortBad", SHORTIDX);
+	}
+	
+	/* STYPE 단축키 리스트 */
+	public List<sc.model.Short> shortListSTYPE(String STYPE) throws Exception {
+		return sqlSessionTemplate.selectList("short.shortListSTYPE", STYPE);
 	}
 	
 	/* 단축키 게시판 댓글 리스트 페이징 BY 게시글번호 */

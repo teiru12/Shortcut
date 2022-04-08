@@ -14,9 +14,9 @@ public interface ShortService {
 	
 	public int countShortListSearch(String KEYWORD, String STYPE) throws Exception;
 	
-	public void insertShortList(Short SHORTCUT) throws Exception;
+	public void insertShortList(sc.model.Short SHORTCUT) throws Exception;
 	
-	public void updateShortList(Short SHORTCUT) throws Exception;
+	public void updateShortList(sc.model.Short SHORTCUT) throws Exception;
 	
 	public void deleteShortList(int SHORTIDX) throws Exception;
 	
@@ -27,6 +27,8 @@ public interface ShortService {
 	public void updateShortGood(int SHORTIDX) throws Exception;
 	
 	public void updateShortBad(int SHORTIDX) throws Exception;
+	
+	public List<sc.model.Short> shortListSTYPE(String STYPE) throws Exception;
 	
 	public List<ShortCom> shortListComPagingByShortIDX(int START, int END, int SHORTIDX) throws Exception;
 	
