@@ -320,4 +320,14 @@ public class ShortController {
 		return password;		
 	}
 	
+	@RequestMapping("/shortSavePdf.cut")
+	public String shortSavePdf(Model model, HttpServletRequest request) throws Exception {
+		String STYPE = request.getParameter("STYPE");
+		
+		List<sc.model.Short> list = shortService.shortListSTYPE(STYPE);
+		
+		model.addAttribute("list", list);
+		
+		return "pdfView";
+	}		
 }

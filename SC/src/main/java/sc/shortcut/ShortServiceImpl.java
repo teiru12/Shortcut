@@ -71,13 +71,13 @@ public class ShortServiceImpl implements ShortService {
 	}
 
 	@Override
-	public void insertShortList(Short SHORTCUT) throws Exception {
+	public void insertShortList(sc.model.Short SHORTCUT) throws Exception {
 		shortDAO.insertShortList(SHORTCUT);
 		
 	}
 
 	@Override
-	public void updateShortList(Short SHORTCUT) throws Exception {
+	public void updateShortList(sc.model.Short SHORTCUT) throws Exception {
 		shortDAO.updateShortList(SHORTCUT);
 	}
 
@@ -104,6 +104,12 @@ public class ShortServiceImpl implements ShortService {
 	@Override
 	public void updateShortBad(int SHORTIDX) throws Exception {
 		shortDAO.updateShortBad(SHORTIDX);
+	}
+	
+	/* STYPE 단축키 리스트 */
+	@Override
+	public List<sc.model.Short> shortListSTYPE(String STYPE) throws Exception {
+		return shortDAO.shortListSTYPE(STYPE);
 	}
 
 	@Override
