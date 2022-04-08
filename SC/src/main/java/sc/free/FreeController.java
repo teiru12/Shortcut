@@ -334,7 +334,7 @@ public class FreeController {
 			
 			freeService.insertFreeListComByFreeIDX(fCom);
 		}	
-		
+	
 		/* jsp로 넘겨줄 페이징한 댓글 리스트 html을 생성 */
 		/* 페이징 변수 설정 */
 		int pageSize = 5; // 페이지당 출력할 포인트 정보의 수
@@ -346,6 +346,9 @@ public class FreeController {
 		int pageBlock = 5; // 표시할 페이지의 수
 		String url = "freeDetail.cut";
 		String searchUrl = "&FREEIDX=" + ARTICLEIDX;
+		
+		START = 1 + pageSize * (currentPage - 1);
+		END = pageSize * currentPage;
 		
 		/* 페이징을 위한 값 계산 */
 		countFreeCom = freeService.countFreeComByFreeIDX(ARTICLEIDX);

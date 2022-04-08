@@ -15,17 +15,28 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		
 		System.out.println("------------------ Interceptor : LoginInterceptor ------------------ ");
 		
-return true;
+		String email = (String) request.getSession().getAttribute("id");
+		String uri = request.getRequestURI();
 		
-//		String email = (String) request.getSession().getAttribute("EMAIL");
-//		String uri = request.getRequestURI();
-//		
-//		/* 로그인하지 않아도 사용할 수 있는 기능들 */
-//		// main.al loginForm.al login.al joinForm.al joinSuccess.al 
-//		// findId.al findIdResult.al findPw.al findPwResult.al confirmId.al
-//		// allList.al aclList.al etcList.al
-//		// noticeList.al noticeDetail.al qnaList.al qnaDetail.al
-//
+		return true;
+		
+		/* 로그인하지 않아도 사용할 수 있는 기능들 */
+		// main.cut loginForm.cut, login.cut, join.cut, joinForm.cut
+		// testemail.cut checkId.cut testjoin.cut findIdForm.cut findId.cut
+		// findPwForm.cut findPw.cut writerDetail.cut
+		// free* (freeGood.cut, freeBad.cut 제외)
+		// info* (infoGood.cut, infoBad.cut 제외)
+		// news* (newGood.cut, newBad.cut 제외)
+		// notice*
+		// report*
+		// short*
+		
+		
+		// main.al loginForm.al login.al joinForm.al joinSuccess.al 
+		// findId.al findIdResult.al findPw.al findPwResult.al confirmId.al
+		// allList.al aclList.al etcList.al
+		// noticeList.al noticeDetail.al qnaList.al qnaDetail.al
+
 //		System.out.println("uri :" + uri);
 //		if(email == null &&
 //				(
