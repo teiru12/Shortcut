@@ -6,6 +6,32 @@
 <head>
 <meta charset="UTF-8">
 <title>숏컷</title>
+<script>
+function makePDF(STYPE) {
+	swal({
+		title				: 'PDF로 출력하시겠습니까?',
+		dangerMode			: true, // 확인 버튼 빨갛게
+		closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+		buttons				: {
+			cancle : {
+				text 		: '취소',
+				value 		: false,
+				className 	: 'btn btn-primary' 
+			},
+			confirm : {
+				text 		: '확인',
+				value 		: true,
+				className 	: 'btn btn-outline-primary' 
+			}
+		}	
+	}).then((result) => {
+		
+		if(result) {
+			location.href = "/SC/shortSavePdf.cut?STYPE=" + STYPE;
+		} 
+	});
+}
+</script>
 </head>
 <body>
 <div id="main">
@@ -36,6 +62,23 @@
 	                            </li>
 	                            <li class="nav-item" role="presentation">
 	                                <a class="nav-link" id="contact-tab" href="shortcutList.cut?STYPE=N">노트패드++</a>
+	                            </li>
+	                            <li>
+									<c:if test="${STYPE == 'M'}">
+										<a href="javascript:makePDF('M')" class="btn btn-outline-primary rounded-pill">PDF 다운</a>
+									</c:if>
+									<c:if test="${STYPE == 'W'}">
+										<a href="javascript:makePDF('W')" class="btn btn-outline-primary rounded-pill">PDF 다운</a>
+									</c:if>
+									<c:if test="${STYPE == 'E'}">
+										<a href="javascript:makePDF('E')" class="btn btn-outline-primary rounded-pill">PDF 다운</a>
+									</c:if>
+									<c:if test="${STYPE == 'H'}">
+										<a href="javascript:makePDF('H')" class="btn btn-outline-primary rounded-pill">PDF 다운</a>
+									</c:if>
+									<c:if test="${STYPE == 'N'}">
+										<a href="javascript:makePDF('N')" class="btn btn-outline-primary rounded-pill">PDF 다운</a>
+									</c:if>
 	                            </li>
 	                        </ul>
 	                        <div class="tab-content" id="myTabContent">
@@ -85,6 +128,14 @@
 											<span>${paging.pageHtml}</span>
 										</div>
 									</c:if>
+									
+									<%-- PDF 출력 버튼 --%>
+										<div class="col-md-3 mb-1" style="float:right;">
+											<div class="input-group mb-3">
+
+										    </div>
+										</div>
+										
 									<form action="shortcutList.cut">
 		                                <div class="col-md-3 mb-1" style="float:right;">
 		                                    <div class="input-group mb-3">
@@ -105,7 +156,7 @@
 		                                        <c:if test="${STYPE == 'N'}">
 		                                        	<input type="hidden" name="STYPE" id="STYPE" value="N">
 		                                        </c:if>
-		                                        <button class="btn btn-outline-secondary">검색</button>
+		                                        <button class="btn btn-outline-secondary">검색</button>&nbsp;
 		                                    </div>
 		                                </div>
                                 	</form>
