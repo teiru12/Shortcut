@@ -62,7 +62,7 @@
                                                 <div class="col-md-6 col-12">
                                                     <div class="form-group">
                                                         <label for="city-column">EMAIL</label>
-                                                        <input type="email" class="form-control" placeholder="Email" id="EMAIL" name="EMAIL" value="${member.EMAIL}">
+                                                        <input type="email" class="form-control" placeholder="Email" id="EMAIL" name="EMAIL" value="${member.EMAIL}" disabled>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6 col-12">

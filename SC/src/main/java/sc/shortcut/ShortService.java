@@ -20,7 +20,7 @@ public interface ShortService {
 	
 	public void deleteShortList(int SHORTIDX) throws Exception;
 	
-	public Short selectShortIDX(int SHORTIDX) throws Exception;
+	public sc.model.Short selectShortIDX(int SHORTIDX) throws Exception;
 	
 	public void updateShortReadcount(int SHORTIDX) throws Exception;
 	
@@ -28,14 +28,22 @@ public interface ShortService {
 	
 	public void updateShortBad(int SHORTIDX) throws Exception;
 	
-	public List<ShortCom> shortListComPagingByShortIDX(int START, int END) throws Exception;
+	public List<ShortCom> shortListComPagingByShortIDX(int START, int END, int SHORTIDX) throws Exception;
 	
-	public int countShortListComByShortIDX() throws Exception;
+	public int countShortListComByShortIDX(int SHORTIDX) throws Exception;
 	
-	public void insertShortListComByShortIDX(Short SHORTCUM) throws Exception;
+	public void insertShortListComByShortIDX(ShortCom SHORTCUM) throws Exception;
 	
-	public void updateShortListComByShortIDX(Short SHORTCUM) throws Exception;
+	public void insertShortListFirstComByShortIDX(ShortCom SHORTCUM) throws Exception;
+	
+	public void updateShortListComByShortIDX(ShortCom SHORTCUM) throws Exception;
 	
 	public void updateShortListComDelByShortIDX(int SHORTIDX)throws Exception;
+	
+	public ShortCom selectShortCom(int SHORTIDX) throws Exception;
+	
+	public int nextReStep(int RETYPE, int RELEVEL, int PCOMIDX, int SHORTIDX) throws Exception;
+	
+	public void increaseReStepEqAndGreaterShort(int RESTEP, int RETYPE, int SHORTIDX) throws Exception;
 
 }

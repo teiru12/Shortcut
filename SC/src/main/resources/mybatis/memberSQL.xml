@@ -199,22 +199,7 @@
 							 
 						]]>
 						</otherwise>
-				</choose>
-				<if test="LEVEL1 != null and LEVEL2 != null">
-				<![CDATA[
-					AND EXP BETWEEN #{LEVEL1} AND #{LEVEL2} 
-				]]>
-				</if>		
-				<if test="LEVEL1 == null and LEVEL2 != null">
-				<![CDATA[
-					AND EXP <= #{LEVEL2} 
-				]]>
-				</if>		
-				<if test="LEVEL1 != null and LEVEL2 == null">
-				<![CDATA[
-					AND EXP >= #{LEVEL1} 
-				]]>
-				</if>		
+				</choose>					
 				<if test="MINEXP!=NULL">
 				<![CDATA[
 					ORDER BY EXP
@@ -245,6 +230,76 @@
 		<![CDATA[
 			ORDER BY EXP DESC
 		]]>
+		</if>
+	</select>
+	
+	<select id="memberLevelListSearchPaging" parameterType="hashmap" resultType="hashmap">
+	<![CDATA[
+		SELECT
+			* 
+		FROM (
+			SELECT
+				MEMIDX, ID, PASSWORD, EMAIL, NAME, NICKNAME, EXP, PROFILE, STATUS, ROWNUM R
+			FROM (
+				SELECT 
+					MEMIDX, ID, PASSWORD, EMAIL, NAME, NICKNAME, EXP, PROFILE, STATUS
+				FROM
+					MEMBER				
+	]]>
+				
+				<if test="LEVEL1 != null and LEVEL2 != null">
+				<![CDATA[
+					WHERE EXP BETWEEN #{LEVEL1} AND #{LEVEL2} 
+				]]>
+				</if>		
+				<if test="LEVEL1 == null and LEVEL2 != null">
+				<![CDATA[
+					WHERE EXP <= #{LEVEL2} 
+				]]>
+				</if>		
+				<if test="LEVEL1 != null and LEVEL2 == null">
+				<![CDATA[
+					WHERE EXP >= #{LEVEL1} 
+				]]>
+				</if>				
+				<if test="LEVEL1 == null and LEVEL2 == null">
+				<![CDATA[
+					
+				]]>
+				</if>
+		<![CDATA[
+			)
+		)
+		WHERE 
+			R between #{START} and #{END}	
+		]]>
+	</select>
+	
+	<!-- 회원 정보 검색 카운트 -->
+	<select id="countMemberLevelSearch" parameterType="hashmap" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			MEMBER
+		<if test="LEVEL1 != null and LEVEL2 != null">
+			<![CDATA[
+				WHERE EXP BETWEEN #{LEVEL1} AND #{LEVEL2} 
+			]]>
+			</if>		
+			<if test="LEVEL1 == null and LEVEL2 != null">
+			<![CDATA[
+				WHERE EXP <= #{LEVEL2} 
+			]]>
+			</if>		
+			<if test="LEVEL1 != null and LEVEL2 == null">
+			<![CDATA[
+				WHERE EXP >= #{LEVEL1} 
+			]]>
+			</if>				
+			<if test="LEVEL1 == null and LEVEL2 == null">
+			<![CDATA[
+					
+			]]>
 		</if>
 	</select>
 

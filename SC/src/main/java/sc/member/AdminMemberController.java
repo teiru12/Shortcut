@@ -1,5 +1,6 @@
 package sc.member;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ public class AdminMemberController {
 	
 	@Resource(name="memberService")
 	private MemberService memberService;
+	
 	
 	@RequestMapping(value="adminMemberList.cut")
 	public String adminMemberList(HttpServletRequest request, Model model) throws Exception {
@@ -95,10 +97,12 @@ public class AdminMemberController {
 		return "adminMemberList";
 	}
 	
+	//레벨 검색했을때
 	@SuppressWarnings("static-access")
 	@RequestMapping(value="searchLeveladminMemberList.cut")
 	public String searchLeveladminMemberList(HttpServletRequest request, Model model) throws Exception {
 		Map<String, Object> map = new HashMap<String, Object>();
+		List<Map<String, Object>> memberList = new ArrayList<Map<String, Object>>();
 		CalculateExp level = new CalculateExp();
 		
 		/* 세션으로부터 로그인 id를 읽어옴 */
@@ -109,11 +113,10 @@ public class AdminMemberController {
 		int START = 1;
 		int END = pageSize;
 		int currentPage = 1; // 현재 페이지
-
 		int countSearchMember; // 검색 회원의 수
 		int pageBlock = 5; // 표시할 페이지의 수
-		int LEVEL1 = Integer.parseInt(request.getParameter("LEVEL1"));
-		int LEVEL2 = Integer.parseInt(request.getParameter("LEVEL2"));
+		int LEVEL1;
+		int LEVEL2;
 		String url = "searchLeveladminMemberList.cut";
 		String searchUrl = "";
 		/* 기본 페이지가 아닐 경우 */
@@ -122,27 +125,75 @@ public class AdminMemberController {
 			START = 1 + pageSize * (currentPage - 1);
 			END = pageSize * currentPage;
 		}
-		map.put("LEVEL1", level.levelToMinExp(LEVEL1));
-		map.put("LEVEL2", level.levelToMaxExp(LEVEL2));
-		searchUrl += "&LEVEL1=" + LEVEL1 + "&LEVEL2=" + LEVEL2;
-		/* 페이징을 위한 값 계산 */
-		countSearchMember = memberService.countMemberSearch(map);
-		// 페이징할 아이템의 총 수, 페이지의 수 ex> 1~5 6~10, 한 페이지에 표시할 아이템의 수, 현재 페이지, 이동주소, 검색시 사용할
-		Paging paging = new Paging(countSearchMember, pageBlock, pageSize, currentPage, url, searchUrl);
-		List<Map<String, Object>> memberList = memberService.memberListSearchPaging(START, END, level.levelToMinExp(LEVEL1), level.levelToMaxExp(LEVEL2), "", "");
-		for(int i = 0; i < memberList.size(); i++) {
-			level.setExp(Integer.parseInt(String.valueOf(memberList.get(i).get("EXP"))));
-			level.calculate();
-			memberList.get(i).put("level", level.getLevel());
-		}
-		/* model.addAttribute("levelList", levelList); */
-		model.addAttribute("memberList", memberList);
-		model.addAttribute("paging", paging);
-		/* 페이징을 위한 값 삽입 */
-		model.addAttribute("currentPage", currentPage);
-		model.addAttribute("LEVEL1", LEVEL1);
-		model.addAttribute("LEVEL2", LEVEL2);
 		
+		map.put("START", START);
+		map.put("END", END);
+		if(request.getParameter("LEVEL1") != "" && request.getParameter("LEVEL2") == "") {
+			LEVEL1 = Integer.parseInt(request.getParameter("LEVEL1"));
+			map.put("LEVEL1", level.levelToMinExp(LEVEL1));
+			searchUrl += "&LEVEL1=" + LEVEL1 + "&LEVEL2=";
+			/* 페이징을 위한 값 계산 */
+			countSearchMember = memberService.countMemberLevelSearch(map);
+			Paging paging = new Paging(countSearchMember, pageBlock, pageSize, currentPage, url, searchUrl);
+			memberList = memberService.memberLevelListSearchPaging(map);
+			for(int i = 0; i < memberList.size(); i++) {
+				level.setExp(Integer.parseInt(String.valueOf(memberList.get(i).get("EXP"))));
+				level.calculate();
+				memberList.get(i).put("level", level.getLevel());
+			}
+			
+			model.addAttribute("LEVEL1", LEVEL1);
+			model.addAttribute("paging", paging);
+		}else if(request.getParameter("LEVEL1") == "" && request.getParameter("LEVEL2") != "") {
+			LEVEL2 = Integer.parseInt(request.getParameter("LEVEL2"));
+			map.put("LEVEL2", level.levelToMaxExp(LEVEL2));
+			searchUrl += "&LEVEL1=" + "&LEVEL2=" + LEVEL2;
+			/* 페이징을 위한 값 계산 */
+			countSearchMember = memberService.countMemberLevelSearch(map);
+			Paging paging = new Paging(countSearchMember, pageBlock, pageSize, currentPage, url, searchUrl);
+			memberList = memberService.memberLevelListSearchPaging(map);
+			for(int i = 0; i < memberList.size(); i++) {
+				level.setExp(Integer.parseInt(String.valueOf(memberList.get(i).get("EXP"))));
+				level.calculate();
+				memberList.get(i).put("level", level.getLevel());
+			}
+			
+			model.addAttribute("LEVEL2", LEVEL2);
+			model.addAttribute("paging", paging);
+		}else if(request.getParameter("LEVEL1") != "" && request.getParameter("LEVEL2") != "") {
+			LEVEL1 = Integer.parseInt(request.getParameter("LEVEL1"));
+			LEVEL2 = Integer.parseInt(request.getParameter("LEVEL2"));
+			map.put("LEVEL1", level.levelToMinExp(LEVEL1));
+			map.put("LEVEL2", level.levelToMaxExp(LEVEL2));
+			searchUrl += "&LEVEL1=" + LEVEL1 + "&LEVEL2=" + LEVEL2;
+			/* 페이징을 위한 값 계산 */
+			countSearchMember = memberService.countMemberLevelSearch(map);
+			Paging paging = new Paging(countSearchMember, pageBlock, pageSize, currentPage, url, searchUrl);
+			memberList = memberService.memberLevelListSearchPaging(map);
+			for(int i = 0; i < memberList.size(); i++) {
+				level.setExp(Integer.parseInt(String.valueOf(memberList.get(i).get("EXP"))));
+				level.calculate();
+				memberList.get(i).put("level", level.getLevel());
+			}
+			model.addAttribute("LEVEL1", LEVEL1);
+			model.addAttribute("LEVEL2", LEVEL2);
+			model.addAttribute("paging", paging);
+		}else {
+			memberList = memberService.memberListPaging(START, END);
+			searchUrl += "&LEVEL1=&LEVEL2=";
+			for(int i = 0; i < memberList.size(); i++) {
+				level.setExp(Integer.parseInt(String.valueOf(memberList.get(i).get("EXP"))));
+				level.calculate();
+				memberList.get(i).put("level", level.getLevel());
+				
+			}
+			countSearchMember = memberService.countMember();
+			Paging paging = new Paging(countSearchMember, pageBlock, pageSize, currentPage, url, searchUrl);
+			model.addAttribute("paging", paging);
+		}
+
+		model.addAttribute("memberList", memberList);
+		model.addAttribute("currentPage", currentPage);
 		
 		return "adminMemberList";
 	}

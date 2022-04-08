@@ -79,10 +79,20 @@ public class MemberServiceImpl implements MemberService{
 		
 		return memberDAO.memberListSearchPaging(map);
 	}
+	
+	@Override
+	public List<Map<String, Object>> memberLevelListSearchPaging(Map<String, Object> map) throws Exception {		
+		return memberDAO.memberLevelListSearchPaging(map);
+	}
 
 	@Override
 	public int countMemberSearch(Map<String, Object> map) throws Exception {
 		return memberDAO.countMemberSearch(map);
+	}
+	
+	@Override
+	public int countMemberLevelSearch(Map<String, Object> map) throws Exception {
+		return memberDAO.countMemberLevelSearch(map);
 	}
 	
 	@Override

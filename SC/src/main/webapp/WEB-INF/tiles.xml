@@ -124,9 +124,9 @@
 			value="/WEB-INF/jsp/shortcut/shortcutList.jsp" />
 	</definition>
 	
-	<definition name="shortcutDetail" extends="main_layout">		
+	<definition name="shortDetail" extends="main_layout">		
 		<put-attribute name="body"
-			value="/WEB-INF/jsp/shortcut/shortcutDetail.jsp" />
+			value="/WEB-INF/jsp/shortcut/shortDetail.jsp" />
 	</definition>
 	
 	<definition name="best10ShortList" extends="main_layout">		
