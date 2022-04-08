@@ -89,10 +89,10 @@ public class ReportServiceImpl implements ReportService{
 		
 	}
 
-	/* 신고 게시판 댓글 수정 (삭제) BY 게시글번호 */
+	/* 신고 게시판 댓글 삭제 BY 게시글번호 */
 	@Override
-	public void updateReportListComDelByReportIDX(int REPORTCOMIDX) throws Exception {
-		reportDAO.updateReportListComDelByReportIDX(REPORTCOMIDX);
+	public void deleteReportListComByReportIDX(int REPORTCOMIDX) throws Exception {
+		reportDAO.deleteReportListComByReportIDX(REPORTCOMIDX);
 		
 	}
 

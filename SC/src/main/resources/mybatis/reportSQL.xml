@@ -98,7 +98,7 @@
 		SELECT 
 			REPORTCOMIDX, REPORTIDX, CONTENT, REPORTCOMDATE
 		FROM
-			REPORT
+			REPORTCOM
 		WHERE 
 			REPORTIDX = #{REPORTIDX}
 		ORDER BY REPORTIDX DESC
@@ -131,15 +131,14 @@
 	]]>           
 	</update>
 
-	<!-- 신고 게시판 댓글 수정 (삭제) BY 게시글번호 -->
-	<update id="updateReportListComDelByReportIDX" parameterType="int">
+	<!-- 신고 게시판 댓글 삭제 BY 게시글번호 -->
+	<delete id="deleteReportListComByReportIDX" parameterType="int">
 	<![CDATA[
-		UPDATE
+		DELETE
+		FROM 
 			REPORTCOM
-		SET
-			ISDEL = 'Y'
 		WHERE
 			REPORTCOMIDX = #{REPORTCOMIDX}
 	]]>
-	</update>
+	</delete>
 </mapper>

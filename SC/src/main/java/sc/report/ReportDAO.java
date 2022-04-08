@@ -19,7 +19,7 @@ public class ReportDAO {
 
 	/*신고 게시판 리스트 페이징*/
 	public List<Report> reportListPaging(Map<String, Object> map) throws Exception {
-		return sqlSessionTemplate.selectOne("report.reportListPaging", map);
+		return sqlSessionTemplate.selectList("report.reportListPaging", map);
 	}
 	
 	/* 신고 게시판 카운트 */
@@ -37,7 +37,7 @@ public class ReportDAO {
 		sqlSessionTemplate.update("report.updateReportList", report);
 	}
 	
-	/* 신고 게시판 수정(삭제) */
+	/* 신고 게시판 삭제 */
 	public void updateReportListDel(int REPORTIDX) throws Exception {
 		sqlSessionTemplate.update("report.updateReportListDel", REPORTIDX);
 	}
@@ -51,7 +51,7 @@ public class ReportDAO {
 	
 	/* 신고 게시판 댓글 리스트 */
 	public List<ReportCom> reportListComByReportIDX(int REPORTIDX) throws Exception {
-		return sqlSessionTemplate.selectOne("report.reportListComByReportIDX", REPORTIDX);
+		return sqlSessionTemplate.selectList("report.reportListComByReportIDX", REPORTIDX);
 	}
 	
 	/* 신고 게시판 댓글 입력 BY 게시글번호 */
@@ -64,8 +64,8 @@ public class ReportDAO {
 		sqlSessionTemplate.update("report.updateReportListComByReportIDX", reportCom);
 	}
 	
-	/* 신고 게시판 댓글 수정 (삭제) BY 게시글번호 */
-	public void updateReportListComDelByReportIDX(int REPORTCOMIDX) throws Exception {
-		sqlSessionTemplate.update("report.updateReportListComDelByReportIDX", REPORTCOMIDX);
+	/* 신고 게시판 댓글 삭제 BY 게시글번호 */
+	public void deleteReportListComByReportIDX(int REPORTCOMIDX) throws Exception {
+		sqlSessionTemplate.delete("report.deleteReportListComByReportIDX", REPORTCOMIDX);
 	}
 }
