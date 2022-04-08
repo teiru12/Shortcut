@@ -38,7 +38,7 @@ public interface ReportService {
 	/* 신고 게시판 댓글 수정 BY 게시글번호 */
 	public void updateReportListComByReportIDX(ReportCom reportCom) throws Exception;
 	
-	/* 신고 게시판 댓글 수정 (삭제) BY 게시글번호 */
-	public void updateReportListComDelByReportIDX(int REPORTCOMIDX) throws Exception;
+	/* 신고 게시판 댓글 삭제 BY 게시글번호 */
+	public void deleteReportListComByReportIDX(int REPORTCOMIDX) throws Exception;
 
 }
