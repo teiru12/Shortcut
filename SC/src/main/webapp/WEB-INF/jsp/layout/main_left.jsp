@@ -17,8 +17,8 @@
 		<div class="sidebar-menu">
 			<ul class="menu">
 			
-				<li class="sidebar-title">총 방문자 수 : </li>
-				<li class="sidebar-title">오늘 방문자 수 : </li>
+				<li class="sidebar-title">총 방문자 수 : <%= request.getSession().getAttribute("totalCount") %></li>
+				<li class="sidebar-title">오늘 방문자 수 : <%= request.getSession().getAttribute("todayCount") %></li>
 				<li class="sidebar-title">
 					<div class="col-12">
 				         <form method=get action="http://www.google.co.kr/search" target="_blank" >   

@@ -1,5 +1,6 @@
 package sc.member;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import sc.follow.FollowService;
 import sc.mail.MailService;
 import sc.model.Member;
+import sc.model.Visit;
 import sc.util.CalculateExp;
+import sc.visit.VisitService;
 
 @Controller
 public class MemberController {
@@ -31,6 +34,9 @@ public class MemberController {
 	@Resource(name="followService")
 	private FollowService followService;
 	
+	@Resource(name="visitService")
+	private VisitService visitService;
+	
 	@RequestMapping(value = "/loginForm.cut")
 	public String loginForm(Model model) throws Exception {
 		return "loginForm";
@@ -41,6 +47,7 @@ public class MemberController {
 	public Map<String, String> login(String ID, String PASSWORD, HttpServletRequest request) throws Exception {
 		Map<String, String> msg = new HashMap<String, String>();
 		
+		Visit visit = new Visit();
 		Member m = new Member();
 		m.setID(ID);
 		m.setPASSWORD(PASSWORD);
@@ -57,6 +64,10 @@ public class MemberController {
 				  } else {
 					  msg.put("message", "success");
 					  request.getSession().setAttribute("id", ID);
+
+					  /* 방문기록 저장 */
+					  visit.setID(ID);
+					  visitService.insertVisit(visit);
 				  }
 		  
 			  } else {
