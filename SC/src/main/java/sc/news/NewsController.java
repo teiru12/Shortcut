@@ -20,6 +20,7 @@ import sc.model.Goodbad;
 import sc.model.News;
 import sc.model.Notice;
 import sc.notice.NoticeService;
+import sc.util.GetIP;
 import sc.util.Paging;
 
 @Controller
@@ -94,6 +95,57 @@ public class NewsController {
 		
 		return "newsList";
 	}	
+	
+	@RequestMapping(value = "newsWrite.cut")
+	@ResponseBody
+	public Map<String,String> newsWrite(String TITLE, String CONTENT,String PASSWORD, HttpServletRequest request) throws Exception{
+		Map<String, String> map = new HashMap<String, String>();
+		
+		News news = new News();
+		String ID = (String)request.getSession().getAttribute("id");
+						
+		news.setID(ID);
+		news.setTITLE(TITLE);
+		news.setCONTENT(CONTENT);
+		
+		newsService.insertNewsList(news);
+		
+		map.put("ID", ID);
+		
+		return map;
+	}
+	
+	@RequestMapping(value = "newsWriteForm.cut")
+	public String newsWriteForm(Model model) throws Exception{
+		
+		return "newsWriteForm";
+	}
+	
+	@RequestMapping(value = "newsModify.cut")
+	@ResponseBody
+	public Map<String, String> newsModify(String TITLE, String CONTENT,int IDX, HttpServletRequest request) throws Exception{
+		Map<String, String> map = new HashMap<String, String>();
+		
+		News news = new News();
+		
+		news.setNEWSIDX(IDX);
+		news.setTITLE(TITLE);
+		news.setCONTENT(CONTENT);
+		
+		newsService.updateNewsList(news);
+		
+		return map;
+	}
+	
+	@RequestMapping(value = "newsModifyForm.cut")
+	public String newsModifyForm(HttpServletRequest request,Model model) throws Exception{
+		int IDX = Integer.parseInt(request.getParameter("IDX"));
+		
+		News news = newsService.selectNewsIDX(IDX);
+		model.addAttribute("news",news);
+		
+		return "newsModifyForm";
+	}
 	
 	@RequestMapping(value = "newsDetail.cut")
 	public String newsDetail(int NEWSIDX, News News, Model model, HttpServletRequest request) throws Exception {
