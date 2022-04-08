@@ -38,7 +38,7 @@ public class NewsDAO {
 	
 	//뉴스 게시판 글 입력
 	public void insertNewsList(News news) throws Exception {
-		sqlSessionTemplate.insert("nesw.insertNewsList", news);
+		sqlSessionTemplate.insert("news.insertNewsList", news);
 	}
 	
 	//뉴스 게시판 수정
