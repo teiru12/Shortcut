@@ -8,6 +8,9 @@
 <head>
 <meta charset="UTF-8">
 <title>숏컷</title>
+<style>
+{ word-break: normal; }
+</style>
 <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="assets/js/detail.js"></script>
 <script>
@@ -189,7 +192,7 @@ function modifyCom(REPORTCOMIDX) {
 
 						<!-- 로그인상태 -->
 						<c:if test="${id == reportDetail.ID}"> 
-							<a href="reportModifyForm.cut" class="btn btn-sm btn-outline-secondary">수정하기</a>
+							<a href="/SC/reportModifyForm.cut?REPORTIDX=${reportDetail.REPORTIDX}"class="btn btn-sm btn-outline-secondary">수정하기</a>
 							<a href="javascript:deleteDetailCheck('member', 'REP', ${reportDetail.REPORTIDX})" class="btn btn-sm btn-outline-secondary">삭제하기</a>
 						</c:if>
 					</div>
@@ -234,7 +237,7 @@ function modifyCom(REPORTCOMIDX) {
 						<c:if test="${id == 'ADMIN'}">
 						<div class="col-12 mx-auto">
                             <div class="input-group mb-3">
-                                <textarea class="form-control" id="reply" placeholder="댓글을 입력해주세요" maxlength="1200"></textarea>
+                                <textarea class="form-control" id="reply" placeholder="댓글을 입력해주세요" maxlength="400"></textarea>
                                 <button class="btn btn-outline-secondary" type="button" onClick="writeCom(${reportDetail.REPORTIDX})"
                                     id="button-addon2">댓글입력</button>
                             </div>
