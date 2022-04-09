@@ -10,9 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import sc.model.Free;
 import sc.model.FreeCom;
 import sc.model.Notice;
 import sc.model.Report;
@@ -89,6 +91,62 @@ public class ReportController {
 		model.addAttribute("reportComList", reportComList);
 		
 		return "reportDetail";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "reportWrite.cut")
+	public Map<String,String> reportWrite(String TITLE, String CONTENT, HttpServletRequest request) throws Exception{
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		Report report = new Report();
+		String ID;
+		  
+		
+		ID = (String)request.getSession().getAttribute("id");
+			
+		report.setID(ID);
+		report.setTITLE(TITLE);
+		report.setCONTENT(CONTENT);
+		
+		reportService.insertReportList(report);
+		
+		msg.put("ID", ID);
+		
+		return msg;
+	}
+	
+	@RequestMapping(value = "reportWriteForm.cut")
+	public String reportWriteForm(Model model) throws Exception{
+		
+		return "reportWriteForm";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "reportModify.cut")
+	public Map<String, String> reportModify(String TITLE, String CONTENT,int REPORTIDX, HttpServletRequest request) throws Exception{
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		Report report = new Report();
+		
+		report.setREPORTIDX(REPORTIDX);
+		report.setTITLE(TITLE);
+		report.setCONTENT(CONTENT);
+		
+		reportService.updateReportList(report);
+		
+		return msg;
+	}
+	
+	@RequestMapping(value = "reportModifyForm.cut")
+	public String reportModifyForm(HttpServletRequest request,Model model, int REPORTIDX) throws Exception{
+		
+		String id = (String) request.getSession().getAttribute("id");
+		
+		Report report = reportService.selectReportIDX(REPORTIDX);
+		
+		model.addAttribute("report",report);
+		
+		return "reportModifyForm";
 	}
 	
 	@ResponseBody
