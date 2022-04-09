@@ -70,6 +70,9 @@ public class ShortController {
 		if(STYPE != null ) {
 			searchUrl += "&STYPE=" + STYPE;
 		}
+		if(KEYWORD != null) {
+			searchUrl += "&KEYWORD=" + KEYWORD;
+		}
 		
 		if((KEYWORD == null || KEYWORD.trim() =="") && (STYPE == null || STYPE.trim() =="")) { // 검색 미적용일때
 			shortCount = shortService.countShortList();
@@ -99,6 +102,7 @@ public class ShortController {
 		model.addAttribute("shortList", shortList);
 		model.addAttribute("noticeTopList", noticeTopList);
 		
+		model.addAttribute("KEYWORD", KEYWORD);
 		model.addAttribute("STYPE", STYPE);
 		
 		return "shortcutList";
