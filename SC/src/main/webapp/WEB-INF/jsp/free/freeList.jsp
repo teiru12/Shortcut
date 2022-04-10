@@ -55,25 +55,35 @@
 											<%-- 삭제되지 않은 게시글 --%>		
 	                               			<c:when test="${freeItem.ISDEL == 'N'}">
 			                        			<tr>
-			                               			<td class="list-group-horizontal-sm">${freeItem.FREEIDX }</td>
+			                               			<td class="list-group-horizontal-sm">${freeItem.FREEIDX } </td>
 			                               			<td class="list-group-horizontal-sm"><a href="freeDetail.cut?FREEIDX=${freeItem.FREEIDX}">${freeItem.TITLE }</a></td>
 			                               			<td class="list-group-horizontal-sm">
-														<button type="button" class="btn btn-icon-default"
-															data-bs-toggle="dropdown" aria-haspopup="false"
-															aria-expanded="false">
-															<b>${freeItem.ID}</b>
-														</button>
-														<div class="dropdown-menu">
-															<button class="btn btn-icon-default" onClick="writerDetail('${freeItem.ID}')">회원 정보</button><br>
-															<c:if test="${! empty sessionScope.id}">
-																<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
-																data-bs-target="#inlineForm"
-																data-s="<%= request.getSession().getAttribute("id") %>" data-g="${freeItem.ID}">
-																	쪽지 보내기
-																</button><br>
-																<a class="btn btn-icon-default" href="chat.cut">1:1 채팅</a>
-															</c:if>
-														</div>
+			                               				<c:choose>
+			                               					<%-- 작성자가 회원일 때 --%>
+					                               			<c:when test="${freeItem.ID != '비회원' }">
+																<button type="button" class="btn btn-icon-default"
+																	data-bs-toggle="dropdown" aria-haspopup="false"
+																	aria-expanded="false">
+																	<b>${freeItem.ID}</b>
+																</button>
+																<div class="dropdown-menu">
+																	<button class="btn btn-icon-default" onClick="writerDetail('${freeItem.ID}')">회원 정보</button><br>
+																	<%-- 로그인 한 사람이 정보조회 하는 경우 --%>
+																	<c:if test="${! empty sessionScope.id}">
+																		<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
+																		data-bs-target="#inlineForm"
+																		data-s="<%= request.getSession().getAttribute("id") %>" data-g="${freeItem.ID}">
+																			쪽지 보내기
+																		</button><br>
+																		<a class="btn btn-icon-default" href="chat.cut">1:1 채팅</a>
+																	</c:if>
+																</div>
+															</c:when>
+															<%-- 작성자가 비회원일 때 --%>
+															<c:otherwise>
+																<b>${freeItem.ID }</b>
+															</c:otherwise>
+														</c:choose>
 			                               			</td>
 			                               			<td class="list-group-horizontal-sm">${freeItem.READCOUNT }</td>
 			                               			<td class="list-group-horizontal-sm">${freeItem.GOOD }</td>

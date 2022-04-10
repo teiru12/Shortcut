@@ -291,15 +291,18 @@ public class MemberController {
 		CalculateExp cal = new CalculateExp(member.getEXP());
 		int level = cal.getLevel();
 		
-		/* 팔로우 여부 */
-		boolean isFollow = false;
-		if(followService.findFollowId(id, ID) != null) {
-			isFollow = true;
+		if(id != null) {
+			/* 팔로우 여부 */
+			boolean isFollow = false;
+			if(followService.findFollowId(id, ID) != null) {
+				isFollow = true;
+			}
+			model.addAttribute("isFollow", isFollow);
 		}
 				
 		model.addAttribute("member", member);
 		model.addAttribute("level", level);
-		model.addAttribute("isFollow", isFollow);
+		
 		
 		return "/member/writerDetail";
 	}

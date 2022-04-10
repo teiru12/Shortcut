@@ -60,19 +60,33 @@
 														<td class="list-group-horizontal-sm">${infoItem.INFOIDX }</td>
 														<td class="list-group-horizontal-sm"><a href="infoDetail.cut?INFOIDX=${infoItem.INFOIDX}">${infoItem.TITLE }</a></td>
 														<td class="list-group-horizontal-sm">
-															<button type="button" class="btn btn-icon-default" data-bs-toggle="dropdown" aria-haspopup="false" aria-expanded="false">
-																<b>${infoItem.ID}</b>
-															</button>
-															<div class="dropdown-menu">
-																<button class="btn btn-icon-default" onClick="writerDetail('${infoItem.ID}')">회원 정보</button>
-																<br>
-																<c:if test="${! empty sessionScope.id}">
-																	<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal" data-bs-target="#inlineForm" data-s="<%= request.getSession().getAttribute("id") %>" data-g="${infoItem.ID}">쪽지 보내기</button>
-																	<br>
-																	<a class="btn btn-icon-default" href="chat.cut">1:1 채팅</a>
-																</c:if>
-															</div>
-														</td>
+			                               				<c:choose>
+			                               					<%-- 작성자가 회원일 때 --%>
+					                               			<c:when test="${infoItem.ID != '비회원' }">
+																<button type="button" class="btn btn-icon-default"
+																	data-bs-toggle="dropdown" aria-haspopup="false"
+																	aria-expanded="false">
+																	<b>${infoItem.ID}</b>
+																</button>
+																<div class="dropdown-menu">
+																	<button class="btn btn-icon-default" onClick="writerDetail('${infoItem.ID}')">회원 정보</button><br>
+																	<%-- 로그인 한 사람이 정보조회 하는 경우 --%>
+																	<c:if test="${! empty sessionScope.id}">
+																		<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
+																		data-bs-target="#inlineForm"
+																		data-s="<%= request.getSession().getAttribute("id") %>" data-g="${infoItem.ID}">
+																			쪽지 보내기
+																		</button><br>
+																		<a class="btn btn-icon-default" href="chat.cut">1:1 채팅</a>
+																	</c:if>
+																</div>
+															</c:when>
+															<%-- 작성자가 비회원일 때 --%>
+															<c:otherwise>
+																<b>${infoItem.ID }</b>
+															</c:otherwise>
+														</c:choose>
+			                               			</td>
 														<td class="list-group-horizontal-sm">${infoItem.READCOUNT }</td>
 														<td class="list-group-horizontal-sm">${infoItem.GOOD }</td>
 														<td class="list-group-horizontal-sm">${infoItem.BAD }</td>
