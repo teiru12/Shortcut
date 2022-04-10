@@ -21,6 +21,20 @@
 <link rel="stylesheet" href="assets/vendors/bootstrap-icons/bootstrap-icons.css">
 <link rel="stylesheet" href="assets/css/app.css">
 <link rel="shortcut icon" href="assets/images/favicon.svg" type="image/x-icon">
+
+<script type="text/javascript">
+//팝업창 닫고 회원가입으로
+function join(){
+    window.opener.location.href="http://localhost:9003/SC/joinForm.cut";
+    self.close();
+}
+
+//팝업창 닫고 로그인으로
+function login(){
+    window.opener.location.href="http://localhost:9003/SC/loginForm.cut";
+    self.close();
+}
+</script>
 </head>
 
 <body>
@@ -34,12 +48,12 @@
 			</div>
 		</div>
 		<section class="section">
-			<div class="card" style="width: 350px; margin-left: auto; margin-right: auto; margin-top: 10px">
+			<div class="card" style="width: 350px; margin-left: auto; margin-right: auto; margin-top: 10px;">
 				<div class="card-header" style="text-align: center">
 					<h4 class="card-title">${member.NAME }</h4>
 				</div>
 
-				<div class="card-body py-4 px-5" style="margin-left: auto; margin-right: auto">
+				<div class="card-body py-4 px-5" style="margin-left: auto; margin-right: auto;">
 					<div class="d-flex align-items-center">
 						<div class="avatar avatar-xl">
 							<!-- 이미지 없을 시 기본 이미지 이미지 있을 경우 해당 이미지 -->
@@ -57,28 +71,44 @@
 						</div>
 					</div>
 				</div>
-
-				<input type="hidden" id="loginId" value="<%=request.getSession().getAttribute("id")%>">
-				<div class="card-content pb-4" style="margin-left: auto; margin-right: auto">
-					<div class="px-4">
-						<button type="button" class="btn btn-block btn-xl btn-light-primary font-bold mt-3" 
-						data-bs-toggle="modal" data-bs-target="#inlineForm"
-						data-s="<%= request.getSession().getAttribute("id") %>" data-g="${member.ID}">쪽지보내기</button>
+				<c:choose>
+				<c:when test="${! empty sessionScope.id}">
+					<input type="hidden" id="loginId" value="<%=request.getSession().getAttribute("id")%>">
+					<div class="card-content pb-4" style="margin-left: auto; margin-right: auto">
+						<div class="px-4">
+							<button type="button" class="btn btn-block btn-xl btn-light-primary font-bold mt-3" 
+							data-bs-toggle="modal" data-bs-target="#inlineForm"
+							data-s="<%= request.getSession().getAttribute("id") %>" data-g="${member.ID}">쪽지보내기</button>
+						</div>
+						<div class="px-4">
+							<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' onClick="chat()">채팅하기</button>
+						</div>
+						<div class="px-4">
+							<c:if test="${isFollow != true}">
+								<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' id="followButton" 
+									onClick="addFollow('${member.ID}')">팔로우하기</button>
+							</c:if>
+							<c:if test="${isFollow == true}">
+								<button class='btn btn-block btn-xl btn-success font-bold mt-3'>팔로우 중</button>
+							</c:if>
+						</div>		
 					</div>
-					<div class="px-4">
-						<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' onClick="chat()">채팅하기</button>
-					</div>
-					<div class="px-4">
-						<c:if test="${isFollow != true}">
-							<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' id="followButton" 
-								onClick="addFollow('${member.ID}')">팔로우하기</button>
-						</c:if>
-						<c:if test="${isFollow == true}">
-							<button class='btn btn-block btn-xl btn-success font-bold mt-3'>팔로우 중</button>
-						</c:if>
-					</div>
-
-				</div>
+				</c:when>
+					<c:otherwise>
+						<div class="card-content pb-4" style="text-align: center; margin-left: auto; margin-right: auto">
+							<div class="px-4">
+								로그인 하시면 더 많은 기능을 <br>
+								사용하실 수 있습니다.
+							</div>
+							<div class="px-4">
+								<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' onclick="join()">회원가입</button>
+							</div>
+							<div class="px-4">
+								<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' onClick="login()">로그인</button>
+							</div>
+						</div>
+					</c:otherwise>
+				</c:choose>
 			</div>
 		</section>
 	</div>
