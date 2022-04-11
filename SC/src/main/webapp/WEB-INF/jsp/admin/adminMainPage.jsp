@@ -14,11 +14,11 @@
 	        <section class="row">
 	            <div class="col-12">
 	                <div class="row">
-	                    <div class="col-6 col-lg-6">
+	                    <div class="col-6">
 	                        <div class="card" align="center">
 	                            <div class="card-body">
-	                                <div class="row">
-										<div style="width:350px; height:350px;">
+	                                <div align="center">
+										<div style="width:350px; height:370px;">
 										   	<h4>자유 게시판</h4>
 											<canvas id="myChart1"></canvas>
 										</div>
@@ -26,11 +26,11 @@
 						        </div>
 						    </div>
 						</div>
-		                <div class="col-6 col-lg-6">
+		                <div class="col-6">
 	                        <div class="card" align="center">
 	                            <div class="card-body">
-	                                <div class="row">
-										<div style="width:350px; height:350px;">
+	                                <div align="center">
+										<div style="width:350px; height:370px;">
 										   	<h4>정보공유 게시판</h4>
 											<canvas id="myChart2"></canvas>
 										</div>
