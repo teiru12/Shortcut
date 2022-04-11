@@ -24,7 +24,7 @@ function sendMessage() {
 	/* 보내는 사람과 받는 사람이 같을 때 */
 	if(SENDID == GETID) {
 		swal({
-			title				: '자기 자신에게 보낼 수 없습니다.',
+			text				: '자기 자신에게 보낼 수 없습니다.',
 			dangerMode			: true, // 확인 버튼 빨갛게
 			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
 			buttons				: {
@@ -37,7 +37,7 @@ function sendMessage() {
 		});	
 	} else if(CONTENT == null || CONTENT.trim() == "") {
 		swal({
-			title				: '내용을 입력해주세요.',
+			text				: '내용을 입력해주세요.',
 			dangerMode			: true, // 확인 버튼 빨갛게
 			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
 			buttons				: {
@@ -59,7 +59,7 @@ function sendMessage() {
 				$('#CONTENT').val("");
 				
 				swal({
-					title				: resultMsg,
+					text				: resultMsg,
 					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
 					buttons				: {
 						confirm : {
@@ -85,21 +85,36 @@ function addFollow(FOLLOWID) {
 		contentType	: "application/json",
 		success		: function(data) {
 			
-			let newButton = "<button class='btn btn-block btn-xl btn-success font-bold mt-3'>팔로우 중</button>";
-			$("#followButton").remove();
-			$("#followButtonDiv").append(newButton);
-			
-			swal({
-				title				: data.message,
-				closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
-				buttons				: {
-					confirm : {
-						text 		: '확인',
-						value 		: true,
-						className 	: 'btn btn-primary' 
+			/* 자기 자신을 팔로우하려고 할 경우 오류 메시지 출력 */
+			if(data.checkMyId == 'SAME') {
+				swal({
+					text				: "자기 자신을 팔로우할 수 없습니다.",
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
 					}
-				}
-			});
+				});				
+			} else {
+				let newButton = "<button class='btn btn-block btn-xl btn-success font-bold mt-3'>팔로우 중</button>";
+				$("#followButton").remove();
+				$("#followButtonDiv").append(newButton);
+				
+				swal({
+					text				: data.message,
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				});
+			}
 		}				
 	});	
 }

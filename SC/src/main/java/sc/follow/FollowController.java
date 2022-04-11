@@ -106,12 +106,24 @@ public class FollowController {
 		StringBuffer sb = new StringBuffer();
 		sb.append("<tbody id=\"followBody\">");
 		for(int i=0;i<followList.size();i++) {
-			sb.append("<tr>");
-			sb.append("<td width=\"50%\">" + ((Map<String, Object>)followList.get(i)).get("FOLLOWID") + "</td>");
+			sb.append("<tr id=\"follow${follow.FOLLOWIDX}\">");
+			
+			
+			
+			sb.append("<td width=\"50%\">");
+			sb.append("<div class=\"btn-group dropend me-1 mb-1\">");
+			sb.append("<button type=\"button\" class=\"btn btn-icon-default\" data-bs-toggle=\"dropdown\" aria-haspopup=\"false\" ");
+			sb.append("aria-expanded=\"false\">" + ((Map<String, Object>)followList.get(i)).get("FOLLOWID") + "</button>");
+			sb.append("<div class=\"dropdown-menu\">");
+			sb.append("<button class=\"btn btn-icon-default\" onClick=\"writerDetail('" + ((Map<String, Object>)followList.get(i)).get("FOLLOWID") + "')\">회원 정보</button><br>");
+			sb.append("<button type=\"button\" class=\"openModal btn btn-icon-default\" data-bs-toggle=\"modal\" ");
+			sb.append("data-bs-target=\"#inlineForm\" id=\"sendModal" + i + "\" data-s=\"${follow.ID}\" data-g=\""); 
+			sb.append(((Map<String, Object>)followList.get(i)).get("FOLLOWID") + "\">쪽지 보내기</button><br>");
+			sb.append("<a class=\"btn btn-icon-default\" href=\"chat.cut\">1:1 채팅</a></div></div></td>");
 			sb.append("<td width=\"50%\">");
 			sb.append("<button class=\"btn btn-sm btn-light\" onClick=\"followDelete(");
 			sb.append(((Map<String, Object>)followList.get(i)).get("FOLLOWIDX") + ",'" + ((Map<String, Object>)followList.get(i)).get("FOLLOWID") + "'," + currentPage);
-			sb.append(")\">삭제</button></td></tr>");
+			sb.append(")\">삭제</button></td></tr>");		
 		}		
 		sb.append("<tbody>");
 		String newFollow = sb.toString();
@@ -160,6 +172,12 @@ public class FollowController {
 		
 		/* 세션으로부터 로그인 id를 읽어옴 */
 		String id = (String) request.getSession().getAttribute("id");
+		
+		/* 팔로우할 FOLLOWID가 자기 자신인지를 검사 */
+		if(id.equals(FOLLOWID)) {
+			msg.put("checkMyId", "SAME");
+			return msg;
+		}
 		
 		/* 이미 팔로우한 ID인지 검사 */
 		if(followService.findFollowId(id, FOLLOWID) != null) {

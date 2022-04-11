@@ -83,7 +83,7 @@ function login(){
 						<div class="px-4">
 							<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' onClick="chat()">채팅하기</button>
 						</div>
-						<div class="px-4">
+						<div class="px-4" id="followButtonDiv">
 							<c:if test="${isFollow != true}">
 								<button class='btn btn-block btn-xl btn-light-primary font-bold mt-3' id="followButton" 
 									onClick="addFollow('${member.ID}')">팔로우하기</button>
