@@ -144,6 +144,7 @@
     <script type="text/javascript">
     let checkPw = false;
     let checkId = false;
+    let checkRecaptcha = false;
     
     $(document).ready(function(){
 	    $("#join").on("click", function(e){ //회원가입버튼 버튼
@@ -277,6 +278,19 @@
 					$("#PASSWORD").focus();
 	    		});
 	    		return false;
+	    	}else if(!checkRecaptcha){
+	    		swal({
+					title				: '인증을 확인해주세요.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				});
+	    		return false;
 	    	}else{
 				$.ajax({
 			        url : "join.cut",
@@ -342,7 +356,7 @@
     }
     
     function recaptchacallback(){
-    	alert("오나");
+    	checkRecaptcha = true;
     }
     </script>
 </body>
