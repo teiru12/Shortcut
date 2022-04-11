@@ -64,7 +64,7 @@ public class MemberController {
 				  } else {
 					  msg.put("message", "success");
 					  request.getSession().setAttribute("id", ID);
-
+					  msg.put("id", ID);
 					  /* 방문기록 저장 */
 					  visit.setID(ID);
 					  visitService.insertVisit(visit);
