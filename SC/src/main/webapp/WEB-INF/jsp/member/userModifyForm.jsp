@@ -108,7 +108,7 @@ function userModify() {
 							}
 						}
 					}).then((result) => {
-						/* 회원 탈퇴 후 loginForm으로 리다이렉트 */
+						/* 회원 정보 수정 후 myPage로 리다이렉트 */
 						location.href="/SC/myPage.cut";
 					});
 				}				
