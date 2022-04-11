@@ -69,6 +69,8 @@
 						GOODBAD
 					WHERE 
 						TO_CHAR(GOODDATE, 'YYYYMMDD') > TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+						AND
+						TYPE = 'FRE'
 				)
 				GROUP BY
 					TYPE, IDX
@@ -105,6 +107,8 @@
 						GOODBAD
 					WHERE 
 						TO_CHAR(GOODDATE, 'YYYYMMDD') > TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+						AND
+						TYPE = 'INF'
 				)
 				GROUP BY
 					TYPE, IDX
@@ -141,6 +145,8 @@
 						GOODBAD
 					WHERE 
 						TO_CHAR(GOODDATE, 'YYYYMMDD') > TO_CHAR(SYSDATE-1, 'YYYYMMDD')
+						AND
+						TYPE = 'SHO'
 				)
 				GROUP BY
 					TYPE, IDX

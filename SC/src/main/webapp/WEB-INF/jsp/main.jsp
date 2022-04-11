@@ -233,19 +233,21 @@
 									<table class="table">
 					    				<thead class="thead-primary"> 
 					    				<tr> 
-					    					<th scope="col" width="100%">제목</th> 
+					    					<th scope="col" width="100%">단축키</th> 
 					    				</tr> 
 						    				</thead>
-											<c:if test = "${empty ShortList}">
+											<c:if test = "${empty goodShortList}">
 												<tr>
 													<td>게시글이 없습니다.</td>
 												</tr>					
 											</c:if>
-						    					<c:forEach var="ShortItem" items="${goodShortList}">
+											<c:if test = "${! empty goodShortList}">
+						    					<c:forEach var="shortItem" items="${goodShortList}">
 													<tr>
 														<td><a href="shortDetail.cut?SHORTIDX=${shortItem.SHORTIDX}">${shortItem.TITLE}</a></td>
 													</tr>
 												</c:forEach>
+											</c:if>
 											</table>
 										</div>
 										</div> 
@@ -269,12 +271,14 @@
 													<td width="20%">0</td>
 												</tr>					
 											</c:if>
+											<c:if test = "${! empty goodFreeList}">
 						    					<c:forEach var="freeItem" items="${goodFreeList}">
 														<tr>
 															<td width="80%"><a href="freeDetail.cut?FREEIDX=${freeItem.FREEIDX }">${freeItem.TITLE}</a></td>
 															<td width="20%">${freeItem.READCOUNT}</td>
 														</tr>
 												</c:forEach>
+											</c:if>
 											</table>
 										</div>
 										</div> 
@@ -298,12 +302,14 @@
 													<td width="20%">0</td>
 												</tr>					
 											</c:if>
+											<c:if test = "${! empty goodInfoList}">
 						    					<c:forEach var="infoItem" items="${goodInfoList}">
 														<tr>
 															<td width="80%"><a href="infoDetail.cut?INFOIDX=${infoItem.INFOIDX }">${infoItem.TITLE}</a></td>
 															<td width="20%">${infoItem.READCOUNT}</td>
 														</tr>
-												</c:forEach> 
+												</c:forEach>
+											</c:if> 
 											</table>
 										</div>
 										</div> 
