@@ -117,12 +117,22 @@ function userModify() {
 	});
 }
 function selectImage(imgNumber) {
-	let src = "assets/images/faces/" + imgNumber + ".jpg";
+	let src;
+	if(imgNumber != 0 ) {
+		src = "assets/images/faces/" + imgNumber + ".jpg";
+	} else {
+		src = "assets/images/faces/blank.png";
+	}
 	
 	// modal 창 닫기
 	$('#large').modal("hide");
 	// 폼에 넘겨줄 hidden 태그의 value값 변경
-	document.getElementById("PROFILE").value = imgNumber + ".jpg";
+	if(imgNumber != 0 ) {
+		document.getElementById("PROFILE").value = imgNumber + ".jpg";
+	} else {
+		document.getElementById("PROFILE").value = "blank.png";
+	}
+	
 	// 이미지 출력 변경
 	document.getElementById("faceImg").src = src;
 }
@@ -211,7 +221,7 @@ function selectImage(imgNumber) {
                                                     <div class="col-md-8">
                                                         <div class="form-group has-icon-left">
                                                             <div class="position-relative">
-                                                                <input type="password" class="form-control" placeholder="Password" id="PASSWORD"
+                                                                <input type="password" class="form-control" placeholder="Password" id="PASSWORD" maxlength="10"
                                                                 	name="PASSWORD" value="${member.PASSWORD}">
                                                                 <div class="form-control-icon">
                                                                     <i class="bi bi-lock"></i>
@@ -226,7 +236,7 @@ function selectImage(imgNumber) {
                                                     <div class="col-md-8">
                                                         <div class="form-group has-icon-left">
                                                             <div class="position-relative">
-                                                                <input type="password" class="form-control" placeholder="Password" id="PASSWORD2"
+                                                                <input type="password" class="form-control" placeholder="Password" id="PASSWORD2" maxlength="10"
                                                                 value="${member.PASSWORD}">
                                                                 <div class="form-control-icon">
                                                                     <i class="bi bi-lock"></i>
@@ -269,7 +279,7 @@ function selectImage(imgNumber) {
                                                     <div class="col-md-8">
                                                         <div class="form-group has-icon-left">
                                                             <div class="position-relative">
-                                                                <input type="text" class="form-control" placeholder="NickName" id="NICKNAME" name="NICKNAME"
+                                                                <input type="text" class="form-control" placeholder="NickName" id="NICKNAME" name="NICKNAME" maxlength="16"
                                                                 	value="${member.NICKNAME}">
                                                                 <div class="form-control-icon">
                                                                     <i class="bi bi-person"></i>
@@ -319,6 +329,9 @@ function selectImage(imgNumber) {
 					</button>
 				</div>
 				<div class="modal-body">
+					<div class="avatar avatar-xl">
+						<img src="assets/images/faces/blank.png" alt="Face" onClick="selectImage(0)">
+					</div>	
 					<div class="avatar avatar-xl">
 						<img src="assets/images/faces/1.jpg" alt="Face" onClick="selectImage(1)">
 					</div>		
