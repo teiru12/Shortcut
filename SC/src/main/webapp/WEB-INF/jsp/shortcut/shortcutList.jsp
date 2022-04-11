@@ -130,11 +130,6 @@ function makePDF(STYPE) {
 									</c:if>
 									
 									<%-- PDF 출력 버튼 --%>
-										<div class="col-md-3 mb-1" style="float:right;">
-											<div class="input-group mb-3">
-
-										    </div>
-										</div>
 										
 									<form action="shortcutList.cut">
 		                                <div class="col-md-3 mb-1" style="float:right;">

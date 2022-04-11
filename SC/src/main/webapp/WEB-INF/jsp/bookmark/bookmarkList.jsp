@@ -79,7 +79,10 @@
 							    			<tbody id="bookmarkBody">
 												<c:if test = "${empty bookmarklist}">
 													<tr>
-														<th width="100%">게시글이 없습니다.</th>
+														<td width="30%">게시글이 없습니다.</td>
+														<td width="20%"></td>
+														<td width="30%"></td>
+														<td width="15%"></td>
 													</tr>		
 												</c:if>
 						    					<c:forEach var="bookmark" items="${bookmarklist}">
@@ -99,7 +102,7 @@
 														<c:if test="${bookmark.STYPE == 'M'}">
 															<td width="15%">오피스</td>
 														</c:if>
-														<td width="20%">${bookmark.TITLE}</td>
+														<td width="20%"><a href="shortDetail.cut?SHORTIDX=${bookmark.SHORTIDX }">${bookmark.TITLE}</a></td>
 														<td width="30%">${bookmark.CONTENT}</td>
 														<td width="15%"><button class="btn btn-sm btn-light"
 																onClick="bookmarkshortDelete(${bookmark.BOOKMARKIDX},'${bookmark.ID}',${currentPage})">
@@ -122,24 +125,27 @@
 							    			<tbody id="bookmarkBody">
 												<c:if test = "${empty bookmarklist}">
 													<tr>
-														<th width="100%">게시글이 없습니다.</th>
+														<td width="30%">게시글이 없습니다.</td>
+														<td width="20%"></td>
+														<td width="30%"></td>
+														<td width="15%"></td>
 													</tr>		
 												</c:if>
 						    					<c:forEach var="bookmark" items="${bookmarklist}">
 													<tr>
 													<c:if test="${bookmark.TYPE == 'FRE' }">
 														<td width="25%">자유 게시판</td>
-														<td width="20%">${bookmark.FTITLE}</td>
+														<td width="20%"><a href="freeDetail.cut?FREEIDX=${bookmark.FREEIDX }">${bookmark.FTITLE}</a></td>
 														<td width="20%">${bookmark.FID}</td>													
 													</c:if>
 													<c:if test="${bookmark.TYPE == 'NEW' }">
 														<td width="25%">뉴스 게시판</td>
-														<td width="20%">${bookmark.NTITLE}</td>
+														<td width="20%"><a href="newsDetail.cut?NEWSIDX=${bookmark.NEWSIDX }">${bookmark.NTITLE}</a></td>
 														<td width="20%">${bookmark.NID}</td>													
 													</c:if>
 													<c:if test="${bookmark.TYPE == 'INF' }">
 														<td width="25%">정보교류 게시판</td>
-														<td width="20%">${bookmark.ITITLE}</td>
+														<td width="20%"><a href="infoDetail.cut?INFOIDX=${bookmark.INFOIDX }">${bookmark.ITITLE}</a></td>
 														<td width="20%">${bookmark.IID}</td>													
 													</c:if>
 														<td width="15%"><button class="btn btn-sm btn-light"
