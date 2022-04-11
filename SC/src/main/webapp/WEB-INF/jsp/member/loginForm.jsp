@@ -164,7 +164,11 @@ $(document).ready(function(){
 							}
 						}
 					}).then((result) => {
+						if(data.id == 'ADMIN'){
+							location.href='/SC/adminMainPage.cut';
+						}else{
 						location.href='<%=referer%>';
+						}
 						// history.go(-1);
 						// location.href="/SC/main.cut";
 					});
