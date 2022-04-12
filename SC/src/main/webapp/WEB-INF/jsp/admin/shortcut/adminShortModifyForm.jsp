@@ -43,7 +43,19 @@ function validation(){
 				}
 			}
 		});		
-	} else if(titleHead == "-----------") {
+	} else if(CONTENT.length >= 400){
+		swal({
+			text				: "본문 글자 수가 너무 많습니다.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
+	}else if(titleHead == "-----------") {
 		swal({
 			text				: "프로그램을 선택해주세요",
 			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게

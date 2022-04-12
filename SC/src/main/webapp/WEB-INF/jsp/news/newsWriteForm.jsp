@@ -16,31 +16,44 @@ function validation(){
 	let TITLE = $("#TITLE").val();
 	let CONTENT = $('textarea[name="editor"]').val();
 	let PASSWORD = "1";
-
-	if($("#inputId").val() == '비회원'){
-		swal({
-			title: '비밀번호 입력',
-			dangerMode: true, // 확인 버튼 빨갛게
-			closeOnClickOutside: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
-			content: {
-				element: 'input',
-				attributes: {
-					placeholder: '비밀번호를 입력해주세요.',
-					type: 'password'
-				}
-			},
-			buttons: {
-				confirm: {
-					text: '확인',
-					value: false,
-					className: 'btn btn-outline-primary'
+	
+	if(TITLE == "") {
+    	swal({
+			text				: "제목을 입력해주세요.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
 				}
 			}
-		}).then((result) => { // result : 입력한 비밀번호
-			PASSWORD = result;
-			writeProcess(TITLE, CONTENT, PASSWORD);
 		});
-	}else{
+	} else if(CONTENT == "") {
+    	swal({
+			text				: "본문을 입력해주세요.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
+	} else if(CONTENT.length >= 400){
+		swal({
+			text				: "본문 글자 수가 너무 많습니다.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
+	} else {
 		writeProcess(TITLE, CONTENT, PASSWORD);
 	}
 }
@@ -97,7 +110,7 @@ $(document).ready(function(){
 						<div class="card-body">
 			    			<div class="col-12">
 			           			<div class="position-relative" style="line-height:30%;">
-								<input type="text" class="form-control" placeholder="제목" id="TITLE"><br>
+								<input type="text" class="form-control" placeholder="제목" id="TITLE" maxlength="30"><br>
 			            		</div>
 			    			</div>
 							<div class="row" style="line-height:30%;">
@@ -113,7 +126,7 @@ $(document).ready(function(){
                                 </div>
                             </div>
 						    <div id="classic">
-								<textarea id="CONTENT" name="editor"></textarea>
+								<textarea id="CONTENT" name="editor" maxlength="400"></textarea>
 	    					</div>
    						<br>
 	    				<div class="col-12 d-flex justify-content-end">

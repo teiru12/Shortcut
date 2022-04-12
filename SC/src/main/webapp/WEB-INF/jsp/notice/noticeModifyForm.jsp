@@ -15,7 +15,45 @@ function validation(){
 	let CONTENT = $('textarea[name="editor"]').val();
 	let IDX = $('#IDX').val();
 
+	if(TITLE == "") {
+    	swal({
+			text				: "제목을 입력해주세요.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
+	} else if(CONTENT == "") {
+    	swal({
+			text				: "본문을 입력해주세요.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
+	} else if(CONTENT.length >= 400){
+		swal({
+			text				: "본문 글자 수가 너무 많습니다.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
+	} else{
 		modifyProcess(TITLE, CONTENT, IDX);
+	}
 }
 function modifyProcess(TITLE, CONTENT, IDX){
 	$.ajax({

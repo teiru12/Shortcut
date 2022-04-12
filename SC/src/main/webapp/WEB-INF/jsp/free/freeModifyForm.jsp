@@ -61,8 +61,29 @@ function validation(){
 				}
 			}
 		}).then((result) => { // result : 입력한 비밀번호
-			PASSWORD = result;
-			modifyProcess(TITLE, CONTENT, IDX, ID);
+			$.ajax({
+				url 		: "/SC/freeDetailPassword.cut",
+				data		: {"IDX" : IDX},
+				contentType	: "application/json",
+				success		: function(data) {
+					if(result == data) { // 패스워드가 일치
+						modifyProcess(TITLE, CONTENT, IDX, ID);
+					} else { // 패스워드가 일치하지 않음
+						swal({
+							title				: '비밀번호가 틀립니다.',
+							dangerMode			: true, // 확인 버튼 빨갛게
+							closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+							buttons				: {
+								confirm : {
+									text 		: '확인',
+									value 		: false,
+									className 	: 'btn btn-outline-primary' 
+								}
+							}
+						});	
+					}
+				}				
+			});				
 		});
 	}else{
 		modifyProcess(TITLE, CONTENT, IDX, ID);
