@@ -10,18 +10,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import sc.model.Free;
-import sc.model.FreeCom;
 import sc.model.Notice;
 import sc.model.Report;
 import sc.model.ReportCom;
 import sc.notice.NoticeService;
-import sc.util.GetIP;
-import sc.util.MakeComList;
 import sc.util.Paging;
 
 @Controller
@@ -35,8 +30,6 @@ public class ReportController {
 		
 	@RequestMapping(value = "/reportList.cut")
 	public String reportList(HttpServletRequest request, Model model) throws Exception {
-		
-		String id = (String) request.getSession().getAttribute("id");
 		
 		/* 페이징 변수 설정 */
 		int pageSize = 10; // 페이지당 출력할 게시글 수
@@ -78,9 +71,7 @@ public class ReportController {
 	
 	@RequestMapping(value = "reportDetail.cut")
 	public String reportDetail(int REPORTIDX, ReportCom reportCom, Report report, Model model, HttpServletRequest request) throws Exception {
-		
-		String id = (String) request.getSession().getAttribute("id");
-		
+	
 		/* 게시글 상세 정보 읽어옴 */
 		Report reportDetail = reportService.selectReportIDX(REPORTIDX);
 		
@@ -100,8 +91,7 @@ public class ReportController {
 		
 		Report report = new Report();
 		String ID;
-		  
-		
+		  		
 		ID = (String)request.getSession().getAttribute("id");
 			
 		report.setID(ID);
@@ -140,8 +130,6 @@ public class ReportController {
 	@RequestMapping(value = "reportModifyForm.cut")
 	public String reportModifyForm(HttpServletRequest request,Model model, int REPORTIDX) throws Exception{
 		
-		String id = (String) request.getSession().getAttribute("id");
-		
 		Report report = reportService.selectReportIDX(REPORTIDX);
 		
 		model.addAttribute("report",report);
@@ -172,9 +160,6 @@ public class ReportController {
 		
 		reportService.insertReportListComByReportIDX(reportCom);
 		
-		List<ReportCom> reportComList = new ArrayList<ReportCom>();
-		reportComList = reportService.reportListComByReportIDX(REPORTIDX);		
-		
 		return map;
 	}
 	
@@ -198,12 +183,32 @@ public class ReportController {
 	public Map<String, String> reportComDelete(int REPORTCOMIDX, HttpServletRequest request) throws Exception {
 		Map<String, String> msg = new HashMap<String, String>();
 				
-		
 		reportService.deleteReportListComByReportIDX(REPORTCOMIDX);
-		
-		String id = (String) request.getSession().getAttribute("id");
 		
 		return msg;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/reportArticle.cut")
+	public Map<String, Object> reportArticle(String TYPE, int IDX, HttpServletRequest request) throws Exception {
+		Map<String, Object> msg = new HashMap<String, Object>();
+		String id = (String)request.getSession().getAttribute("id");
 		
+		/* 신고로그 테이블에서 신고를 이미 했는지를 검사 */
+		if(reportService.selectReportLog(TYPE, IDX, id) == null) { // 신고 횟수가 없음 신고 가능
+		
+			/* 신고횟수 저장 테이블의 신고횟수를 증가 */
+			reportService.updateCountReport(TYPE, IDX);
+			/* 신고로그 테이블에 신고 기록 */
+			reportService.insertReportLog(TYPE, IDX, id);
+			
+			/* 해당 게시글의 신고횟수를 읽어와 msg에 저장 */
+			int countReport = reportService.selectCountReport(TYPE, IDX);
+			
+			msg.put("countReport", countReport);		
+		} else { // 이미 이 게시글을 신고 했음
+			msg.put("ISREPORTED", "Y");			
+		}
+		return msg;
+	}		
 }

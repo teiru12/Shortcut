@@ -183,8 +183,6 @@ function modifyCom(REPORTCOMIDX) {
 					<span class="text-subtitle text-muted">
 						<fmt:formatDate pattern="yyyy-MM-dd" value="${reportDetail.REPORTDATE}"/> &nbsp;
 						
-						<!-- 신고 -->
-						<a href="#"><span style="color:#C00000">신고</span></a>
 					</span><hr>
 					<p>${reportDetail.CONTENT}</p>
 					<div style="text-align:right;">

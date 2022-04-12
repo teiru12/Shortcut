@@ -17,12 +17,13 @@ import sc.bookmark.BookmarkService;
 import sc.goodbad.GoodbadService;
 import sc.member.MemberService;
 import sc.model.Bookmark;
+import sc.model.CountReport;
 import sc.model.Free;
 import sc.model.FreeCom;
 import sc.model.Goodbad;
-import sc.model.Member;
 import sc.model.Notice;
 import sc.notice.NoticeService;
+import sc.report.ReportService;
 import sc.util.GetIP;
 import sc.util.MakeComList;
 import sc.util.Paging;
@@ -44,6 +45,9 @@ public class FreeController {
 	
 	@Resource(name = "bookmarkService")
 	private BookmarkService bookmarkService;
+	
+	@Resource(name = "reportService")
+	private ReportService reportService;
 	
 	@RequestMapping(value = "/freeList.cut")
 	public String freeList(HttpServletRequest request, Model model) throws Exception {
@@ -134,7 +138,14 @@ public class FreeController {
 		free.setTITLE(TITLE);
 		free.setCONTENT(CONTENT);
 		
+		/* 글 입력 */
 		freeService.insertFreeList(free);
+		
+		/* 입력한 게시글의 글 번호를 가져옴 */
+		int inputIDX = reportService.selectMaxFREEIDX();
+		
+		/* 입력한 게시글의 신고 횟수 0으로 초기화 */
+		reportService.insertCountReport("FRE", inputIDX);
 		
 		msg.put("ID", ID);
 		
@@ -192,6 +203,13 @@ public class FreeController {
 			bk = bookmarkService.selectBookmark(id, "FRE", FREEIDX);
 		}
 		
+		/* 게시글의 신고 횟수 & id의 신고 여부 */
+		int countReport = reportService.selectCountReport("FRE", FREEIDX);
+		String isReported = "N";
+		if(id != null && reportService.selectReportLog("FRE", FREEIDX, id) != null) {
+			isReported = "Y";
+		}		
+		
 		/* 페이징 변수 설정 */
 		int pageSize = 5; // 페이지당 출력할 포인트 정보의 수
 		int START = 1;
@@ -235,6 +253,10 @@ public class FreeController {
 		if(id !=null && bk != null) {
 			model.addAttribute("bookmark", bk);
 		}
+		
+		/* 게시글의 신고 횟수 & id의 신고 여부 모델에 삽입*/
+		model.addAttribute("countReport", countReport);
+		model.addAttribute("isReported", isReported);
 		
 		return "freeDetail";
 	}

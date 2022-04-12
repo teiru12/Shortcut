@@ -134,7 +134,17 @@
 						&emsp;
 						
 						<!-- 신고 -->
-						<a href="#"><span style="color:#C00000">신고</span></a>
+						<% if(request.getSession().getAttribute("id") != null) { %>
+							<c:if test="${isReported == 'N'}">
+								<a id="repA" href="javascript:reportCheck('NEW', ${newsDetail.NEWSIDX})"><span id="repSpan" style="color:#C00000">신고</span></a>
+							</c:if>
+							<c:if test="${isReported == 'Y'}">
+								<a id="repA" href="#"><span id="repSpan" style="color:#C00000">신고함</span></a>
+							</c:if>
+						<% } else { %>
+							<a id="repA" href="#"><span>신고</span></a>
+						<% } %>
+						&nbsp;: <span id="repCount">${countReport}</span>
 					</span><hr>
 					<p>${newsDetail.CONTENT}</p>
 					<div style="text-align:right;">
