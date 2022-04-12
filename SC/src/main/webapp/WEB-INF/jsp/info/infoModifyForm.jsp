@@ -184,8 +184,9 @@ $(document).ready(function(){
 							<input type="hidden" id="IDX" value="${info.INFOIDX}">
 							<button type="submit" onclick="validation()"
 							    class="btn btn-primary me-1 mb-1">작성</button>
-							<button type="reset"
-							    class="btn btn-light-secondary me-1 mb-1">취소</button>
+                           <button type="button"
+                               class="btn btn-light-secondary me-1 mb-1"
+                               onClick="javascript:history.go(-1);">취소</button>
 						</div>
 					</div>
    				 </div>
