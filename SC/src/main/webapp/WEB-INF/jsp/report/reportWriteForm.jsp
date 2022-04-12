@@ -41,6 +41,18 @@ function validation(){
 				}
 			}
 		});
+	} else if(CONTENT.length >= 400){
+		swal({
+			text				: "본문 글자 수가 너무 많습니다.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
 	} else{
 		writeProcess(TITLE, CONTENT);
 	}
@@ -121,8 +133,9 @@ $(document).ready(function(){
 	    				<div class="col-12 d-flex justify-content-end">
                            <button type="submit" onclick="validation()"
                                class="btn btn-primary me-1 mb-1">작성</button>
-                           <button type="reset"
-                               class="btn btn-light-secondary me-1 mb-1">취소</button>
+                           <button type="button"
+                               class="btn btn-light-secondary me-1 mb-1"
+                               onClick="javascript:history.go(-1);">취소</button>
 						</div>
 					</div>
    				 </div>

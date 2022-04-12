@@ -116,7 +116,7 @@ $(document).ready(function(){
 						<div class="card-body">
 			    			<div class="col-12">
 			           			<div class="position-relative" style="line-height:30%;">
-								<input type="text" class="form-control" placeholder="제목" id="TITLE"><br>
+								<input type="text" class="form-control" placeholder="제목" id="TITLE" maxlength="30"><br>
 			            		</div>
 			    			</div>
 							<div class="row" style="line-height:30%;">
@@ -138,8 +138,9 @@ $(document).ready(function(){
 	    				<div class="col-12 d-flex justify-content-end">
                            <button type="submit" onclick="validation()"
                                class="btn btn-primary me-1 mb-1">작성</button>
-                           <button type="reset"
-                               class="btn btn-light-secondary me-1 mb-1">취소</button>
+                           <button type="button"
+                               class="btn btn-light-secondary me-1 mb-1"
+                               onClick="javascript:history.go(-1);">취소</button>
 						</div>
 					</div>
    				 </div>

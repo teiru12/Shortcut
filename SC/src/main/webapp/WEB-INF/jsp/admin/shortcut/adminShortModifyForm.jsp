@@ -217,6 +217,9 @@ $(document).ready(function(){
 	    				<div class="col-12 d-flex justify-content-end">
                            <button type="submit" onclick="validation()"
                                class="btn btn-primary me-1 mb-1">수정</button>
+                           <button type="button"
+                               class="btn btn-light-secondary me-1 mb-1"
+                               onClick="javascript:history.go(-1);">취소</button>
 						</div>
 					</div>
    				 </div>
