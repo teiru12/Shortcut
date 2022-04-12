@@ -21,6 +21,7 @@ import sc.model.Info;
 import sc.model.InfoCom;
 import sc.model.Notice;
 import sc.notice.NoticeService;
+import sc.report.ReportService;
 import sc.util.GetIP;
 import sc.util.MakeComList;
 import sc.util.Paging;
@@ -39,6 +40,9 @@ public class InfoController {
 	
 	@Resource(name = "bookmarkService")
 	private BookmarkService bookmarkService;
+	
+	@Resource(name = "reportService")
+	private ReportService reportService;
 
 	@RequestMapping(value = "infoList.cut")
 	public String infoList(HttpServletRequest request, Model model) throws Exception {
@@ -123,6 +127,13 @@ public class InfoController {
 			bk = bookmarkService.selectBookmark(id, "INF", INFOIDX);
 		}
 		
+		/* 게시글의 신고 횟수 & id의 신고 여부 */
+		int countReport = reportService.selectCountReport("INF", INFOIDX);
+		String isReported = "N";
+		if(id != null && reportService.selectReportLog("INF", INFOIDX, id) != null) {
+			isReported = "Y";
+		}	
+		
 		/* 페이징 변수 설정 */
 		int pageSize = 5; // 페이지당 출력할 포인트 정보의 수
 		int START = 1;
@@ -168,6 +179,10 @@ public class InfoController {
 			model.addAttribute("bookmark", bk);
 		}
 		
+		/* 게시글의 신고 횟수 & id의 신고 여부 모델에 삽입*/
+		model.addAttribute("countReport", countReport);
+		model.addAttribute("isReported", isReported);
+		
 		return "infoDetail";
 	}
 	
@@ -203,7 +218,14 @@ public class InfoController {
 		info.setTITLE(TITLE);
 		info.setIP(ip);
 		
+		/* 글 입력 */
 		infoService.insertInfoList(info);
+		
+		/* 입력한 게시글의 글 번호를 가져옴 */
+		int inputIDX = reportService.selectMaxINFOIDX();
+		
+		/* 입력한 게시글의 신고 횟수 0으로 초기화 */
+		reportService.insertCountReport("INF", inputIDX);
 		
 		msg.put("ID", ID);
 		

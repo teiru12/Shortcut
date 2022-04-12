@@ -693,3 +693,67 @@ function comModifyProcess(comModifyUrl, COMIDX, index, MODDEL) {
 function openComWriteForm(index) {
 	$('#reForm'+index).css("display", "block");
 }	
+
+/* 신고 체크 */
+function reportCheck(TYPE, IDX) {
+	$.ajax({
+		url 		: "/SC/reportArticle.cut",
+		data		: {"TYPE" : TYPE, "IDX" : IDX},
+		contentType	: "application/json",
+		success		: function(data) {
+			if(data.ISREPORTED == 'Y') { // 이미 신고함
+				
+			} else {
+				let count = Number($('#repCount').html()) + 1;
+				$('#repA').attr("href", "#");
+				
+				/* 신고 횟수가 30회가 넘어갈 때 */
+				// 게시글을 삭제
+				// 신고 게시판에 게시글 등록
+				if(data.countReport >= 30) {
+					let delUrl ="";
+					if(TYPE == 'FRE') {
+						delUrl = "/SC/freeDelete.cut";
+					} else if(TYPE == 'INF') {
+						delUrl = "/SC/infoDelete.cut";
+					} else if(TYPE == 'NEW') {
+						delUrl = "/SC/newsDelete.cut";
+					}
+									
+					// 게시글 삭제
+					$.ajax({
+						url 		: delUrl,
+						data		: {"IDX" : IDX},
+						contentType	: "application/json",
+						success		: function(data) {
+									
+							let title ="";
+							if(TYPE == 'FRE') {
+								title = "자유게시판 " + IDX + "번 글을 신고합니다";
+							} else if(TYPE == 'INF') {
+								title = "정보교류게시판 " + IDX + "번 글을 신고합니다";
+							} else if(TYPE == 'NEW') {
+								title = "정보교류게시판 " + IDX + "번 글을 신고합니다";
+							}
+							let content = "신고 누적 30회";
+							
+							// 신고 게시판에 글 등록							
+							$.ajax({
+								url 		: "/SC/reportWrite.cut",
+								data		: {"TITLE" : title, "CONTENT" : content},
+								contentType	: "application/json",
+								success		: function(data) {
+									$('#repCount').html(count);
+									$('#repSpan').html("신고함");
+								}	
+							});
+						}	
+					});
+				} else {
+					$('#repCount').html(count);
+					$('#repSpan').html("신고함");
+				}
+			}
+		}	
+	});
+}

@@ -20,7 +20,7 @@ import sc.model.Goodbad;
 import sc.model.News;
 import sc.model.Notice;
 import sc.notice.NoticeService;
-import sc.util.GetIP;
+import sc.report.ReportService;
 import sc.util.Paging;
 
 @Controller
@@ -37,6 +37,9 @@ public class NewsController {
 	
 	@Resource(name = "bookmarkService")
 	private BookmarkService bookmarkService;
+	
+	@Resource(name = "reportService")
+	private ReportService reportService;
 	
 	@RequestMapping(value = "/newsList.cut")
 	public String newsList(HttpServletRequest request, Model model) throws Exception {
@@ -115,7 +118,14 @@ public class NewsController {
 		news.setTITLE(TITLE);
 		news.setCONTENT(CONTENT);
 		
+		/* 글 입력 */
 		newsService.insertNewsList(news);
+		
+		/* 입력한 게시글의 글 번호를 가져옴 */
+		int inputIDX = reportService.selectMaxNEWSIDX();
+		
+		/* 입력한 게시글의 신고 횟수 0으로 초기화 */
+		reportService.insertCountReport("NEW", inputIDX);
 		
 		map.put("ID", ID);
 		
@@ -173,6 +183,13 @@ public class NewsController {
 			bk = bookmarkService.selectBookmark(id, "NEW", NEWSIDX);
 		}
 		
+		/* 게시글의 신고 횟수 & id의 신고 여부 */
+		int countReport = reportService.selectCountReport("NEW", NEWSIDX);
+		String isReported = "N";
+		if(id != null && reportService.selectReportLog("NEW", NEWSIDX, id) != null) {
+			isReported = "Y";
+		}	
+		
 		model.addAttribute("newsDetail", newsDetail);
 		/* 좋아요/싫어요가 있을 경우 모델에 삽입 */
 		if(id != null && gb != null) {
@@ -183,6 +200,10 @@ public class NewsController {
 		if(id !=null && bk != null) {
 			model.addAttribute("bookmark", bk);
 		}
+		
+		/* 게시글의 신고 횟수 & id의 신고 여부 모델에 삽입*/
+		model.addAttribute("countReport", countReport);
+		model.addAttribute("isReported", isReported);
 		
 		return "newsDetail";
 	}

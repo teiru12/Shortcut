@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import sc.model.Report;
 import sc.model.ReportCom;
+import sc.model.ReportLog;
 
 @Service("reportService")
 public class ReportServiceImpl implements ReportService{
@@ -60,11 +61,8 @@ public class ReportServiceImpl implements ReportService{
 	public Report selectReportIDX(int REPORTIDX) throws Exception {
 		return reportDAO.selectReportIDX(REPORTIDX);
 	}
-
 	
 	/* 신고 게시판 댓글 */
-	
-	
 	/* 신고 게시판 댓글 리스트 */
 	@Override
 	public List<ReportCom> reportListComByReportIDX(int REPORTIDX) throws Exception {
@@ -79,22 +77,91 @@ public class ReportServiceImpl implements ReportService{
 	@Override
 	public void insertReportListComByReportIDX(ReportCom reportCom) throws Exception {
 		reportDAO.insertReportListComByReportIDX(reportCom);
-		
 	}
 
 	/* 신고 게시판 댓글 수정 BY 게시글번호 */
 	@Override
 	public void updateReportListComByReportIDX(ReportCom reportCom) throws Exception {
 		reportDAO.updateReportListComByReportIDX(reportCom);
-		
 	}
 
 	/* 신고 게시판 댓글 삭제 BY 게시글번호 */
 	@Override
 	public void deleteReportListComByReportIDX(int REPORTCOMIDX) throws Exception {
 		reportDAO.deleteReportListComByReportIDX(REPORTCOMIDX);
-		
 	}
 
-	
+	/* 신고 카운트 */
+	/* 신고 횟수 초기화 생성 */
+	@Override
+	public void insertCountReport(String TYPE, int IDX) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("TYPE", TYPE);
+		map.put("IDX", IDX);
+		
+		reportDAO.insertCountReport(map);
 	}
+	
+	/* 신고 횟수 증가 */
+	@Override
+	public void updateCountReport(String TYPE, int IDX) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("TYPE", TYPE);
+		map.put("IDX", IDX);
+		
+		reportDAO.updateCountReport(map);
+	}
+	
+	/* 신고 횟수 조회 */
+	@Override
+	public int selectCountReport(String TYPE, int IDX) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("TYPE", TYPE);
+		map.put("IDX", IDX);
+		
+		return Integer.parseInt(String.valueOf(reportDAO.selectCountReport(map)));
+	}
+	
+	/* 신고 로그 */
+	/* 신고 로그 조회 */
+	@Override
+	public ReportLog selectReportLog(String TYPE, int IDX, String ID) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("TYPE", TYPE);
+		map.put("IDX", IDX);
+		map.put("ID", ID);
+		
+		return reportDAO.selectReportLog(map);
+	}
+	
+	/* 신고 로그 입력 */
+	@Override
+	public void insertReportLog(String TYPE, int IDX, String ID) throws Exception {
+		Map<String, Object> map = new HashMap<String, Object>();
+		
+		map.put("TYPE", TYPE);
+		map.put("IDX", IDX);
+		map.put("ID", ID);
+		
+		reportDAO.insertReportLog(map);
+	}	
+	
+	/* 자유 게시판의 최근 입력 게시글 번호 */
+	public int selectMaxFREEIDX() throws Exception {
+		return Integer.parseInt(String.valueOf(reportDAO.selectMaxFREEIDX()));
+	}
+	
+	/* 정보교류 게시판의 최근 입력 게시글 번호 */
+	public int selectMaxINFOIDX() throws Exception {
+		return Integer.parseInt(String.valueOf(reportDAO.selectMaxINFOIDX()));
+	}
+	
+	/* 뉴스 게시판의 최근 입력 게시글 번호 */
+	public int selectMaxNEWSIDX() throws Exception {
+		return Integer.parseInt(String.valueOf(reportDAO.selectMaxNEWSIDX()));
+	}
+}

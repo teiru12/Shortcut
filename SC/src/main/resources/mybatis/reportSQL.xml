@@ -141,4 +141,98 @@
 			REPORTCOMIDX = #{REPORTCOMIDX}
 	]]>
 	</delete>
+	
+	<!-- 신고 횟수 0으로 초기화해서 생성  -->
+	<!-- 게시글 작성 시 생성 -->
+	<insert id="insertCountReport" parameterType="hashmap">
+		INSERT INTO
+			COUNTREPORT
+		VALUES(
+			COUNTREPORT_SEQ.NEXTVAL,
+			#{TYPE},
+			#{IDX},
+			0	
+		)
+	</insert>
+
+	<!-- 신고 횟수 증가 -->
+	<!-- 신고 버튼 눌렀을 경우 업데이트 -->
+	<update id="updateCountReport" parameterType="hashmap">
+		UPDATE
+			COUNTREPORT
+		SET
+			COUNT = COUNT+1
+		WHERE
+			TYPE = #{TYPE}
+			AND
+			IDX = #{IDX}
+	</update>
+
+	<!-- 신고 횟수 조회 -->
+	<!-- 특정 게시판의 특정 게시글의 신고횟수 조회 -->
+	<select id="selectCountReport" parameterType="hashmap" resultType="int">
+		SELECT
+			COUNT
+		FROM
+			COUNTREPORT
+		WHERE
+			TYPE = #{TYPE}
+			AND
+			IDX = #{IDX}	
+	</select>
+
+	<!--  신고로그 테이블 쿼리 -->
+
+	<!-- 신고 로그 조회 -->
+	<!-- 특정 게시판의 특정 게시글을 ID인 사람이 신고를 했는지 조회 -->
+	<select id="selectReportLog" parameterType="hashmap" resultType="sc.model.ReportLog">
+		SELECT
+			*
+		FROM
+			REPORTLOG
+		WHERE
+			TYPE = #{TYPE}
+			AND
+			IDX = #{IDX}
+			AND
+			ID = #{ID}
+	</select>
+
+	<!-- 신고 로그 입력 -->
+	<!-- 신고 버튼을 눌렀을 경우 신고기록 입력 -->
+	<insert id="insertReportLog" parameterType="hashmap">
+		INSERT INTO
+			REPORTLOG
+		VALUES(
+			REPORTLOG_SEQ.NEXTVAL,
+			#{TYPE},
+			#{IDX},
+			#{ID},
+			SYSDATE
+		)
+	</insert>
+	
+	<!-- 자유 게시판의 최근 입력 게시글 번호 -->
+	<select id="selectMaxFREEIDX" resultType="int">
+		SELECT
+			MAX(FREEIDX)
+		FROM
+			FREE
+	</select>
+	
+	<!-- 정보교류 게시판의 최근 입력 게시글 번호 -->
+	<select id="selectMaxINFOIDX" resultType="int">
+		SELECT
+			MAX(INFOIDX)
+		FROM
+			INFO
+	</select>
+	
+	<!-- 뉴스 게시판의 최근 입력 게시글 번호 -->
+	<select id="selectMaxNEWSIDX" resultType="int">
+		SELECT
+			MAX(NEWSIDX)
+		FROM
+			NEWS
+	</select>
 </mapper>
