@@ -16,8 +16,44 @@ function validation(){
 	let PASSWORD = "1";
 	let IDX = $('#IDX').val();
 	let ID = $('#inputId').val();
-
-	if($("#inputId").val() == '비회원'){
+	
+	if(TITLE == "") {
+    	swal({
+			text				: "제목을 입력해주세요.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
+	} else if(CONTENT == "") {
+    	swal({
+			text				: "본문을 입력해주세요.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
+	} else if(CONTENT.length >= 400){
+		swal({
+			text				: "본문 글자 수가 너무 많습니다.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
+	} else if($("#inputId").val() == '비회원'){
 		swal({
 			title: '비밀번호 입력',
 			dangerMode: true, // 확인 버튼 빨갛게
@@ -25,7 +61,7 @@ function validation(){
 			content: {
 				element: 'input',
 				attributes: {
-					placeholder: '비밀번호를 입력해주세요.',
+					placeholder: '작성시 입력한 비밀번호를 입력해주세요.',
 					type: 'password'
 				}
 			},
@@ -37,8 +73,29 @@ function validation(){
 				}
 			}
 		}).then((result) => { // result : 입력한 비밀번호
-			PASSWORD = result;
-			modifyProcess(TITLE, CONTENT, IDX, ID);
+			$.ajax({
+				url 		: "/SC/infoDetailPassword.cut",
+				data		: {"IDX" : IDX},
+				contentType	: "application/json",
+				success		: function(data) {
+					if(result == data) { // 패스워드가 일치
+						modifyProcess(TITLE, CONTENT, IDX, ID);
+					} else { // 패스워드가 일치하지 않음
+						swal({
+							title				: '비밀번호가 틀립니다.',
+							dangerMode			: true, // 확인 버튼 빨갛게
+							closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+							buttons				: {
+								confirm : {
+									text 		: '확인',
+									value 		: false,
+									className 	: 'btn btn-outline-primary' 
+								}
+							}
+						});	
+					}
+				}				
+			});				
 		});
 	}else{
 		modifyProcess(TITLE, CONTENT, IDX, ID);
@@ -97,7 +154,7 @@ $(document).ready(function(){
 						<div class="card-body">
 							<div class="col-12">
 			           			<div class="position-relative" style="line-height:30%;">
-								<input type="text" class="form-control" placeholder="제목" id="TITLE"
+								<input type="text" class="form-control" placeholder="제목" id="TITLE" maxlength="30"
 								value="${info.TITLE}">
 			            		</div>
 			    			</div>
@@ -120,7 +177,7 @@ $(document).ready(function(){
                             </div>
 			    			 
 						    <div id="classic">
-							<textarea id="CONTENT" name="editor">${info.CONTENT}</textarea>
+							<textarea id="CONTENT" name="editor" maxlength="400">${info.CONTENT}</textarea>
 	    					</div>
    						<br>
 	    				<div class="col-12 d-flex justify-content-end">

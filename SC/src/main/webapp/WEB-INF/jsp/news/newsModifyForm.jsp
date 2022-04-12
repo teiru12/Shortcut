@@ -16,30 +16,68 @@ function modifyProcess(){
 	let IDX = $('#IDX').val();
 	let ID = $('#inputId').val();
 	
-	$.ajax({
-        url:"/SC/newsModify.cut",
-        data: {"TITLE": TITLE,"CONTENT": CONTENT,"IDX": IDX},
-        contentType	:"application/json",
-        success		:function(data){
-        	swal({
-				text				: ID+'님이 글을 수정했습니다.',
-				closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
-				buttons				: {
-					confirm : {
-						text 		: '확인',
-						value 		: true,
-						className 	: 'btn btn-primary' 
-					}
+	if(TITLE == "") {
+    	swal({
+			text				: "제목을 입력해주세요.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
 				}
-			}).then((result) => {
-				location.href='newsDetail.cut?NEWSIDX='+IDX;
-			});
-		},
-		error		:function(request, error){
-			alert("fail");
-			alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-		}
-    });
+			}
+		});
+	} else if(CONTENT == "") {
+    	swal({
+			text				: "본문을 입력해주세요.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
+	} else if(CONTENT.length >= 400){
+		swal({
+			text				: "본문 글자 수가 너무 많습니다.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
+	} else{
+		$.ajax({
+	        url:"/SC/newsModify.cut",
+	        data: {"TITLE": TITLE,"CONTENT": CONTENT,"IDX": IDX},
+	        contentType	:"application/json",
+	        success		:function(data){
+	        	swal({
+					text				: ID+'님이 글을 수정했습니다.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				}).then((result) => {
+					location.href='newsDetail.cut?NEWSIDX='+IDX;
+				});
+			},
+			error		:function(request, error){
+				alert("fail");
+				alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+	    });
+	}
 }
 </script>
 <script>
@@ -68,7 +106,7 @@ $(document).ready(function(){
 						<div class="card-body">
 							<div class="col-12">
 			           			<div class="position-relative" style="line-height:30%;">
-								<input type="text" class="form-control" placeholder="제목" id="TITLE"
+								<input type="text" class="form-control" placeholder="제목" id="TITLE" maxlength="30"
 								value="${news.TITLE}">
 			            		</div>
 			    			</div>
@@ -87,7 +125,7 @@ $(document).ready(function(){
                             </div>
 			    			 
 						    <div id="classic">
-							<textarea id="CONTENT" name="editor">${news.CONTENT}</textarea>
+							<textarea id="CONTENT" name="editor" maxlength="400">${news.CONTENT}</textarea>
 	    					</div>
    						<br>
 	    				<div class="col-12 d-flex justify-content-end">

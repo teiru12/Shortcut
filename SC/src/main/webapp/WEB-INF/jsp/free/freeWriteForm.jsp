@@ -41,6 +41,18 @@ function validation(){
 				}
 			}
 		});
+	} else if(CONTENT.length >= 400){
+		swal({
+			text				: "본문 글자 수가 너무 많습니다.",
+			closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+			buttons				: {
+				confirm : {
+					text 		: '확인',
+					value 		: true,
+					className 	: 'btn btn-primary' 
+				}
+			}
+		});
 	} else if($("#inputId").val() == '비회원'){
 		swal({
 			title: '비밀번호 입력',
@@ -61,8 +73,23 @@ function validation(){
 				}
 			}
 		}).then((result) => { // result : 입력한 비밀번호
+			
 			PASSWORD = result;
-			writeProcess(TITLE, CONTENT, PASSWORD);
+			if(PASSWORD.length >= 10) {
+				swal({
+					title				: "글자 수가 너무 많습니다",
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				});
+			} else {
+				writeProcess(TITLE, CONTENT, PASSWORD);
+			}
 		});
 	}else{
 		writeProcess(TITLE, CONTENT, PASSWORD);
