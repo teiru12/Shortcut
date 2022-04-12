@@ -32,8 +32,8 @@ public class NewsDAO {
 	}
 	
 	//뉴스 게시판 검색한 글 수
-	public int countNewsListSearch() throws Exception {
-		return sqlSessionTemplate.selectOne("news.countNewsListSearch");
+	public int countNewsListSearch(String KEYWORD) throws Exception {
+		return sqlSessionTemplate.selectOne("news.countNewsListSearch", KEYWORD);
 	}
 	
 	//뉴스 게시판 글 입력

@@ -6,9 +6,12 @@
 <meta charset="UTF-8">
 <title>chat</title>
 </head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+	history.go(-1);
+});
+</script>
 <body>
-
-
-
 </body>
 </html>

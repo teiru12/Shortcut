@@ -66,16 +66,14 @@
 	</select>
 
 	<!-- 뉴스 게시판 검색 카운트 -->
-	<select id="countNewsListSearch" parameterType="hashmap" resultType="int">
+	<select id="countNewsListSearch" parameterType="String" resultType="int">
 		SELECT
 			COUNT(*)
 		FROM
 			NEWS
 		<trim prefix="WHERE" prefixOverrides="OR">
 			<!-- 단축키 검색 : 검색어 입력 -->
-			<if test="KEYWORD != NULL">
-				ID LIKE '%'||#{KEYWORD}||'%'
-			</if>				
+			TITLE LIKE '%'||#{KEYWORD}||'%'
 		</trim>
 	</select>
 
