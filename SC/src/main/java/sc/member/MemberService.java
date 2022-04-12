@@ -34,4 +34,6 @@ public interface MemberService {
 	public int countMemberLevelSearch(Map<String, Object> map) throws Exception;
 	
 	public void testjoin(String Email) throws Exception;
+	
+	public void updateDelMember(Member member) throws Exception;
 }

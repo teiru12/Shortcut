@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="/WEB-INF/jsp/include/memMenu.jspf" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -131,22 +132,76 @@
 														<td width="15%"></td>
 													</tr>		
 												</c:if>
-						    					<c:forEach var="bookmark" items="${bookmarklist}">
+						    					<c:forEach var="bookmark" items="${bookmarklist}" varStatus="vs">
 													<tr>
 													<c:if test="${bookmark.TYPE == 'FRE' }">
 														<td width="25%">자유 게시판</td>
 														<td width="20%"><a href="freeDetail.cut?FREEIDX=${bookmark.FREEIDX }">${bookmark.FTITLE}</a></td>
-														<td width="20%">${bookmark.FID}</td>													
+														<td width="20%">
+														<div class="btn-group dropend me-1 mb-1">																
+															<button type="button" class="btn btn-icon-default"
+																data-bs-toggle="dropdown" aria-haspopup="false"
+																aria-expanded="false">
+																${bookmark.FID}
+															</button>
+															<div class="dropdown-menu">
+																<button class="btn btn-icon-default" onClick="writerDetail('${bookmark.FID}')">회원 정보</button><br>
+																<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
+																data-bs-target="#inlineForm"
+																id="sendModal${vs.index}"
+																data-s="${bookmark.BID}" data-g="${bookmark.FID}">
+																	쪽지 보내기
+																</button><br>
+																<a class="btn btn-icon-default" href="chat.cut">1:1 채팅</a>
+															</div>
+														</div>
+														</td>													
 													</c:if>
 													<c:if test="${bookmark.TYPE == 'NEW' }">
 														<td width="25%">뉴스 게시판</td>
 														<td width="20%"><a href="newsDetail.cut?NEWSIDX=${bookmark.NEWSIDX }">${bookmark.NTITLE}</a></td>
-														<td width="20%">${bookmark.NID}</td>													
+														<td width="20%">
+														<div class="btn-group dropend me-1 mb-1">																
+															<button type="button" class="btn btn-icon-default"
+																data-bs-toggle="dropdown" aria-haspopup="false"
+																aria-expanded="false">
+																${bookmark.NID}
+															</button>
+															<div class="dropdown-menu">
+																<button class="btn btn-icon-default" onClick="writerDetail('${bookmark.NID}')">회원 정보</button><br>
+																<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
+																data-bs-target="#inlineForm"
+																id="sendModal${vs.index}"
+																data-s="${bookmark.BID}" data-g="${bookmark.NID}">
+																	쪽지 보내기
+																</button><br>
+																<a class="btn btn-icon-default" href="chat.cut">1:1 채팅</a>
+															</div>
+														</div>
+														</td>													
 													</c:if>
 													<c:if test="${bookmark.TYPE == 'INF' }">
 														<td width="25%">정보교류 게시판</td>
 														<td width="20%"><a href="infoDetail.cut?INFOIDX=${bookmark.INFOIDX }">${bookmark.ITITLE}</a></td>
-														<td width="20%">${bookmark.IID}</td>													
+														<td width="20%">
+														<div class="btn-group dropend me-1 mb-1">																
+															<button type="button" class="btn btn-icon-default"
+																data-bs-toggle="dropdown" aria-haspopup="false"
+																aria-expanded="false">
+																${bookmark.IID}
+															</button>
+															<div class="dropdown-menu">
+																<button class="btn btn-icon-default" onClick="writerDetail('${bookmark.IID}')">회원 정보</button><br>
+																<button type="button" class="openModal btn btn-icon-default" data-bs-toggle="modal"
+																data-bs-target="#inlineForm"
+																id="sendModal${vs.index}"
+																data-s="${bookmark.BID}" data-g="${bookmark.IID}">
+																	쪽지 보내기
+																</button><br>
+																<a class="btn btn-icon-default" href="chat.cut">1:1 채팅</a>
+															</div>
+														</div>
+														</td>													
 													</c:if>
 														<td width="15%"><button class="btn btn-sm btn-light"
 																onClick="bookmarkboardDelete(${bookmark.BOOKMARKIDX},'${bookmark.BID}',${currentPage})">

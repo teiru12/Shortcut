@@ -1,6 +1,5 @@
 package sc.member;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,9 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import sc.follow.FollowService;
 import sc.mail.MailService;
@@ -108,7 +109,11 @@ public class MemberController {
 		member.setNICKNAME(NICKNAME);
 		TESTEMAIL = EMAIL;
 		
-		memberService.insertMember(member); 
+		if(memberService.selectMemberId(ID) != null) {
+			memberService.updateDelMember(member);
+		}else {
+			memberService.insertMember(member);			
+		}
 		//mailService.sendAuthMail(EMAIL);
 		
 		return EMAIL;
@@ -116,22 +121,31 @@ public class MemberController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/testemail.cut")
-	public void testEmail(Model model) throws Exception {
+	public ModelAndView testEmail(Model model) throws Exception {
+		ModelAndView mv = new ModelAndView("loginForm");
 		mailService.sendAuthMail(TESTEMAIL);
+		
+		return mv;
 	}
 	
 	//회원가입 아이디 중복체크
 	@ResponseBody
-	@RequestMapping(value="/checkID.cut")
-	public boolean checkID(String ID) throws Exception{		
-		
-		// ID가 존재할 경우 false
-		if(memberService.selectMemberId(ID) != null) {
-			return false;
+	@RequestMapping(value="/checkID.cut" ,method = {RequestMethod.POST, RequestMethod.GET})
+	public ModelAndView checkID(@RequestBody String ID) throws Exception{
+		ModelAndView mv = new ModelAndView("jsonView");
+		if(ID.isEmpty()) {//빈칸일때
+			mv.addObject("EMPTY", true);
+		}else {
+			Member member = memberService.selectMemberId(ID);
+			if(member != null) {//탈퇴한회원, 등록된 아이디 일시
+				mv.addObject("STATUS", member.getSTATUS());				
+				mv.addObject("ID", member.getID());				
+			}else {//사용가능한 아이디일시
+				mv.addObject("CHECK", true);
+			}
 		}
 		
-		// ID가 존재하지 않을 경우 true
-		return true;
+		return mv;
 	}
 	
 	// 메일 인증 후 결과 페이지 연결

@@ -334,4 +334,20 @@
 		</trim>
 	</select>
 	
+	<!-- 탈퇴 아이디로 회원가입할떄 -->
+	<update id="updateDelMember" parameterType="sc.model.Member">
+	<![CDATA[
+		UPDATE
+			MEMBER
+		SET
+			PASSWORD = #{PASSWORD},
+			NAME = #{NAME},
+			NICKNAME = #{NICKNAME},
+			EMAIL = #{EMAIL},
+			STATUS = 'STAY'
+		WHERE
+			ID = #{ID}
+	]]>           
+	</update>
+	
 </mapper>

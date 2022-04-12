@@ -84,4 +84,9 @@ public class MemberDAO {
 	public void testjoin(String EMAIL) throws Exception {
 		sqlSessionTemplate.update("member.testjoin", EMAIL);
 	}
+	
+	/* 회원가입 인증 */
+	public void updateDelMember(Member member) throws Exception {
+		sqlSessionTemplate.update("member.updateDelMember", member);
+	}
 }

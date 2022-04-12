@@ -98,5 +98,10 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public void testjoin(String Email) throws Exception {
 		memberDAO.testjoin(Email);
+	}
+
+	@Override
+	public void updateDelMember(Member member) throws Exception {
+		memberDAO.updateDelMember(member);
 	}	
 }
