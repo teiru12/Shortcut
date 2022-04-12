@@ -87,13 +87,13 @@ public class ShortDAO {
 	}
 	
 	/* 단축키 게시판 댓글 입력 BY 게시글번호 */
-	public void insertShortListComByShortIDX(ShortCom SHORTCUM) throws Exception{
-		sqlSessionTemplate.insert("short.insertShortListComByShortIDX",SHORTCUM);
+	public void insertShortListComByShortIDX(ShortCom shortCom) throws Exception{
+		sqlSessionTemplate.insert("short.insertShortListComByShortIDX",shortCom);
 	}
 	
 	/* 단축키 게시판 댓글 수정 BY 게시글번호 */
-	public void updateShortListComByShortIDX(ShortCom SHORTCUM) throws Exception{
-		sqlSessionTemplate.update("short.updateShortListComByShortIDX",SHORTCUM);
+	public void updateShortListComByShortIDX(ShortCom shortCom) throws Exception{
+		sqlSessionTemplate.update("short.updateShortListComByShortIDX",shortCom);
 	}
 	
 	/* 단축키 게시판 댓글 수정 (삭제) BY 게시글번호 */
@@ -115,8 +115,8 @@ public class ShortDAO {
 		sqlSessionTemplate.update("short.increaseReStepEqAndGreaterShort",map);
 	}
 	
-	public void insertShortListFirstComByShortIDX(ShortCom SHORTCUM) throws Exception {
-		sqlSessionTemplate.update("short.insertShortListFirstComByShortIDX",SHORTCUM);
+	public void insertShortListFirstComByShortIDX(ShortCom shortCom) throws Exception {
+		sqlSessionTemplate.update("short.insertShortListFirstComByShortIDX",shortCom);
 	}
 	
 }

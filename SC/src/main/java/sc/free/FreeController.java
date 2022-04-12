@@ -71,6 +71,9 @@ public class FreeController {
 		
 		KEYWORD = request.getParameter("KEYWORD");
 		
+		if(KEYWORD != null) {
+			searchUrl += "&KEYWORD=" + KEYWORD;
+		}
 		
 		if(KEYWORD == null || KEYWORD.trim() =="") { // 검색 미적용일때
 			freeCount = freeService.countFreeList();
@@ -99,6 +102,8 @@ public class FreeController {
 		
 		model.addAttribute("freeList", freeList);
 		model.addAttribute("noticeTopList", noticeTopList);
+		
+		model.addAttribute("KEYWORD", KEYWORD);
 		
 		return "freeList";
 	}	

@@ -64,6 +64,9 @@ public class NewsController {
 		
 		KEYWORD = request.getParameter("KEYWORD");
 		
+		if(KEYWORD != null) {
+			searchUrl += "&KEYWORD=" + KEYWORD;
+		}
 		
 		if(KEYWORD == null || KEYWORD.trim() =="") { // 검색 미적용일때
 			newsCount = newsService.countNewsList();
@@ -92,6 +95,8 @@ public class NewsController {
 		
 		model.addAttribute("newsList", newsList);
 		model.addAttribute("noticeTopList", noticeTopList);
+		
+		model.addAttribute("KEYWORD", KEYWORD);
 		
 		return "newsList";
 	}	

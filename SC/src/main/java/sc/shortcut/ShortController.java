@@ -220,10 +220,11 @@ public class ShortController {
 			sCom.setRELEVEL(0);
 			// 현재 게시글의 댓글 수를 구한뒤 +1을 한 값을 RESTEP값에 입력
 			sCom.setRESTEP(shortService.countShortListComByShortIDX(ARTICLEIDX) + 1);
-			
-			shortService.insertShortListComByShortIDX(sCom);			
+
+			shortService.insertShortListFirstComByShortIDX(sCom);
+						
 		/* 대댓글일 경우 */	
-		} else {
+		} else {			
 			sCom.setRETYPE(RETYPE);
 			sCom.setPCOMIDX(COMIDX);
 			
@@ -244,7 +245,7 @@ public class ShortController {
 			// 게시글의 댓글 중 새로운 RESTEP값보다 같거나 큰 댓글들의 모든 RESTEP값을 1씩 증가  
 			shortService.increaseReStepEqAndGreaterShort(newReStep, RETYPE, ARTICLEIDX);
 			
-			shortService.insertShortListFirstComByShortIDX(sCom);
+			shortService.insertShortListComByShortIDX(sCom);
 		}	
 		/* jsp로 넘겨줄 페이징한 댓글 리스트 html을 생성 */
 		/* 페이징 변수 설정 */
@@ -301,7 +302,7 @@ public class ShortController {
 	
 	@ResponseBody
 	@RequestMapping("/shortComDelete.cut")
-	public Map<String, String> shortDelete(int COMIDX) throws Exception {
+	public Map<String, String> shortComDelete(int COMIDX) throws Exception {
 		Map<String, String> msg = new HashMap<String, String>();
 		
 		// 단축키게시판의 댓글 삭제 : ISDEL을 'Y'로 변환

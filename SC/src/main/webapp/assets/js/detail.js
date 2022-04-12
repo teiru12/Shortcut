@@ -182,7 +182,7 @@ function modifyDetailCheck(memberCheck, TYPE, IDX) {
 		} else if(TYPE == 'NOT') {
 			location.href = "/SC/noticeModifyForm.cut?IDX="+IDX;
 		} else if(TYPE == 'SHO') {
-			location.href = "/SC/shortModifyForm.cut?IDX="+IDX;
+			location.href = "/SC/adminShortModifyForm.cut?IDX="+IDX;
 		}
 	/* 비회원일 경우 패스워드 검사 */
 	} else {
@@ -380,7 +380,7 @@ function delArticle(delUrl, TYPE, IDX) {
 						} else if(TYPE == 'REP') {
 							location.href="/SC/reportList.cut";
 						} else if(TYPE == 'SHO') {
-							location.href="/SC/shortList.cut";
+							location.href="/SC/shortcutList.cut";
 						}
 					});
 				}	

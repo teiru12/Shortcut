@@ -273,7 +273,6 @@
 
 	<!-- 단축키 게시판 댓글 입력 BY 게시글번호 -->
 	<insert id="insertShortListComByShortIDX" parameterType="sc.model.ShortCom">
-	<![CDATA[
 		INSERT INTO
 			SHORTCOM
 		VALUES(
@@ -290,7 +289,6 @@
 			#{PCOMIDX},
 			'N'
 		)
-	]]>
 	</insert>
 	
 	<!-- 단축키 게시판 대댓글이 아닌 댓글 입력 BY 게시글번호 -->

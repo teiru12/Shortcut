@@ -149,7 +149,7 @@
 					</span><hr>
 					<p>${infoDetail.CONTENT}</p>
 					<div style="text-align:right;">
-						<a href="/SC/infoList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
+						<a href=<%=referer%> class="btn btn-sm btn-outline-secondary">목록으로</a>
 
 						<!-- 비회원상태 -->
 						<c:if test="${id == null && infoDetail.PASSWORD != null}">

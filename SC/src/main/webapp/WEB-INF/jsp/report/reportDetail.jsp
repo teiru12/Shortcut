@@ -188,7 +188,7 @@ function modifyCom(REPORTCOMIDX) {
 					</span><hr>
 					<p>${reportDetail.CONTENT}</p>
 					<div style="text-align:right;">
-						<a href="/SC/reportList.cut" class="btn btn-sm btn-outline-secondary">목록으로</a>
+						<a href=<%=referer%> class="btn btn-sm btn-outline-secondary">목록으로</a>
 
 						<!-- 로그인상태 -->
 						<c:if test="${id == reportDetail.ID}"> 
