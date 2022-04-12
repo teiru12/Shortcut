@@ -69,8 +69,10 @@ public class NewsController {
 		}
 		
 		if(KEYWORD == null || KEYWORD.trim() =="") { // 검색 미적용일때
+			System.out.println("1");
 			newsCount = newsService.countNewsList();
-		}else { // 감색했을때
+		} else { // 감색했을때
+			System.out.println("2");
 			newsCount = newsService.countNewsListSearch(KEYWORD);
 		}
 

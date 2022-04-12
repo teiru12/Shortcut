@@ -49,7 +49,7 @@ public class NewsServiceImpl implements NewsService {
 	//뉴스 게시판 검색 글 수
 	@Override
 	public int countNewsListSearch(String KEYWORD) throws Exception {
-		return Integer.parseInt(String.valueOf(newsDAO.countNewsListSearch()));
+		return Integer.parseInt(String.valueOf(newsDAO.countNewsListSearch(KEYWORD)));
 	}
 
 	//뉴스 게시판 등록

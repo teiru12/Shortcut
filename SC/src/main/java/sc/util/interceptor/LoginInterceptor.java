@@ -57,7 +57,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 				// noticeDelete.cut noticeWrite.cut noticeWriteForm.cut noticeModify.cut noticeModifyForm.cut
 				// reportComWrite.cut reportComModify.cut reportComDelete.cut
 				if( (!id.equals("ADMIN")) && (
-						uri.substring(6, 11).equals("admin") || uri.equals("/SC/searchLeveladminMemberList.cut") || uri.equals("/SC/noticeDelete.cut") ||
+						uri.substring(4, 9).equals("admin") || uri.equals("/SC/searchLeveladminMemberList.cut") || uri.equals("/SC/noticeDelete.cut") ||
 						uri.equals("/SC/noticeWrite.cut") || uri.equals("/SC/noticeWriteForm.cut") || uri.equals("/SC/noticeModify.cut") ||
 						uri.equals("/SC/noticeModifyForm.cut") || uri.equals("/SC/reportComWrite.cut") || uri.equals("/SC/reportComModify.cut") ||
 						uri.equals("/SC/reportComDelete.cut")

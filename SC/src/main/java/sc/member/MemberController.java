@@ -306,4 +306,10 @@ public class MemberController {
 		
 		return "/member/writerDetail";
 	}
+	
+	@RequestMapping("/chat.cut")
+	public String chat() throws Exception {
+		
+		return "chat";
+	}
 }
