@@ -20,8 +20,9 @@
 	                    <div class="card-body">
 	                        <div class="tab-content" id="myTabContent">
 	                            <div class="tab-pane fade show active" id="shortcutList.cut" role="tabpanel" aria-labelledby="home-tab">
-	                            <div class="col-md-3 mb-1" style="float:right;">
-		                            <div class="input-group mb-3">
+	                            <div class="col-md-4 mb-1" style="float:right;">
+		                            <div class="input-group mb-4">
+		                            <a class="btn btn-outline-secondary" href="adminMemberList.cut">초기화</a>
 		                            <a class="btn btn-outline-secondary">레벨</a>
 			                        <input type=text name="LEVEL1" id="LEVEL1" class="form-control" style="width:60px;" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" value="${LEVEL1}">
 			                         &nbsp;&nbsp;~&nbsp;&nbsp; <input type="text" name="LEVEL2" id="LEVEL2" class="form-control" style="width:60px;" onkeydown="checkNumber();" value="${LEVEL2}">
@@ -126,8 +127,16 @@
 </div>
 <script type="text/javascript">
 	function memberstatus(data){
-		alert($("#dropdownMenuButton").val());
-		
+		const btnElement = document.getElementById('dropdownMenuButton');
+		if(data == 'ON'){
+			btnElement.innerText = "사용가능";
+		}else if(data == 'OFF'){
+			btnElement.innerText = "정지";
+		}else if(data == 'DEL'){
+			btnElement.innerText = "탈퇴";
+		}else if(data == 'STAY'){
+			btnElement.innerText = "인증대기";
+		}
 		document.getElementById('STATUS').value = data;
 	}
 	
