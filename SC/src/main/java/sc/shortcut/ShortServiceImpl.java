@@ -123,29 +123,40 @@ public class ShortServiceImpl implements ShortService {
 		return shortDAO.shortListComPagingByShortIDX(map);
 	}
 
+	/* 단축게시판 댓글 카운트 BY 게시글번호*/
 	@Override
 	public int countShortListComByShortIDX(int SHORTIDX) throws Exception {
-		return shortDAO.countShortListComByShortIDX(SHORTIDX);
+		return Integer.parseInt(String.valueOf(shortDAO.countShortListComByShortIDX(SHORTIDX)));
 	}
-
+	
+	/* 단축키 게시판 댓글 입력 BY 게시글번호*/
 	@Override
-	public void insertShortListComByShortIDX(ShortCom SHORTCUM) throws Exception {
-		shortDAO.insertShortListComByShortIDX(SHORTCUM);
+	public void insertShortListComByShortIDX(ShortCom shortCom) throws Exception {
+		shortDAO.insertShortListComByShortIDX(shortCom);
 	}
-
+	
+	//단축키 게시판 대댓글이 아닌 댓글 입력 BY 게시글번호
 	@Override
-	public void updateShortListComByShortIDX(ShortCom SHORTCUM) throws Exception {
-		shortDAO.updateShortListComByShortIDX(SHORTCUM);
+	public void insertShortListFirstComByShortIDX(ShortCom shortCom) throws Exception {
+		shortDAO.insertShortListFirstComByShortIDX(shortCom);
 	}
 
+	/* 단축키 게시판 댓글 수정 BY 게시글번호*/
+	@Override
+	public void updateShortListComByShortIDX(ShortCom shortCom) throws Exception {
+		shortDAO.updateShortListComByShortIDX(shortCom);
+	}
+
+	/* 단축키 게시판 댓글 수정 (삭제) BY 게시글번호*/
 	@Override
 	public void updateShortListComDelByShortIDX(int SHORTIDX) throws Exception {
 		shortDAO.updateShortListComDelByShortIDX(SHORTIDX);
 	}
 
+	/* 단축키 게시판 댓글 하나의 정보 BY SHORTCOMIDX */
 	@Override
-	public ShortCom selectShortCom(int SHORTIDX) throws Exception {
-		return shortDAO.selectShortCom(SHORTIDX);
+	public ShortCom selectShortCom(int SHORTCOMIDX) throws Exception {
+		return shortDAO.selectShortCom(SHORTCOMIDX);
 	}
 	
 	/*다음 RESTEP값을 찾음*/
@@ -179,9 +190,5 @@ public class ShortServiceImpl implements ShortService {
 		shortDAO.increaseReStepEqAndGreaterShort(map);
 	}
 
-	//단축키 게시판 대댓글 입력
-	@Override
-	public void insertShortListFirstComByShortIDX(ShortCom SHORTCUM) throws Exception {
-		shortDAO.insertShortListFirstComByShortIDX(SHORTCUM);
-	}
+
 }

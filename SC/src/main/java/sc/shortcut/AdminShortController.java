@@ -40,8 +40,8 @@ public class AdminShortController {
 	}
 	
 	@RequestMapping(value = "adminShortModifyForm.cut")
-	public String freeModifyForm(HttpServletRequest request, Model model) throws Exception{
-		int IDX = Integer.parseInt(request.getParameter("SHORTIDX"));
+	public String adminShortModifyForm(HttpServletRequest request, Model model) throws Exception{
+		int IDX = Integer.parseInt(request.getParameter("IDX"));
 		
 		sc.model.Short shortItem = shortService.selectShortIDX(IDX);
 		model.addAttribute("shortItem", shortItem);
@@ -66,4 +66,16 @@ public class AdminShortController {
 		
 		return msg;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/shortDelete.cut")
+	public Map<String, String> shortDelete(int IDX) throws Exception {
+		Map<String, String> msg = new HashMap<String, String>();
+		
+		// 자유게시판의 게시글 삭제 : ISDEL을 'Y'로 변환
+		shortService.deleteShortList(IDX);
+		
+		return msg;
+	}
+	
 }

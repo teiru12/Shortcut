@@ -6,6 +6,11 @@
 <head>
 <meta charset="UTF-8">
 </head>
+<%
+	/* 로그인 전 페이지 정보 */
+	String referer = request.getHeader("referer");
+	if(referer==null)referer = "/";
+%>
 <body>
 <div id="app">
         <div id="main">
@@ -145,7 +150,7 @@ function memberModify(){
 		},
 		contentType : "application/json; charset=UTF-8",
       	success : function(result){
-      		location.href="adminMemberList.cut";
+      		location.href='<%=referer%>';
       	}
 	});
 }

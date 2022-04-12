@@ -66,6 +66,10 @@ public class InfoController {
 
 		KEYWORD = request.getParameter("KEYWORD");
 
+		if(KEYWORD != null) {
+			searchUrl += "&KEYWORD=" + KEYWORD;
+			}
+		
 		if (KEYWORD == null || KEYWORD.trim() == "") { // 검색 미적용일때
 			infoCount = infoService.countInfoList();
 		} else { // 감색했을때
@@ -94,6 +98,8 @@ public class InfoController {
 
 		model.addAttribute("infoList", infoList);
 		model.addAttribute("noticeTopList", noticeTopList);
+		
+		model.addAttribute("KEYWORD", KEYWORD);
 
 		return "infoList";
 	}
