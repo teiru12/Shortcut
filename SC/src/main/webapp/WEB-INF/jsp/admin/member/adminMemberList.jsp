@@ -23,8 +23,8 @@
 	                            <div class="col-md-3 mb-1" style="float:right;">
 		                            <div class="input-group mb-3">
 		                            <a class="btn btn-outline-secondary">레벨</a>
-			                        <input type="text" name="LEVEL1" id="LEVEL1" class="form-control" style="width:60px;" value="${LEVEL1}">
-			                         &nbsp;&nbsp;~&nbsp;&nbsp; <input type="text" name="LEVEL2" id="LEVEL2" class="form-control" style="width:60px;" value="${LEVEL2}">
+			                        <input type=text name="LEVEL1" id="LEVEL1" class="form-control" style="width:60px;" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" value="${LEVEL1}">
+			                         &nbsp;&nbsp;~&nbsp;&nbsp; <input type="text" name="LEVEL2" id="LEVEL2" class="form-control" style="width:60px;" onkeydown="checkNumber();" value="${LEVEL2}">
 			                         	<span class="input-group-text"><i class="bi bi-search" onclick="findlevel()" style="cursor:pointer"></i></span>
 			                         </div>
 			                    </div>
@@ -35,18 +35,7 @@
 	                        			<th width="20%">이메일</th>
 	                        			<th width="15%">이름</th>
 	                        			<th width="10%">레벨</th>
-	                        			<th width="20%">회원 상태&nbsp;
-	                        				<select id="memberStatus" onchange="memberstatus(this.value)">
-	                        					<option>--선택--</option>
-	                        					<option value="ON"
-	                        					<c:if test="${STATUS == 'ON'}">selected</c:if>>사용가능</option>
-	                        					<option value="OFF"
-	                        					<c:if test="${STATUS == 'OFF'}">selected</c:if>>정지</option>
-	                        					<option value="DEL"
-	                        					<c:if test="${STATUS == 'DEL'}">selected</c:if>>탈퇴</option>
-	                        					<option value="STAY"
-	                        					<c:if test="${STATUS == 'STAY'}">selected</c:if>>인증대기</option>
-	                        				</select>
+	                        			<th width="20%">회원 상태
 	                        			</th>
 	                        		</tr>
 	                        		<thead>
@@ -91,8 +80,35 @@
 									</c:if>
 									<form id="frm" action="adminMemberList.cut">
 									<input type="hidden" id="STATUS" name="STATUS" value="${STATUS }">
-		                                <div class="col-md-3 mb-1" style="float:right;">
-		                                    <div class="input-group mb-3">
+		                                <div class="col-md-4 mb-1" style="float:right;">
+		                                    <div class="input-group mb-4">
+			                                    <div class="dropdown">
+	                                                <button class="btn btn-primary dropdown-toggle me-1" type="button"
+	                                                    id="dropdownMenuButton" data-bs-toggle="dropdown"
+	                                                    aria-haspopup="true" aria-expanded="false" value="회원상태">
+	                                                    <c:if test="${STATUS == null }">
+	                                                    회원상태
+	                                                    </c:if>
+	                                                    <c:if test="${STATUS == 'ON' }">
+	                                                    사용가능
+	                                                    </c:if>
+	                                                    <c:if test="${STATUS == 'OFF' }">
+	                                                    정지
+	                                                    </c:if>
+	                                                    <c:if test="${STATUS == 'DEL' }">
+	                                                    탈퇴
+	                                                    </c:if>
+	                                                    <c:if test="${STATUS == 'STAY' }">
+	                                                    인증대기
+	                                                    </c:if>
+	                                                </button>
+	                                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+	                                                	<a class="btn btn-icon-default" onClick="memberstatus('ON')">사용가능</a><br>
+	                                                	<a class="btn btn-icon-default" onClick="memberstatus('OFF')">정지</a><br>
+	                                                	<a class="btn btn-icon-default" onClick="memberstatus('DEL')">탈퇴</a><br>
+	                                                	<a class="btn btn-icon-default" onClick="memberstatus('STAY')">인증대기</a><br>
+	                                                </div>
+	                                            </div>
 		                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
 		                                        <input type="text" name="KEYWORD" id="KEYWORD" value="${KEYWORD}" class="form-control" placeholder="검색어 ...">
 		                                        <button class="btn btn-outline-secondary">검색</button>
@@ -110,6 +126,8 @@
 </div>
 <script type="text/javascript">
 	function memberstatus(data){
+		alert($("#dropdownMenuButton").val());
+		
 		document.getElementById('STATUS').value = data;
 	}
 	
@@ -117,6 +135,18 @@
 		let level1 = $("#LEVEL1").val();
 		let level2 = $("#LEVEL2").val();
 		location.href="searchLeveladminMemberList.cut?LEVEL1="+level1+"&LEVEL2="+level2;
+	}
+	
+	function checkNumber() {
+		if((event.keyCode > 48 && event.keyCode < 57 ) 
+			      || event.keyCode == 8 //backspace
+			      || event.keyCode == 37 || event.keyCode == 39 //방향키 →, ←
+			      || event.keyCode == 46 //delete키
+			      || event.keyCode == 39){
+			event.returnValue=true;
+		}else{
+			event.returnValue=false;
+		}		  
 	}
 </script>
 </body>

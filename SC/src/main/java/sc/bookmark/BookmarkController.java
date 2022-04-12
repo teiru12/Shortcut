@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import sc.model.Bookmark;
-import sc.model.Follow;
 import sc.util.Paging;
 
 @Controller
@@ -29,7 +28,7 @@ public class BookmarkController {
 		/* 세션으로부터 로그인 id를 읽어옴 */
 		String ID = (String) request.getSession().getAttribute("id");
 		/* 페이징 변수 설정 */
-		int pageSize = 2; // 페이지당 출력할 포인트 정보의 수
+		int pageSize = 5; // 페이지당 출력할 포인트 정보의 수
 		int START = 1;
 		int END = pageSize;
 		int currentPage = 1; // 현재 페이지
@@ -61,12 +60,12 @@ public class BookmarkController {
 		// 주소 입력
 		Paging paging;
 		Paging paging2;
-		if(STYPE == null) {
+		if(STYPE == null) {//단축키게시판
 			paging = new Paging(bookmarkshortListCount, pageBlock, pageSize, currentPage, url, searchUrl);
 			bookmarklist = bookmarkService.bookmarkShortListPaging(START, END, ID);
 			model.addAttribute("bookmarklist", bookmarklist);
 			model.addAttribute("paging", paging);
-		}else {
+		}else {//즐겨찾기게시판
 			paging2 = new Paging(bookmarkboardListCount, pageBlock, pageSize, currentPage, url, searchUrl);
 			bookmarklist = bookmarkService.bookmarkBoardListPaging(START, END, ID);
 			model.addAttribute("bookmarklist", bookmarklist);
@@ -95,7 +94,7 @@ public class BookmarkController {
 		String id = (String) request.getSession().getAttribute("id");
 		
 		/* 페이징 변수 설정 */
-		int pageSize = 2; // 페이지당 출력할 포인트 정보의 수
+		int pageSize = 5; // 페이지당 출력할 포인트 정보의 수
 		// int currentPage // currentPage는 파라미터로 전달받음
 		int START = 1 + pageSize * (currentPage - 1);
 		int END = pageSize * currentPage;
@@ -174,7 +173,7 @@ public class BookmarkController {
 		String id = (String) request.getSession().getAttribute("id");
 		
 		/* 페이징 변수 설정 */
-		int pageSize = 2; // 페이지당 출력할 포인트 정보의 수
+		int pageSize = 5; // 페이지당 출력할 포인트 정보의 수
 		// int currentPage // currentPage는 파라미터로 전달받음
 		int START = 1 + pageSize * (currentPage - 1);
 		int END = pageSize * currentPage;

@@ -37,7 +37,7 @@
                                                     <div class="col-md-8">
                                                         <div class="form-group has-icon-left">
                                                             <div class="position-relative input-group has-validation">
-                                                                <input type="text" class="form-control" placeholder="ID" id="ID" oninput="checkID();">
+                                                                <input type="text" class="form-control" placeholder="ID" id="ID" maxlength="30" oninput="checkID();">
                                                                 <div class="form-control-icon">
                                                                     <i class="bi bi-person"></i>
                                                                 </div>
@@ -51,7 +51,7 @@
                                                     <div class="col-md-8">
                                                         <div class="form-group has-icon-left">
                                                             <div class="position-relative">
-                                                                <input type="password" class="form-control" placeholder="Password" id="PASSWORD" oninput="checkPW()">
+                                                                <input type="password" class="form-control" placeholder="Password" id="PASSWORD" maxlength="30" oninput="checkPW()">
                                                                 <div class="form-control-icon">
                                                                     <i class="bi bi-lock"></i>
                                                                 </div>
@@ -64,7 +64,7 @@
                                                     <div class="col-md-8">
                                                         <div class="form-group has-icon-left">
                                                             <div class="position-relative">
-                                                                <input type="password" class="form-control" id="PASSWORD2" placeholder="Password" oninput="checkPW()">
+                                                                <input type="password" class="form-control" id="PASSWORD2" placeholder="Password" maxlength="30" oninput="checkPW()">
                                                                 <div class="form-control-icon">
                                                                     <i class="bi bi-lock"></i>
                                                                 </div>
@@ -78,7 +78,7 @@
                                                     <div class="col-md-8">
                                                         <div class="form-group has-icon-left">
                                                             <div class="position-relative">
-                                                                <input type="email" class="form-control" placeholder="Email" id="EMAIL" >
+                                                                <input type="email" class="form-control" placeholder="Email" id="EMAIL" maxlength="50">
                                                                 <div class="form-control-icon">
                                                                     <i class="bi bi-envelope"></i>
                                                                 </div>
@@ -91,7 +91,7 @@
                                                     <div class="col-md-8">
                                                         <div class="form-group has-icon-left">
                                                             <div class="position-relative">
-                                                                <input type="text" class="form-control" placeholder="Name" id="NAME">
+                                                                <input type="text" class="form-control" placeholder="Name" id="NAME" maxlength="50">
                                                                 <div class="form-control-icon">
                                                                     <i class="bi bi-person"></i>
                                                                 </div>
@@ -104,7 +104,7 @@
                                                     <div class="col-md-8">
                                                         <div class="form-group has-icon-left">
                                                             <div class="position-relative">
-                                                                <input type="text" class="form-control" placeholder="NickName" id="NICKNAME">
+                                                                <input type="text" class="form-control" placeholder="NickName" id="NICKNAME" maxlength="50">
                                                                 <div class="form-control-icon">
                                                                     <i class="bi bi-person"></i>
                                                                 </div>
@@ -292,26 +292,38 @@
 				});
 	    		return false;
 	    	}else{
-				$.ajax({
-			        url : "join.cut",
-			      	data : {
-			      		"ID" : id,
-			      		"PASSWORD" : password, 
-			      		"EMAIL" : email, 
-			      		"NAME" : name, 
-			      		"NICKNAME" : nickname
-			      	},
-			      	contentType : "application/json; charset=UTF-8",
-			      	success : function(result){
-			      		location.href="testemail.cut";
-			      		location.href="loginForm.cut";
-			      	},
-			        error:function(request, error) {
-			            alert("fail");
-			            // error 발생 이유를 알려준다.
-			         alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-			        }
-				})	    		
+	    		swal({
+					title				: '입력하신 이메일로 인증메일을 발송하였습니다.',
+					closeOnClickOutside	: false, // alert 창 제외하고 밖 클릭해도 창 안 닫히게
+					buttons				: {
+						confirm : {
+							text 		: '확인',
+							value 		: true,
+							className 	: 'btn btn-primary' 
+						}
+					}
+				}).then(function(){
+					$.ajax({
+				        url : "join.cut",
+				      	data : {
+				      		"ID" : id,
+				      		"PASSWORD" : password, 
+				      		"EMAIL" : email, 
+				      		"NAME" : name, 
+				      		"NICKNAME" : nickname
+				      	},
+				      	contentType : "application/json; charset=UTF-8",
+				      	success : function(result){
+				      		location.href="testemail.cut";
+				      	},
+				        error:function(request, error) {
+				            alert("fail");
+				            // error 발생 이유를 알려준다.
+				         alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				        }
+					})
+	    		});		
+					    		
 	    	}
 			
 		});
@@ -335,23 +347,35 @@
     function checkID(){
     	let id = $("#ID").val();
     	
+    	if(id == ""){
+    		$("#checkID").empty();
+    	}
     	$.ajax({
 	        url : "checkID.cut",
-	      	data : {
-	      		"ID" : id
-	      	},
+	      	data : id,
+	      	type : "post",
+	      	dataType : 'json',
 	      	contentType : "application/json; charset=UTF-8",
 	      	success : function(result){
-	      		if(result){
+	      		if(result.EMPTY){
+	      			$("#checkID").empty();
+	      			checkId = false;
+	      		}else if(result.STATUS == 'DEL'){//탈퇴한회원 아이디
 	      			$("#checkID").empty();
 	    			$("#checkID").append("(사용가능한 아이디입니다.)");
-	    			checkId = true;
+	    			checkId = true; 	      			
+	      		}else if(result.CHECK){//사용가능한 아이디
+	      			$("#checkID").empty();
+	    			$("#checkID").append("(사용가능한 아이디입니다.)");
+	    			checkId = true; 	      			
 	      		}else{
 	      			$("#checkID").empty();
 	    			$("#checkID").append("(중복된 아이디입니다.)");
 	    			checkId = false;
 	      		}
-	      	}
+	      	},error : function(){
+				 alert("서버요청실패");
+			}
 		})
     }
     

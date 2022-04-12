@@ -23,7 +23,7 @@ public class MailService {
             MailUtils sendMail = new MailUtils(mailSender);
             sendMail.setSubject("ShortCut 이메일인증");
             sendMail.setText(new StringBuffer().append("<h1>[이메일 인증]</h1>")
-            .append("<p>아래 비밀번호로 로그인후 비밀번호 변경하시길 권장드립니다.</p>")
+            .append("<p>아래 링크를 누르시면 회원가입이 완료됩니다.</p>")
             .append("<a href='http://localhost:9003/SC/testjoin.cut?EMAIL=")
             .append(email)
             .append("'>링크</a>")
